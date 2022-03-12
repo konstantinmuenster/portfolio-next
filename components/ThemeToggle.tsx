@@ -3,14 +3,14 @@ import { useTheme } from 'next-themes';
 
 export const ThemeToggle = () => {
   const [mounted, setMounted] = useState(false);
-  const { setTheme, currentTheme } = useTheme();
+  const { setTheme, resolvedTheme } = useTheme();
 
   useEffect(() => setMounted(true), []);
 
   if (!mounted) return <></>;
 
   const toggleTheme = () => {
-    setTheme(currentTheme === 'light' ? 'dark' : 'light');
+    setTheme(resolvedTheme === 'light' ? 'dark' : 'light');
   };
 
   return <button onClick={toggleTheme}>Switch theme</button>;

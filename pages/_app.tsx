@@ -8,12 +8,15 @@ import type { AppProps } from 'next/app';
 
 import { applyGlobalStyles } from '@config/stitches.config';
 import { ThemeProvider } from '@components/ThemeProvider';
+import { Layout } from '@components/Layout';
 
 function MyApp({ Component, pageProps }: AppProps) {
   applyGlobalStyles();
   return (
     <ThemeProvider>
-      <Component {...pageProps} />
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
     </ThemeProvider>
   );
 }

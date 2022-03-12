@@ -53,10 +53,10 @@ export const {
     transitions: {},
   },
   media: {
-    bp1: '(min-width: 520px)',
-    bp2: '(min-width: 900px)',
-    bp3: '(min-width: 1200px)',
-    bp4: '(min-width: 1800px)',
+    bp1: '(min-width: 480px)',
+    bp2: '(min-width: 768px)',
+    bp3: '(min-width: 1024px)',
+    bp4: '(min-width: 1200px)',
     motion: '(prefers-reduced-motion)',
     hover: '(any-hover: hover)',
     dark: '(prefers-color-scheme: dark)',
@@ -68,6 +68,9 @@ export type CSS = Stitches.CSS<typeof config>;
 
 export const darkTheme = createTheme('dark-theme', {
   colors: {
+    primary: '#5F89C8',
+    primaryLight: '#D7E2F3',
+    secondary: '#F0EBE4',
     background: '#121212',
     surface: '#1E1E1E',
     text: '#D2D5DA',
