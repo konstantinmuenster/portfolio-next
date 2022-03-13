@@ -37,6 +37,7 @@ export const {
       borderGradient: 'linear-gradient(#E44873 50%, #613FE6 50%)',
     },
     radii: {
+      less: '4px',
       default: '8px',
       round: '9999px',
     },
@@ -104,11 +105,19 @@ export const applyGlobalStyles = globalCss({
   },
 
   a: {
-    fontSize: '1rem',
+    fontSize: '1.125rem',
     fontWeight: 'bold',
     lineHeight: 'inherit',
     textDecoration: 'none',
     color: '$subtext',
+    '&:hover': {
+      color: '$text',
+    },
+    '&:focus-visible': {
+      outlineColor: '$text',
+      color: '$text',
+      borderRadius: '$less',
+    },
   },
 
   strong: {
@@ -116,7 +125,7 @@ export const applyGlobalStyles = globalCss({
   },
 
   p: {
-    fontSize: '1rem',
+    fontSize: '1.125rem',
     fontWeight: 'normal',
     lineHeight: '1.75rem',
   },
@@ -150,7 +159,7 @@ export const applyGlobalStyles = globalCss({
 
   h5: {
     fontFamily: '$sans',
-    fontSize: '1rem',
+    fontSize: '1.125rem',
     lineHeight: '1.75rem',
     fontWeight: 'bold',
   },
@@ -159,6 +168,36 @@ export const applyGlobalStyles = globalCss({
     fontSize: '0.875rem',
     lineHeight: '1.125rem',
     color: '$subtext',
+  },
+
+  // https://gist.github.com/pepebe/1176777
+  'ul.reset, ol.reset': {
+    margin: '0',
+    padding: '0',
+    textIndent: '0',
+    listStyleType: 'none',
+    '& li, & ul li': {
+      margin: '0',
+      padding: '0',
+      textIndent: '0',
+      listStyleType: 'none',
+    },
+  },
+
+  // https://www.a11yproject.com/posts/how-to-hide-content/
+  '.visually-hidden': {
+    clip: 'rect(0 0 0 0)',
+    clipPath: 'inset(50%)',
+    height: '1px',
+    overflow: 'hidden',
+    position: 'absolute',
+    whiteSpace: 'nowrap',
+    width: '1px',
+  },
+
+  // https://www.a11yproject.com/posts/how-to-hide-content/#alternatives-to-display%3A-none
+  '[hidden]': {
+    display: 'none !important',
   },
 
   // https://rude.im/blog/dark-theme-with-stitches-and-next-js#handling-the-fodt-flash-of-default-theme

@@ -1,13 +1,27 @@
+import { useEffect, useState } from 'react';
+
 import { useThemeValue } from '@hooks/useThemeValue';
+import Link from 'next/link';
 
 type LogoColors = {
   text?: string;
   circle?: string;
 };
 
-export const Logo = ({ colors }: { colors?: LogoColors }) => {
+export const Logo = ({
+  asLink,
+  colors,
+}: {
+  asLink?: boolean;
+  colors?: LogoColors;
+}) => {
+  const [mounted, setMounted] = useState(false);
   const theme = useThemeValue();
-  return (
+
+  useEffect(() => setMounted(true), []);
+  if (!mounted) return <></>;
+
+  const LogoSvg = (
     <svg
       width="128"
       height="38"
@@ -26,5 +40,13 @@ export const Logo = ({ colors }: { colors?: LogoColors }) => {
         fill={colors?.circle ?? theme.colors.primary.value}
       />
     </svg>
+  );
+
+  if (!asLink) return LogoSvg;
+
+  return (
+    <Link href="/" passHref>
+      <a aria-label="Go to home page">{LogoSvg}</a>
+    </Link>
   );
 };
