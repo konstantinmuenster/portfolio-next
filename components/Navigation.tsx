@@ -2,16 +2,44 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 import { styled } from '@config/stitches.config';
+import { normalizeName } from '@utils/normalizeName';
 
 import { VisuallyHidden } from './VisuallyHidden';
+import { Box } from './Box';
+import { useEffect } from 'react';
 
-const StyledNavigation = styled('nav', {
-  '> ul': {
-    display: 'flex',
-  },
-  'a': {
-    padding: '0.5rem 1rem',
-    marginLeft: '2rem',
+const StyledNavigation = styled(Box, {
+  variants: {
+    orientation: {
+      horizontal: {
+        '> ul': {
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+          height: '100%',
+        },
+        a: {
+          display: 'inline-block',
+          padding: '0.5rem 1rem',
+          marginLeft: '2rem',
+        },
+      },
+      vertical: {
+        '> ul': {
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100%',
+        },
+        a: {
+          display: 'inline-block',
+          padding: '2rem $pagePadding',
+          fontSize: '2rem',
+        }
+      },
+    },
   },
 });
 
@@ -25,8 +53,8 @@ const NavigationItem = ({ item }: { item: NavigationItem }) => {
   const router = useRouter();
 
   const ariaProps = {
-    ariaLabel: `Go to ${item.label} page`,
-    ariaCurrent: router.pathname === item.to ? ('page' as const) : undefined,
+    'aria-label': `Go to ${item.label} page`,
+    'aria-current': router.pathname === item.to ? ('page' as const) : undefined,
   };
 
   const WrappedLink = item.external ? (
@@ -42,19 +70,31 @@ const NavigationItem = ({ item }: { item: NavigationItem }) => {
   return <li>{WrappedLink}</li>;
 };
 
-export const Navigation = ({
-  items,
-  orientation,
-}: {
+export type NavigationProps = {
+  name: string;
   items: NavigationItem[];
   orientation?: 'horizontal' | 'vertical';
-}) => {
+  as?: 'nav' | 'div';
+  setHtmlId?: boolean;
+};
+
+export const Navigation = ({
+  name,
+  items,
+  orientation,
+  setHtmlId,
+  as,
+}: NavigationProps) => {
+  const htmlName = normalizeName(name);
   return (
     <StyledNavigation
-      aria-labelledby="mainMenuLabel"
-      aria-orientation={orientation}
+      id={setHtmlId !== false ? htmlName : undefined}
+      as={as ?? 'nav'}
+      role={!as || as === 'nav' ? 'navigation' : undefined}
+      aria-labelledby={`${htmlName}-label`}
+      orientation={orientation ?? 'horizontal'}
     >
-      <VisuallyHidden id="mainMenuLabel">Main Menu</VisuallyHidden>
+      <VisuallyHidden id={`${htmlName}-label`}>{name}</VisuallyHidden>
       <ul className="reset">
         {items.map((item, key) => {
           return <NavigationItem key={key} item={item} />;

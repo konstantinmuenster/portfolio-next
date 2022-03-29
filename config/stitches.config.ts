@@ -41,8 +41,10 @@ export const {
       default: '8px',
       round: '9999px',
     },
+    space: {
+      pagePadding: '1rem',
+    },
     fontSizes: {},
-    space: {},
     sizes: {},
     fontWeights: {},
     lineHeights: {},
@@ -54,15 +56,24 @@ export const {
     transitions: {},
   },
   media: {
-    bp1: '(min-width: 480px)',
-    bp2: '(min-width: 768px)',
-    bp3: '(min-width: 1024px)',
-    bp4: '(min-width: 1200px)',
+    sm: '(min-width: 480px)',
+    md: '(min-width: 768px)',
+    lg: '(min-width: 1024px)',
+    xl: '(min-width: 1200px)',
     motion: '(prefers-reduced-motion)',
     hover: '(any-hover: hover)',
     dark: '(prefers-color-scheme: dark)',
     light: '(prefers-color-scheme: light)',
   },
+  utils: {
+    size: (value: string) => ({
+      width: value,
+      height: value,
+    }),
+    linearGradient: (value: string) => ({
+      backgroundImage: `linear-gradient(${value})`,
+    }),
+  }
 });
 
 export type CSS = Stitches.CSS<typeof config>;
@@ -113,6 +124,16 @@ export const applyGlobalStyles = globalCss({
     '&:hover': {
       color: '$text',
     },
+    '&:focus-visible': {
+      outlineColor: '$text',
+      color: '$text',
+      borderRadius: '$less',
+    },
+  },
+
+  button: {
+    border: 'none',
+    cursor: 'pointer',
     '&:focus-visible': {
       outlineColor: '$text',
       color: '$text',
