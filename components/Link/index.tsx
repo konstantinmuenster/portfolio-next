@@ -1,4 +1,5 @@
 import NextLink from 'next/link';
+import { ComponentPropsWithoutRef } from 'react';
 import { useRouter } from 'next/router';
 import { DiagonalArrowRightUp as ArrowRightUp } from '@styled-icons/evaicons-solid';
 
@@ -12,6 +13,7 @@ const StyledExternalLink = styled('a', {
   paddingRight: '10px',
 
   'svg[data-external-hint]': {
+    display: 'block',
     position: 'absolute',
     top: 0,
     right: 0,
@@ -19,22 +21,23 @@ const StyledExternalLink = styled('a', {
   },
 });
 
-export const Link: React.FunctionComponent<{
+type LinkProps = ComponentPropsWithoutRef<'a'> & {
   to: string;
-}> = props => {
+};
+
+export const Link: React.FC<LinkProps> = ({ to, ...props }) => {
   const router = useRouter();
 
-  const labelString = props.children?.toString();
-  const isExternal = isExternalLink(props.to);
+  const label = typeof props.children === 'string' ? props.children : to;
+  const isExternal = isExternalLink(to);
   const ariaProps = {
-    'aria-label': `Go to ${labelString} page`,
-    'aria-current':
-      router.pathname === props.to ? ('page' as const) : undefined,
+    'aria-label': `Go to ${label} page`,
+    'aria-current': router.pathname === to ? ('page' as const) : undefined,
   };
 
   return isExternal ? (
     <StyledExternalLink
-      href={props.to}
+      href={to}
       rel="noopener noreferrer"
       target="_blank"
       {...ariaProps}
@@ -43,7 +46,7 @@ export const Link: React.FunctionComponent<{
       {props.children} <ArrowRightUp data-external-hint aria-hidden="true" />
     </StyledExternalLink>
   ) : (
-    <NextLink href={props.to}>
+    <NextLink href={to}>
       <a {...ariaProps} {...props}>
         {props.children}
       </a>

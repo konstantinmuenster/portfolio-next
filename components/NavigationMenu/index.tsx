@@ -8,21 +8,33 @@ import { Link } from '../Link';
 const StyledNavigation = styled('nav', {
   '> ul': {
     display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'flex-end',
     height: '100%',
+
+    '@sm': {
+      flexDirection: 'row',
+      justifyContent: 'flex-end',
+      alignItems: 'center',
+    },
+  },
+
+  a: {
+    display: 'inline-block',
+    padding: '1rem',
+    marginLeft: '2rem',
+    borderRadius: '$less',
+
+    '@sm': {
+      padding: '0.5rem 1rem',
+    },
   },
 
   variants: {
     location: {
       header: {
         a: {
-          display: 'inline-block',
-          padding: '0.5rem 1rem',
-          marginLeft: '2rem',
-          borderRadius: '$default',
-
           '&:hover, &:focus-visible, &:active': {
             backgroundColor: '$background',
           },
@@ -35,9 +47,6 @@ const StyledNavigation = styled('nav', {
       },
       footer: {
         a: {
-          display: 'inline-block',
-          padding: '0.5rem 1rem',
-          marginLeft: '2rem',
           fontWeight: 'normal',
           fontSize: '16px',
 
