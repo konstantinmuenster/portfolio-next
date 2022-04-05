@@ -1,6 +1,11 @@
-export const headerNavigation = [
+export type NavigationItem = {
+  to: string;
+  label: string;
+};
+
+export const headerNavigation: NavigationItem[] = [
   {
-    to: '/blog',
+    to: 'https://google.com/blog',
     label: 'Blog',
   },
   {

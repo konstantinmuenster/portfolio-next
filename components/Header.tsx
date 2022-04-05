@@ -1,13 +1,20 @@
 import { headerNavigation } from '@config/navigation.config';
-import { styled } from '@config/stitches.config';
+import { darkTheme, styled } from '@config/stitches.config';
 
 import { ContentWrapper } from './Layout';
 import { Logo } from './Logo';
-import { Navigation as NavigationBar } from './Navigation';
-import { Sidedrawer } from './Sidedrawer';
+import { NavigationMenu } from './NavigationMenu';
+import { DropdownMenu } from './DropdownMenu';
 
 const StyledHeader = styled('header', {
-  padding: '1rem 0',
+  py: '1rem',
+  px: '$pagePadding',
+  backgroundColor: '$surface250',
+  borderBottom: '2px solid #000000',
+
+  [`.${darkTheme} &`]: {
+    borderBottom: '2px solid #2A2A2D',
+  },
 
   '> div': {
     display: 'grid',
@@ -17,7 +24,8 @@ const StyledHeader = styled('header', {
     '> a.logo': {
       display: 'flex',
       alignItems: 'center',
-      padding: '0.5rem $pagePadding',
+      py: '0.5rem',
+      px: 0,
     },
 
     '> nav': {
@@ -50,8 +58,8 @@ export const Header = () => {
     <StyledHeader>
       <ContentWrapper>
         <Logo asLink />
-        <NavigationBar name="Header Navigation" items={headerNavigation} />
-        <Sidedrawer name="Mobile Navigation" items={headerNavigation} />
+        <NavigationMenu name="Header Navigation" items={headerNavigation} />
+        <DropdownMenu name="Mobile Navigation" items={headerNavigation} />
       </ContentWrapper>
     </StyledHeader>
   );

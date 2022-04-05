@@ -66,6 +66,22 @@ export const {
     light: '(prefers-color-scheme: light)',
   },
   utils: {
+    mx: (value: string) => ({
+      marginLeft: value,
+      marginRight: value,
+    }),
+    my: (value: string) => ({
+      marginTop: value,
+      marginBottom: value,
+    }),
+    px: (value: string) => ({
+      paddingLeft: value,
+      paddingRight: value,
+    }),
+    py: (value: string) => ({
+      paddingTop: value,
+      paddingBottom: value,
+    }),
     size: (value: string) => ({
       width: value,
       height: value,
@@ -73,7 +89,7 @@ export const {
     linearGradient: (value: string) => ({
       backgroundImage: `linear-gradient(${value})`,
     }),
-  }
+  },
 });
 
 export type CSS = Stitches.CSS<typeof config>;
@@ -84,7 +100,9 @@ export const darkTheme = createTheme('dark-theme', {
     primaryLight: '#D7E2F3',
     secondary: '#F0EBE4',
     background: '#121212',
-    surface: '#1E1E1E',
+    surface250: '#1E1E1E',
+    surface500: '#1E1E1E',
+    surface750: '#1E1E1E',
     text: '#D2D5DA',
     subtext: '#888F96',
   },
@@ -121,7 +139,7 @@ export const applyGlobalStyles = globalCss({
     lineHeight: 'inherit',
     textDecoration: 'none',
     color: '$subtext',
-    '&:hover': {
+    '&:hover, &[aria-current="page"]': {
       color: '$text',
     },
     '&:focus-visible': {
@@ -132,8 +150,15 @@ export const applyGlobalStyles = globalCss({
   },
 
   button: {
+    margin: 0,
+    padding: 0,
     border: 'none',
     cursor: 'pointer',
+    backgroundColor: 'transparent',
+    color: 'inherit',
+    font: 'inherit',
+    width: 'auto',
+    overflow: 'visible',
     '&:focus-visible': {
       outlineColor: '$text',
       color: '$text',
