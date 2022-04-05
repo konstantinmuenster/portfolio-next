@@ -1,10 +1,10 @@
 import { headerNavigation } from '@config/navigation.config';
 import { darkTheme, styled } from '@config/stitches.config';
 
-import { ContentWrapper } from './Layout';
-import { Logo } from './Logo';
-import { NavigationMenu } from './NavigationMenu';
-import { DropdownMenu } from './DropdownMenu';
+import { ContentWrapper } from '../Layout';
+import { Logo } from '../Logo';
+import { NavigationMenu } from '../NavigationMenu';
+import { DropdownMenu } from '../DropdownMenu';
 
 const StyledHeader = styled('header', {
   py: '1rem',

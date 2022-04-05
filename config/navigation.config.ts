@@ -17,3 +17,18 @@ export const headerNavigation: NavigationItem[] = [
     label: 'Contact',
   },
 ];
+
+export const footerNavigation: NavigationItem[] = [
+  {
+    to: '/contact',
+    label: 'Contact',
+  },
+  {
+    to: '/transparency',
+    label: 'Transparency',
+  },
+  {
+    to: '/imprint',
+    label: 'Imprint',
+  },
+];

@@ -210,12 +210,6 @@ export const applyGlobalStyles = globalCss({
     fontWeight: 'bold',
   },
 
-  '.caption': {
-    fontSize: '0.875rem',
-    lineHeight: '1.125rem',
-    color: '$subtext',
-  },
-
   // https://gist.github.com/pepebe/1176777
   'ul.reset, ol.reset': {
     margin: '0',
@@ -228,17 +222,6 @@ export const applyGlobalStyles = globalCss({
       textIndent: '0',
       listStyleType: 'none',
     },
-  },
-
-  // https://www.a11yproject.com/posts/how-to-hide-content/
-  '.visually-hidden': {
-    clip: 'rect(0 0 0 0)',
-    clipPath: 'inset(50%)',
-    height: '1px',
-    overflow: 'hidden',
-    position: 'absolute',
-    whiteSpace: 'nowrap',
-    width: '1px',
   },
 
   // https://www.a11yproject.com/posts/how-to-hide-content/#alternatives-to-display%3A-none

@@ -2,8 +2,8 @@ import type { NavigationItem } from '@config/navigation.config';
 import { styled } from '@config/stitches.config';
 import { normalizeName } from '@utils/normalizeName';
 
-import { VisuallyHidden } from './VisuallyHidden';
-import { Link } from './Link';
+import { VisuallyHidden } from '../VisuallyHidden';
+import { Link } from '../Link';
 
 const StyledNavigation = styled('nav', {
   '> ul': {
@@ -14,19 +14,39 @@ const StyledNavigation = styled('nav', {
     height: '100%',
   },
 
-  a: {
-    display: 'inline-block',
-    padding: '0.5rem 1rem',
-    marginLeft: '2rem',
-    borderRadius: '$default',
+  variants: {
+    location: {
+      header: {
+        a: {
+          display: 'inline-block',
+          padding: '0.5rem 1rem',
+          marginLeft: '2rem',
+          borderRadius: '$default',
 
-    '&:hover, &:focus-visible, &:active': {
-      backgroundColor: '$background',
-    },
+          '&:hover, &:focus-visible, &:active': {
+            backgroundColor: '$background',
+          },
 
-    '& svg[data-external-hint]': {
-      top: 6,
-      right: 4,
+          '& svg[data-external-hint]': {
+            top: 6,
+            right: 4,
+          },
+        },
+      },
+      footer: {
+        a: {
+          display: 'inline-block',
+          padding: '0.5rem 1rem',
+          marginLeft: '2rem',
+          fontWeight: 'normal',
+          fontSize: '16px',
+
+          '& svg[data-external-hint]': {
+            top: 6,
+            right: 4,
+          },
+        },
+      },
     },
   },
 });
@@ -34,6 +54,7 @@ const StyledNavigation = styled('nav', {
 export type NavigationMenuProps = {
   name: string;
   items: NavigationItem[];
+  location?: 'header' | 'footer';
 };
 
 export const NavigationMenu: React.FC<NavigationMenuProps> = props => {
@@ -44,6 +65,7 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = props => {
       id={htmlName}
       role="navigation"
       aria-labelledby={`${htmlName}-label`}
+      location={props.location ?? 'header'}
     >
       <VisuallyHidden id={`${htmlName}-label`}>{props.name}</VisuallyHidden>
       <ul className="reset">
