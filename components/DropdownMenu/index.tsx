@@ -13,8 +13,8 @@ const StyledDropdownMenu = styled('nav', {
   'a > svg[data-external-hint]': {
     top: 6,
     right: 6,
-    size: '20px'
-  }
+    size: '20px',
+  },
 });
 
 type DropdownMenuProps = {
