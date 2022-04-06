@@ -134,7 +134,6 @@ export const applyGlobalStyles = globalCss({
   },
 
   a: {
-    fontSize: '1.125rem',
     fontWeight: 'bold',
     lineHeight: 'inherit',
     textDecoration: 'none',

@@ -1,10 +1,11 @@
 import { headerNavigation } from '@config/navigation.config';
 import { darkTheme, styled } from '@config/stitches.config';
 
-import { ContentWrapper } from '../Layout';
-import { Logo } from '../Logo';
-import { NavigationMenu } from '../NavigationMenu';
-import { DropdownMenu } from '../DropdownMenu';
+import { ThemeToggle } from '@components/ThemeToggle';
+import { ContentWrapper } from '@components/Layout';
+import { Logo } from '@components/Logo';
+import { NavigationMenu } from '@components/NavigationMenu';
+import { DropdownMenu } from '@components/DropdownMenu';
 
 const StyledHeader = styled('header', {
   py: '1rem',
@@ -18,8 +19,9 @@ const StyledHeader = styled('header', {
 
   '> div': {
     display: 'grid',
-    gridTemplateColumns: 'auto 1fr',
+    gridTemplateColumns: 'auto 1fr auto',
     gridTemplateRows: '100%',
+    alignItems: 'center',
 
     '> a.logo': {
       display: 'flex',
@@ -33,23 +35,19 @@ const StyledHeader = styled('header', {
       flexDirection: 'row',
       alignItems: 'center',
     },
+
+    '> #theme-toggle': {
+      mx: '2rem',
+      justifySelf: 'flex-end',
+    },
   },
 
-  '#header-navigation': {
-    display: 'none',
-  },
-
-  '#mobile-navigation': {
-    display: 'flex',
-  },
+  '#header-navigation': { display: 'none' },
+  '#mobile-navigation': { display: 'flex' },
 
   '@md': {
-    '#header-navigation': {
-      display: 'flex',
-    },
-    '#mobile-navigation': {
-      display: 'none',
-    },
+    '#header-navigation': { display: 'flex' },
+    '#mobile-navigation': { display: 'none' },
   },
 });
 
@@ -59,6 +57,7 @@ export const Header = () => {
       <ContentWrapper>
         <Logo asLink />
         <NavigationMenu name="Header Navigation" items={headerNavigation} />
+        <ThemeToggle />
         <DropdownMenu name="Mobile Navigation" items={headerNavigation} />
       </ContentWrapper>
     </StyledHeader>

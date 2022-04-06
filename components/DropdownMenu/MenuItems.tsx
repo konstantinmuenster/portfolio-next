@@ -4,12 +4,12 @@ import type { NavigationItem } from '@config/navigation.config';
 import { styled } from '@config/stitches.config';
 import { Link } from '@components/Link';
 
-import { BAR_HEIGHT, BAR_MARGIN } from './HamburgerButton';
+import { BUTTON_SIZE } from './HamburgerButton';
 
 const StyledMenuItems = styled(Menu.Items, {
   position: 'absolute',
   right: 0,
-  top: (BAR_HEIGHT + BAR_MARGIN * 2) * 3 + 30,
+  top: BUTTON_SIZE + 15,
   transformOrigin: 'top right',
   width: '14rem',
   marginTop: '1.5rem',

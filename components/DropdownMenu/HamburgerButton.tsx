@@ -1,68 +1,68 @@
+import { useEffect } from 'react';
 import { Menu } from '@headlessui/react';
 
 import { styled } from '@config/stitches.config';
+import { VisuallyHidden } from '@components/VisuallyHidden';
 
-export const BAR_HEIGHT = 4;
-export const BAR_MARGIN = 3.5;
+const SVG_SIZE = 32;
+const PADDING = 8;
 
-const StyledHamburgerButton = styled('div', {
+export const BUTTON_SIZE = 8 + 32 + 8;
+
+const StyledSvgWrapper = styled('div', {
   position: 'relative',
-  padding: '0.5rem $pagePadding',
-  backgroundColor: 'transparent',
-  display: 'flex',
-  width: '65px',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  alignItems: 'flex-end',
+  padding: `${PADDING}px`,
   borderRadius: '$default',
 
-  '&[data-open="true"]': {
+  svg: {
+    size: `${SVG_SIZE}px`,
+    transform: 'rotate(0deg)',
+    transformOrigin: 'center',
+    transition: 'all 0.2s ease-in-out',
+    line: { stroke: '$subtext' },
+  },
+
+  '&:hover, &:focus-visible': {
     backgroundColor: '$background',
+    svg: { line: { stroke: '$text' } },
   },
 
-  '> div': {
-    background: '$text',
-    borderRadius: '$default',
-    height: BAR_HEIGHT + 'px',
-    my: BAR_MARGIN + 'px',
-    transition: '.4s  cubic-bezier(0.68, -0.6, 0.32, 1.6)',
-  },
-
-  '> div:nth-of-type(1)': {
-    width: '100%',
-  },
-
-  '> div:nth-of-type(2)': {
-    width: '100%',
-  },
-
-  '> div:nth-of-type(3)': {
-    width: '75%',
-  },
-
-  '&[data-open="true"] > div:nth-of-type(1)': {
-    transformOrigin: 'bottom',
-    transform: 'rotateZ(45deg) translate(7px,7px)',
-  },
-
-  '&[data-open="true"] > div:nth-of-type(2)': {
-    transformOrigin: 'top',
-    transform: 'rotateZ(-45deg)',
-  },
-
-  '&[data-open="true"] > div:nth-of-type(3)': {
-    transformOrigin: 'bottom',
-    width: '50%',
-    transform: 'translate(-3px,-7px) rotateZ(45deg)',
+  '&[data-open="true"]': {
+    svg: { transform: 'rotate(-45deg)' },
   },
 });
 
-export const HamburgerButton: React.FC<{ open: boolean }> = props => (
-  <Menu.Button aria-label={props.open ? 'Close Navigation' : 'Open Navigation'}>
-    <StyledHamburgerButton data-open={props.open}>
-      <div />
-      <div />
-      <div />
-    </StyledHamburgerButton>
-  </Menu.Button>
-);
+export const HamburgerButton: React.FC<{ open: boolean }> = props => {
+  const { open } = props;
+
+  useEffect(() => {
+    if (open) document.body.style.overflowY = 'hidden';
+    else document.body.style.overflowY = 'visible';
+  }, [open]);
+
+  return (
+    <Menu.Button aria-label={open ? 'Close Navigation' : 'Open Navigation'}>
+      <StyledSvgWrapper data-open={props.open}>
+        <svg xmlns="http://www.w3.org/2000/svg">
+          <line
+            x1="4.8"
+            y1="9.6"
+            x2="27.2"
+            y2="9.6"
+            strokeWidth="3"
+            strokeLinecap="round"
+          ></line>
+          <line
+            x1="27.2"
+            y1="22.4"
+            x2="4.8"
+            y2="22.4"
+            strokeWidth="3"
+            strokeLinecap="round"
+          ></line>
+        </svg>
+      </StyledSvgWrapper>
+      <VisuallyHidden>Toggle Mobile Menu</VisuallyHidden>
+    </Menu.Button>
+  );
+};

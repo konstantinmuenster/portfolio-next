@@ -5,7 +5,7 @@ export type NavigationItem = {
 
 export const headerNavigation: NavigationItem[] = [
   {
-    to: 'https://google.com/blog',
+    to: '/blog',
     label: 'Blog',
   },
   {
