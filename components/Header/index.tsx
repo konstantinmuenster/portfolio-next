@@ -39,6 +39,7 @@ const StyledHeader = styled('header', {
     '> #theme-toggle': {
       mx: '2rem',
       justifySelf: 'flex-end',
+      '@md': { marginRight: 0 },
     },
   },
 
