@@ -209,6 +209,16 @@ export const applyGlobalStyles = globalCss({
     fontWeight: 'bold',
   },
 
+  '::selection': {
+    color: '$text',
+    background: '$secondary',
+  },
+
+  '::-moz-selection': {
+    color: '$text',
+    background: '$secondary',
+  },
+
   // https://gist.github.com/pepebe/1176777
   'ul.reset, ol.reset': {
     margin: '0',
