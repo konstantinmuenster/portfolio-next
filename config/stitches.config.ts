@@ -1,5 +1,6 @@
 import type * as Stitches from '@stitches/react';
 import { createStitches } from '@stitches/react';
+import { reset } from 'stitches-reset';
 
 const isDarkThemeColorKey = (
   key: string
@@ -109,6 +110,8 @@ export const darkTheme = createTheme('dark-theme', {
 });
 
 export const applyGlobalStyles = globalCss({
+  ...reset,
+
   '*': { boxSizing: 'border-box' },
 
   'html, body': {
@@ -179,7 +182,6 @@ export const applyGlobalStyles = globalCss({
     fontFamily: '$serif',
     fontSize: '2.25rem',
     lineHeight: '2.625rem',
-    letterSpacing: '-1px',
   },
 
   h2: {

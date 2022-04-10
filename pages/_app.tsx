@@ -1,4 +1,3 @@
-import 'normalize.css';
 import '@fontsource/bree-serif';
 import '@fontsource/ibm-plex-mono';
 import '@fontsource/ibm-plex-sans';
