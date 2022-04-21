@@ -21,11 +21,16 @@ export const Favicon = () => {
         href="/favicon-16x16.png"
       />
       <link rel="manifest" href="/site.webmanifest" />
-      <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
-      <meta name="apple-mobile-web-app-title" content="konstantin" />
-      <meta name="application-name" content="<APP NAME>" />
-      <meta name="msapplication-TileColor" content="#ffc40d" />
-      <meta name="theme-color" content={theme.colors.primary.value} />
+      <link
+        rel="mask-icon"
+        href="/safari-pinned-tab.svg"
+        color={theme.colors.primary500.value}
+      />
+      <meta
+        name="msapplication-TileColor"
+        content={theme.colors.primary500.value}
+      />
+      <meta name="theme-color" content={theme.colors.primary500.value} />
     </>
   );
 };

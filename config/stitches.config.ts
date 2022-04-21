@@ -25,17 +25,26 @@ export const {
       mono: '"IBM Plex Mono", monospace',
     },
     colors: {
-      primary: '#5F89C8',
-      primaryLight: '#D7E2F3',
-      secondary: '#F0EBE4',
-      background: '#F8F8F8',
-      surface250: '#F2F2EE',
-      surface500: '#EAEAEA',
-      surface750: '#E3E3DA',
+      background: '#FFFFFF',
       text: '#2A2A2D',
       subtext: '#707172',
-      grey: '#888F96',
-      borderGradient: 'linear-gradient(#E44873 50%, #613FE6 50%)',
+      border: '#212121',
+      surface50: '#F8F8F8',
+      surface100: '#EAEAEA',
+      surface250: '#DADADA',
+      surface500: '#B8B8B8',
+      secondary50: '#F2F2EE',
+      secondary100: '#E3E3DA',
+      secondary250: '#D4D4C7',
+      secondary500: '#838374',
+      secondary900: '#1A1A14',
+      primary50: '#DDD6FA',
+      primary100: '#9A84F0',
+      primary250: '#6240E7',
+      primary500: '#522EE5',
+      primary900: '#1C0C5E',
+      accentGradient: 'linear-gradient(#E44873 50%, #613FE6 50%)',
+      turquoise: '#E8EBEF',
     },
     radii: {
       less: '4px',
@@ -45,7 +54,12 @@ export const {
     space: {
       pagePadding: '1rem',
     },
-    fontSizes: {},
+    fontSizes: {
+      mini: '0.75rem',
+      small: '0.875rem',
+      default: '1rem',
+      big: '1.125rem',
+    },
     sizes: {},
     fontWeights: {},
     lineHeights: {},
@@ -97,20 +111,46 @@ export type CSS = Stitches.CSS<typeof config>;
 
 export const darkTheme = createTheme('dark-theme', {
   colors: {
-    primary: '#5F89C8',
-    primaryLight: '#D7E2F3',
-    secondary: '#F0EBE4',
-    background: '#121212',
-    surface250: '#1E1E1E',
-    surface500: '#1E1E1E',
-    surface750: '#1E1E1E',
-    text: '#D2D5DA',
+    background: '#141415',
+    text: '#EAECEF',
     subtext: '#888F96',
+    border: '#3F4041',
+    surface50: '#18181A',
+    surface100: '#28282C',
+    surface250: '#38383D',
+    surface500: '#38383D',
+    secondary50: '#1B1822',
+    secondary100: '#262331',
+    secondary250: '#353044',
+    secondary500: '#8C87A3',
+    secondary900: '#B7B2C9',
+    primary50: '#31255F',
+    primary100: '#4F3C9C',
+    primary250: '#8776CA',
+    primary500: '#CAC2E7',
+    primary900: '#F2F2EE',
   },
 });
 
 export const applyGlobalStyles = globalCss({
   ...reset,
+
+  '@font-face': [
+    {
+      fontFamily: 'Bree Serif',
+      fontWeight: 400,
+      fontStyle: 'normal',
+      fontDisplay: 'swap',
+      src: 'local("Bree Serif"), url("/fonts/BreeSerifLight.woff2"), url("/fonts/BreeSerifLight.woff2")',
+    },
+    {
+      fontFamily: 'Bree Serif',
+      fontWeight: 500,
+      fontStyle: 'normal',
+      fontDisplay: 'swap',
+      src: 'local("Bree Serif"), url("/fonts/BreeSerifRegular.woff2"), url("/fonts/BreeSerifRegular.woff2")',
+    },
+  ],
 
   '*': { boxSizing: 'border-box' },
 
@@ -169,56 +209,62 @@ export const applyGlobalStyles = globalCss({
   },
 
   strong: {
-    fontWeight: 'bold',
+    fontWeight: 500,
+  },
+
+  b: {
+    fontWeight: 500,
   },
 
   p: {
-    fontSize: '1.125rem',
+    fontSize: '$default',
     fontWeight: 'normal',
     lineHeight: '1.75rem',
   },
 
   h1: {
     fontFamily: '$serif',
-    fontSize: '2.25rem',
-    lineHeight: '2.625rem',
+    fontWeight: 400,
+    fontSize: '2.5rem',
+    lineHeight: '3rem',
   },
 
   h2: {
     fontFamily: '$serif',
-    fontSize: '2rem',
-    lineHeight: '2.375rem',
+    fontWeight: 400,
+    fontSize: '2.25rem',
+    lineHeight: '2.75rem',
   },
 
   h3: {
-    fontFamily: '$sans',
-    fontSize: '1.5rem',
-    lineHeight: '2rem',
-    fontWeight: 'bold',
+    fontFamily: '$serif',
+    fontWeight: 400,
+    fontSize: '2rem',
+    lineHeight: '2.5rem',
   },
 
   h4: {
-    fontFamily: '$sans',
-    fontSize: '1.125rem',
-    lineHeight: '1.75rem',
-    fontWeight: 'bold',
+    fontFamily: '$serif',
+    fontWeight: 400,
+    fontSize: '1.75rem',
+    lineHeight: '2.25rem',
   },
 
   h5: {
-    fontFamily: '$sans',
-    fontSize: '1.125rem',
-    lineHeight: '1.75rem',
-    fontWeight: 'bold',
+    fontFamily: '$serif',
+    fontWeight: 400,
+    fontSize: '1.5rem',
+    lineHeight: '2rem',
   },
 
   '::selection': {
     color: '$text',
-    background: '$secondary',
+    background: '$secondary100',
   },
 
   '::-moz-selection': {
     color: '$text',
-    background: '$secondary',
+    background: '$secondary100',
   },
 
   // https://gist.github.com/pepebe/1176777
