@@ -8,54 +8,54 @@ import { Link } from '../Link';
 const StyledNavigation = styled('nav', {
   '> ul': {
     display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'flex-end',
     height: '100%',
-
-    '@sm': {
-      flexDirection: 'row',
-      justifyContent: 'flex-end',
-      alignItems: 'center',
-    },
   },
 
   a: {
     display: 'inline-block',
-    padding: '1rem',
+    padding: '0.5rem 1rem',
     marginLeft: '2rem',
     borderRadius: '$less',
 
-    '@sm': {
-      padding: '0.5rem 1rem',
+    '& svg[data-external-hint]': {
+      top: 6,
+      right: 4,
     },
   },
 
   variants: {
     location: {
       header: {
+        '> ul': {
+          flexDirection: 'row',
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+        },
+
         a: {
           hoverBg: '$colors$surface50',
 
           '&:hover, &:focus-visible, &:active': {
             color: '$primary900',
           },
-
-          '& svg[data-external-hint]': {
-            top: 6,
-            right: 4,
-          },
         },
       },
       footer: {
+        '> ul': {
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'flex-end',
+
+          '@sm': {
+            flexDirection: 'row',
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+          },
+        },
+
         a: {
           fontWeight: 'normal',
           fontSize: '16px',
-
-          '& svg[data-external-hint]': {
-            top: 6,
-            right: 4,
-          },
         },
       },
     },

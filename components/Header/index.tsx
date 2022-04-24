@@ -13,45 +13,86 @@ const StyledHeader = styled('header', {
   '> div': {
     height: '100%',
     px: '$pagePadding',
-
     display: 'grid',
     gridTemplateColumns: 'auto 1fr auto',
     gridTemplateRows: '100%',
     alignItems: 'center',
 
-    '> a.logo': {
-      display: 'flex',
-      alignItems: 'center',
-      py: '0.5rem',
-    },
-
     '> #theme-toggle': {
-      mx: '2rem',
+      mx: '1rem',
       justifySelf: 'flex-end',
-      '@md': { marginRight: 0 },
-    },
-
-    '> nav': {
-      justifyContent: 'flex-end',
-      flexDirection: 'row',
-      alignItems: 'center',
+      '@md': { marginLeft: '2rem', marginRight: 0 },
     },
   },
 
-  '#header-navigation': { display: 'none' },
-  '#mobile-navigation': { display: 'flex' },
+  variants: {
+    variant: {
+      withLogo: {
+        '> div': {
+          '> a.logo': {
+            display: 'flex',
+            alignItems: 'center',
+            py: '0.5rem',
+          },
 
-  '@md': {
-    '#header-navigation': { display: 'flex' },
-    '#mobile-navigation': { display: 'none' },
+          '> #header-navigation': {
+            justifyContent: 'flex-end',
+            flexDirection: 'row',
+            alignItems: 'center',
+          },
+        },
+
+        '#header-navigation': { display: 'none' },
+        '#mobile-navigation': { display: 'flex' },
+
+        '@md': {
+          '#header-navigation': { display: 'flex' },
+          '#mobile-navigation': { display: 'none' },
+        },
+      },
+      withoutLogo: {
+        '> div': {
+          '> #header-navigation': {
+            justifyContent: 'flex-start',
+            flexDirection: 'row',
+            alignItems: 'center',
+
+            '> ul > li': {
+              display: 'none',
+              '&:nth-of-type(1)': { display: 'block' },
+              '&:nth-of-type(2)': { display: 'block' },
+              '@md': { display: 'block' },
+            },
+
+            '> ul > li > a': {
+              marginLeft: 0,
+              marginRight: '1rem',
+              '@md': { marginRight: '2rem' },
+            },
+          },
+        },
+
+        '#header-navigation': { display: 'flex' },
+        '#mobile-navigation': { display: 'flex' },
+
+        '@md': {
+          '#header-navigation': { display: 'flex' },
+          '#mobile-navigation': { display: 'none' },
+        },
+      },
+    },
   },
 });
 
-export const Header: React.FC = () => {
+type HeaderProps = {
+  variant: 'withoutLogo' | 'withLogo';
+};
+
+export const Header: React.FC<HeaderProps> = props => {
   return (
-    <StyledHeader>
+    <StyledHeader variant={props.variant}>
       <ContentWrapper>
-        <Logo asLink />
+        {props.variant === 'withLogo' ? <Logo asLink /> : <></>}
         <NavigationMenu name="Header Navigation" items={headerNavigation} />
         <ThemeToggle />
         <DropdownMenu name="Mobile Navigation" items={headerNavigation} />

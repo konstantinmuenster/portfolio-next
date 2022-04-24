@@ -1,3 +1,5 @@
+import { useRouter } from 'next/router';
+
 import { styled } from '@config/stitches.config';
 
 import { Footer } from '../Footer';
@@ -10,9 +12,11 @@ export const ContentWrapper = styled('div', {
 });
 
 export const Layout: React.FC = ({ children }) => {
+  const router = useRouter();
+  const isFrontpage = router.pathname === '/';
   return (
     <>
-      <Header />
+      <Header variant={isFrontpage ? 'withoutLogo' : 'withLogo'} />
       <main>
         <ContentWrapper>{children}</ContentWrapper>
       </main>
