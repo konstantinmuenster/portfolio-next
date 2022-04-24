@@ -8,6 +8,9 @@ import { Link } from '../Link';
 const StyledNavigation = styled('nav', {
   '> ul': {
     display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
     height: '100%',
   },
 
@@ -26,12 +29,6 @@ const StyledNavigation = styled('nav', {
   variants: {
     location: {
       header: {
-        '> ul': {
-          flexDirection: 'row',
-          justifyContent: 'flex-end',
-          alignItems: 'center',
-        },
-
         a: {
           hoverBg: '$colors$surface50',
 
@@ -41,18 +38,6 @@ const StyledNavigation = styled('nav', {
         },
       },
       footer: {
-        '> ul': {
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'flex-end',
-
-          '@sm': {
-            flexDirection: 'row',
-            justifyContent: 'flex-end',
-            alignItems: 'center',
-          },
-        },
-
         a: {
           fontWeight: 'normal',
           fontSize: '16px',
