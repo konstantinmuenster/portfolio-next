@@ -11,15 +11,18 @@ const StyledSocialProfiles = styled('div', {
 
   '@md': { justifyContent: 'flex-start' },
 
-  '.profile-list-item': {
+  a: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
 
-    padding: '.125rem',
+    padding: '0.125rem',
     marginRight: '1.5rem',
     borderRadius: '$less',
+
+    fontSize: '$mini',
+    lineHeight: '1.5rem',
 
     '@sm': { marginRight: '1rem' },
 
@@ -47,8 +50,8 @@ export const SocialProfiles: React.FC<SocialProfilesProps> = props => {
     <StyledSocialProfiles>
       {props.profiles.map(({ icon: Icon, label, to }, key) => {
         return (
-          <Link key={key} to={to} className="profile-list-item">
-            <Icon title={label} size={30} />
+          <Link key={key} to={to}>
+            {Icon ? <Icon title={label} size={24} /> : `Open ${label}`}
           </Link>
         );
       })}

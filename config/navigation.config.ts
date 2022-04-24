@@ -20,10 +20,6 @@ export const headerNavigation: NavigationItem[] = [
 
 export const footerNavigation: NavigationItem[] = [
   {
-    to: '/contact',
-    label: 'Contact',
-  },
-  {
     to: '/transparency',
     label: 'Transparency',
   },

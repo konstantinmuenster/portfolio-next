@@ -1,11 +1,10 @@
 import type { StyledIcon } from '@styled-icons/styled-icon';
 import { SocialLinkedin, SocialGithub } from '@styled-icons/foundation';
-import { MailUnread } from '@styled-icons/fluentui-system-filled';
 
 export type Profile = {
   to: string;
   label: string;
-  icon: StyledIcon;
+  icon?: StyledIcon;
 };
 
 export const socialProfiles: Profile[] = [
@@ -22,7 +21,6 @@ export const socialProfiles: Profile[] = [
   {
     to: 'mailto:mail@konstantin.digital',
     label: 'Email',
-    icon: MailUnread,
   },
 ];
 
