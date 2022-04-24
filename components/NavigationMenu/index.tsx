@@ -36,7 +36,8 @@ const StyledNavigation = styled('nav', {
       header: {
         a: {
           '&:hover, &:focus-visible, &:active': {
-            backgroundColor: '$background',
+            backgroundColor: '$surface50',
+            color: '$primary900',
           },
 
           '& svg[data-external-hint]': {

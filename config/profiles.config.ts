@@ -25,3 +25,5 @@ export const socialProfiles: Profile[] = [
     icon: MailUnread,
   },
 ];
+
+export const avatarSrc = '/images/avatar.jpg';

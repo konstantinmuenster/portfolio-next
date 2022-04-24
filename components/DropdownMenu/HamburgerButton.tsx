@@ -12,7 +12,11 @@ export const BUTTON_SIZE = 8 + 32 + 8;
 const StyledSvgWrapper = styled('div', {
   position: 'relative',
   padding: `${PADDING}px`,
-  borderRadius: '$default',
+  borderRadius: '$less',
+
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
 
   svg: {
     size: `${SVG_SIZE}px`,
@@ -23,8 +27,8 @@ const StyledSvgWrapper = styled('div', {
   },
 
   '&:hover, &:focus-visible': {
-    backgroundColor: '$background',
-    svg: { line: { stroke: '$text' } },
+    backgroundColor: '$surface50',
+    svg: { line: { stroke: '$primary900' } },
   },
 
   '&[data-open="true"]': {
