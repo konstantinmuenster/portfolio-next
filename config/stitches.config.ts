@@ -104,6 +104,29 @@ export const {
     linearGradient: (value: string) => ({
       backgroundImage: `linear-gradient(${value})`,
     }),
+    hoverBg: (color: string) => ({
+      position: 'relative',
+
+      '&:before': {
+        content: '',
+        transform: 'scale(.7) perspective(1px)',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        zIndex: -1,
+        display: 'block',
+        height: '100%',
+        width: '100%',
+        borderRadius: '$less',
+        opacity: 0,
+        transition: 'all .2s ease',
+        background: `${color}`,
+      },
+      '&:hover:before,  &:focus-visible:before, &:active:before': {
+        transform: 'scale(1) perspective(1px)',
+        opacity: 1,
+      },
+    }),
   },
 });
 

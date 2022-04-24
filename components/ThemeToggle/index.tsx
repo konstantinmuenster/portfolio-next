@@ -6,12 +6,11 @@ import { styled } from '@config/stitches.config';
 
 const StyledThemeButton = styled('button', {
   transition: 'all .3s ease-out',
-  borderRadius: '$less',
+  hoverBg: '$colors$surface50',
   padding: '0.8rem',
   '@md': { padding: '0.4rem' },
 
   '&:hover, &:focus-visible': {
-    backgroundColor: '$surface50',
     svg: { fill: '$primary900' },
   },
 

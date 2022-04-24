@@ -35,8 +35,9 @@ const StyledNavigation = styled('nav', {
     location: {
       header: {
         a: {
+          hoverBg: '$colors$surface50',
+
           '&:hover, &:focus-visible, &:active': {
-            backgroundColor: '$surface50',
             color: '$primary900',
           },
 
