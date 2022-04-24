@@ -47,7 +47,7 @@ const StyledHeader = styled('header', {
   },
 });
 
-export const Header = () => {
+export const Header: React.FC = () => {
   return (
     <StyledHeader>
       <ContentWrapper>

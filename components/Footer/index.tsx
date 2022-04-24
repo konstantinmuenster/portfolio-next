@@ -35,7 +35,7 @@ const StyledFooter = styled('footer', {
   },
 });
 
-export const Footer = () => {
+export const Footer: React.FC = () => {
   return (
     <StyledFooter>
       <ContentWrapper>

@@ -1,6 +1,6 @@
 import { theme } from '@config/stitches.config';
 
-export const Favicon = () => {
+export const Favicon: React.FC = () => {
   return (
     <>
       <link
