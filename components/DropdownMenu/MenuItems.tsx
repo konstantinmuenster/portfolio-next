@@ -62,7 +62,7 @@ const StyledMenuItems = styled(Menu.Items, {
   },
 
   hr: {
-    width: 'calc(100% - 4px)',
+    width: 'calc(100% - 10px)',
     margin: '0 auto',
     border: '1px solid $surface100',
   },
@@ -93,7 +93,7 @@ export const MenuItems: React.FC<{ items: NavigationItem[] }> = props => (
           />
           <div>
             Konstantin Münster
-            <span>Contact Me</span>
+            <span>Get To Know Me</span>
           </div>
         </Link>
       )}
