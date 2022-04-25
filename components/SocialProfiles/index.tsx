@@ -31,10 +31,6 @@ const StyledSocialProfiles = styled('div', {
       '@sm': { marginRight: '1rem' },
     },
 
-    '&:hover, &:focus-visible': {
-      backgroundColor: '$background',
-    },
-
     'svg[data-external-hint]': {
       display: 'none',
     },
