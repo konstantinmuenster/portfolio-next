@@ -12,7 +12,6 @@ const StyledHeader = styled('header', {
 
   '> div': {
     height: '100%',
-    px: '$pagePadding',
     display: 'grid',
     gridTemplateColumns: 'auto 1fr auto',
     gridTemplateRows: '100%',

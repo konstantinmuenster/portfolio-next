@@ -8,7 +8,6 @@ import { NavigationMenu } from '../NavigationMenu';
 
 const StyledFooter = styled('footer', {
   py: '1rem',
-  px: '$pagePadding',
   backgroundColor: '$surface50',
   borderTop: '2px solid $border',
 

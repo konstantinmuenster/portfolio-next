@@ -9,6 +9,7 @@ export const ContentWrapper = styled('div', {
   width: '100%',
   maxWidth: '52rem',
   margin: '0 auto',
+  px: '$pagePadding',
 });
 
 export const Layout: React.FC = ({ children }) => {
