@@ -1,14 +1,27 @@
 import { headerNavigation } from '@config/navigation.config';
 import { styled } from '@config/stitches.config';
 
+import { useVisibilityOnScroll } from '@hooks/useVisibilityOnScroll';
+
 import { ThemeToggle } from '@components/ThemeToggle';
 import { ContentWrapper } from '@components/Layout';
 import { Logo } from '@components/Logo';
 import { NavigationMenu } from '@components/NavigationMenu';
 import { DropdownMenu } from '@components/DropdownMenu';
 
+export const HEADER_HEIGHT = 100;
+
 const StyledHeader = styled('header', {
-  minHeight: '100px',
+  position: 'fixed',
+  zIndex: 1,
+  top: 0,
+  left: 0,
+  right: 0,
+
+  width: '100%',
+  height: `${HEADER_HEIGHT}px`,
+  transition: '$default',
+  backgroundColor: 'transparent',
 
   '> div': {
     height: '100%',
@@ -25,6 +38,16 @@ const StyledHeader = styled('header', {
   },
 
   variants: {
+    withBackground: {
+      true: {
+        backgroundColor: '$background',
+      },
+    },
+    hidden: {
+      true: {
+        top: `-${HEADER_HEIGHT}px`,
+      },
+    },
     variant: {
       withLogo: {
         '> div': {
@@ -88,8 +111,14 @@ type HeaderProps = {
 };
 
 export const Header: React.FC<HeaderProps> = props => {
+  const { show, lastScrollY } = useVisibilityOnScroll();
+
   return (
-    <StyledHeader variant={props.variant}>
+    <StyledHeader
+      variant={props.variant}
+      withBackground={lastScrollY > 10}
+      hidden={!show}
+    >
       <ContentWrapper>
         {props.variant === 'withLogo' ? <Logo asLink /> : <></>}
         <NavigationMenu name="Header Navigation" items={headerNavigation} />
