@@ -1,16 +1,24 @@
 import { useEffect, useState } from 'react';
 
+const SCROLL_GRANULARITY = 10;
+
 export const useVisibilityOnScroll = () => {
   const [show, setShow] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const isScrollDown = window.scrollY > lastScrollY;
-      if (isScrollDown) setShow(false);
-      else setShow(true);
+    // Only react on every n pixel to reduce updates
+    const isScrollAboveGranularity = (scrollY: number) =>
+      scrollY > lastScrollY + SCROLL_GRANULARITY ||
+      scrollY < lastScrollY - SCROLL_GRANULARITY;
 
-      setLastScrollY(window.scrollY);
+    const handleScroll = () => {
+      if (isScrollAboveGranularity(window.scrollY)) {
+        const isScrollDown = window.scrollY > lastScrollY;
+        if (isScrollDown) setShow(false);
+        else setShow(true);
+        setLastScrollY(window.scrollY);
+      }
     };
 
     window.addEventListener('scroll', handleScroll);

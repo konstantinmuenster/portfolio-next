@@ -41,6 +41,7 @@ const StyledHeader = styled('header', {
     withBackground: {
       true: {
         backgroundColor: '$background',
+        borderBottom: '2px solid $subtext',
       },
     },
     hidden: {
