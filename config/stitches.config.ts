@@ -43,8 +43,10 @@ export const {
       primary250: '#6240E7',
       primary500: '#522EE5',
       primary900: '#1C0C5E',
-      accentGradient: 'linear-gradient(#E44873 50%, #613FE6 50%)',
+      accentGradient: 'linear-gradient(#E54974 50%, #613FE6 50%)',
       turquoise: '#E8EBEF',
+      pinky: '#E54974',
+      violet: '#613FE6',
     },
     radii: {
       less: '4px',
@@ -60,15 +62,22 @@ export const {
       default: '1rem',
       big: '1.125rem',
     },
+    lineHeights: {
+      mini: '1rem',
+      small: '1.5rem',
+      default: '1.75rem',
+      big: '2rem',
+    },
     sizes: {},
     fontWeights: {},
-    lineHeights: {},
     letterSpacings: {},
     borderWidths: {},
     borderStyles: {},
     shadows: {},
     zIndices: {},
-    transitions: {},
+    transitions: {
+      default: 'all .2s ease',
+    },
   },
   media: {
     sm: '(min-width: 480px)',
@@ -104,6 +113,10 @@ export const {
     linearGradient: (value: string) => ({
       backgroundImage: `linear-gradient(${value})`,
     }),
+    accentBorderWithBg: (bgColor: string) => ({
+      border: '2px solid transparent',
+      background: `linear-gradient(${bgColor}, ${bgColor}) padding-box, linear-gradient($pinky 50%, $violet 50%) border-box`,
+    }),
     hoverBg: (color: string) => ({
       position: 'relative',
 
@@ -119,7 +132,7 @@ export const {
         width: '100%',
         borderRadius: '$less',
         opacity: 0,
-        transition: 'all .2s ease',
+        transition: '$default',
         background: `${color}`,
       },
       '&:hover:before,  &:focus-visible:before, &:active:before': {
@@ -191,7 +204,7 @@ export const applyGlobalStyles = globalCss({
     minHeight: '100%',
     display: 'grid',
     gridTemplateColumns: '100%',
-    gridTemplateRows: 'auto 1fr auto',
+    gridTemplateRows: '1fr auto',
   },
 
   body: {
@@ -224,10 +237,11 @@ export const applyGlobalStyles = globalCss({
     font: 'inherit',
     width: 'auto',
     overflow: 'visible',
+    textAlign: 'left',
     '&:focus-visible': {
       outlineColor: '$text',
       color: '$text',
-      borderRadius: '$less',
+      borderRadius: '$default',
     },
   },
 

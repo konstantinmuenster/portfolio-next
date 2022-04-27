@@ -39,11 +39,12 @@ const StyledSocialProfiles = styled('div', {
 
 type SocialProfilesProps = {
   profiles: Profile[];
+  className?: string;
 };
 
 export const SocialProfiles: React.FC<SocialProfilesProps> = props => {
   return (
-    <StyledSocialProfiles>
+    <StyledSocialProfiles className={props.className}>
       {props.profiles.map(({ icon: Icon, label, to }, key) => {
         return (
           <Link key={key} to={to}>

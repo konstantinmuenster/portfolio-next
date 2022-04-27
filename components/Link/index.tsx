@@ -21,7 +21,7 @@ const StyledExternalLink = styled('a', {
   },
 });
 
-type LinkProps = ComponentPropsWithoutRef<'a'> & {
+export type LinkProps = ComponentPropsWithoutRef<'a'> & {
   to: string;
 };
 

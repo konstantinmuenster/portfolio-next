@@ -18,9 +18,7 @@ export const Layout: React.FC = ({ children }) => {
   return (
     <>
       <Header variant={isFrontpage ? 'withoutLogo' : 'withLogo'} />
-      <main>
-        <ContentWrapper>{children}</ContentWrapper>
-      </main>
+      <main>{children}</main>
       <Footer />
     </>
   );
