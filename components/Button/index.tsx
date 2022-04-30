@@ -2,6 +2,7 @@ import { MouseEventHandler, FC } from 'react';
 
 import { styled, theme } from '@config/stitches.config';
 import { Link, LinkProps } from '@components/Link';
+import { generateColorPaletteVariants } from '@utils/generateColorPaletteVariants';
 
 const BaseButton = (as: 'button' | FC<LinkProps>) =>
   styled(as, {
@@ -32,39 +33,16 @@ const BaseButton = (as: 'button' | FC<LinkProps>) =>
 
     variants: {
       bgColor: {
-        ...(() => {
-          return Object.values(theme.colors).reduce((prev, color) => {
-            return {
-              ...prev,
-              [color.token]: {
-                backgroundColor: `$${color.token}`,
-              },
-            };
-          }, {});
-        })(),
-      } as Record<keyof typeof theme.colors, { backgroundColor: string }>,
+        ...generateColorPaletteVariants({ backgroundColor: '$––color––' }),
+      },
       bgHoverColor: {
-        ...(() => {
-          return Object.values(theme.colors).reduce((prev, color) => {
-            return {
-              ...prev,
-              [color.token]: {
-                '&:not(:disabled):hover, &:not(:disabled):active, &:not(:disabled):focus-visible':
-                  {
-                    boxShadow: `inset 0 -44px 0 0 $colors$${color.token}`,
-                  },
-              },
-            };
-          }, {});
-        })(),
-      } as Record<
-        keyof typeof theme.colors,
-        {
-          '&:not(:disabled):hover, &:not(:disabled):active, &:not(:disabled):focus-visible': {
-            boxShadow: string;
-          };
-        }
-      >,
+        ...generateColorPaletteVariants({
+          '&:not(:disabled):hover, &:not(:disabled):active, &:not(:disabled):focus-visible':
+            {
+              boxShadow: 'inset 0 -44px 0 0 $colors$$––color––',
+            },
+        }),
+      },
     },
   });
 
