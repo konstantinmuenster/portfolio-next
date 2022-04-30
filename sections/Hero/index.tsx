@@ -7,34 +7,34 @@ import { ProfileCard } from '@components/ProfileCard';
 
 const StyledSection = styled('section', {
   paddingTop: `calc(${HEADER_HEIGHT}px + 3rem)`,
-  marginBottom: '4rem',
-  backgroundColor: '$turquoise',
-  borderBottom: '2px solid $border',
   textAlign: 'center',
-
-  [`.${darkTheme} &`]: { backgroundColor: '$secondary50' },
+  backgroundColor: '$turquoise',
 
   '@md': { paddingTop: `calc(${HEADER_HEIGHT}px + 5rem)` },
 
-  h1: {
-    fontWeight: 500,
-    color: '$primary900',
-    marginBottom: '3rem',
+  [`.${darkTheme} &`]: { backgroundColor: '$secondary50' },
+
+  '.hero-content': {
+    marginBottom: '4rem',
+
+    h1: {
+      fontWeight: 500,
+      color: '$primary900',
+      marginBottom: '3rem',
+    },
+
+    p: {
+      width: '90%',
+      margin: '0 auto',
+      fontSize: '$big',
+      lineHeight: '$big',
+      color: '$subtext',
+    },
   },
 
-  p: {
-    width: '90%',
-    margin: '0 auto',
-    fontSize: '$big',
-    lineHeight: '$big',
-    color: '$subtext',
-  },
-
-  '.profile-card-wrapper': {
-    marginTop: '3rem',
-    marginBottom: '-5.75rem',
-    '@md': { marginTop: '6rem' },
-    '> div': { mx: 'auto' },
+  '.profile-card-bg': {
+    linearGradient: '$turquoise 38%, $border 38%, $border 39%, $surface50 39%',
+    '> div > div': { mx: 'auto' },
   },
 });
 
@@ -42,7 +42,7 @@ export const HeroSection: React.FC = () => {
   const { colors } = theme;
   return (
     <StyledSection id="hero-section">
-      <ContentWrapper>
+      <ContentWrapper className="hero-content">
         <h1>
           <TextDecoration variant="spark" color={colors.secondary500.value}>
             Building
@@ -55,10 +55,12 @@ export const HeroSection: React.FC = () => {
         </h1>
         <p>I help individuals and companies build better web applications.</p>
         <p>Available for freelance work in Hamburg or remote.</p>
-        <div className="profile-card-wrapper">
-          <ProfileCard accent />
-        </div>
       </ContentWrapper>
+      <div className="profile-card-bg">
+        <ContentWrapper>
+          <ProfileCard accent />
+        </ContentWrapper>
+      </div>
     </StyledSection>
   );
 };

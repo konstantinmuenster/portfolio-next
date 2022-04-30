@@ -9,7 +9,7 @@ import { Logo } from '@components/Logo';
 import { NavigationMenu } from '@components/NavigationMenu';
 import { DropdownMenu } from '@components/DropdownMenu';
 
-export const HEADER_HEIGHT = 100;
+export const HEADER_HEIGHT = 80;
 
 const StyledHeader = styled('header', {
   position: 'fixed',
