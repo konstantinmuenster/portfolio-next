@@ -6,6 +6,7 @@ import { Card } from '@components/Card';
 
 const StyledSection = styled('section', {
   backgroundColor: '$surface50',
+  borderBottom: '2px solid $border',
 
   '> .content': {
     paddingTop: '4rem',
