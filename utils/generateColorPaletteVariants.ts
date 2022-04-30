@@ -5,7 +5,7 @@ import { theme } from '@config/stitches.config';
 const COLOR_PATTERN = '$––color––';
 const REGEX = /\"([^\"]*?\$––color––[^\"]*?)\"/;
 
-export const generateColorPaletteVariants = (css: Record<string, unknown>) => {
+export const generateColorPaletteVariants = (css: Stitches.CSS) => {
   const cssString = JSON.stringify(css);
 
   return Object.values(theme.colors).reduce((prev, color) => {
