@@ -34,6 +34,10 @@ const StyledSection = styled('section', {
 
   '.profile-card-bg': {
     linearGradient: '$turquoise 38%, $border 38%, $border 39%, $surface50 39%',
+    [`.${darkTheme} &`]: {
+      linearGradient:
+        '$secondary50 38%, $border 38%, $border 39%, $surface50 39%',
+    },
     '> div > div': { mx: 'auto' },
   },
 });
