@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
+import Image from 'next/image';
 import { GetStaticProps } from 'next';
 import { getMDXComponent, getMDXExport } from 'mdx-bundler/client';
 import { ReadTimeResults } from 'reading-time';
 
-import { getAllBlogPosts, getBlogPost } from 'lib/mdx';
-import Image from 'next/image';
 import { redirectTo } from '@utils/redirectTo';
+import { getAllBlogPosts, getBlogPost } from '@lib/mdx/blog';
 
 export type BlogPostMatter = {
   title: string;
