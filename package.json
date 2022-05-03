@@ -26,6 +26,7 @@
     "next-themes": "^0.1.1",
     "react": "18.1.0",
     "react-dom": "18.1.0",
+    "reading-time": "^1.5.0",
     "remark-autolink-headings": "^7.0.1",
     "remark-mdx-images": "^1.0.3",
     "remark-slug": "^7.0.1",

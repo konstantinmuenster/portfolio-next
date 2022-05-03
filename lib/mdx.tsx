@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
+import readingTime from 'reading-time';
 import { remarkMdxImages } from 'remark-mdx-images';
 import remarkSlug from 'remark-slug';
 import remarkAutolinkHeadings from 'remark-autolink-headings';
@@ -33,7 +34,7 @@ const findMdxFileBySlug = (slug: string) => {
 const getCompiledMDX = async (source: string, slug: string) => {
   try {
     setEsbuildExecutable();
-    return await bundleMDX({
+    const { code, frontmatter } = await bundleMDX({
       source,
       cwd: path.join(BLOG_DIR, slug),
       mdxOptions(options) {
@@ -59,6 +60,14 @@ const getCompiledMDX = async (source: string, slug: string) => {
         return options;
       },
     });
+
+    return {
+      code,
+      frontmatter: {
+        readingTime: readingTime(source),
+        ...frontmatter,
+      },
+    };
   } catch (error) {
     return undefined;
   }

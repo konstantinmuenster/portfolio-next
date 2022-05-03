@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { GetStaticProps } from 'next';
 import { getMDXComponent, getMDXExport } from 'mdx-bundler/client';
+import { ReadTimeResults } from 'reading-time';
 
 import { getAllBlogPosts, getBlogPost } from 'lib/mdx';
 import Image from 'next/image';
@@ -14,6 +15,7 @@ export type BlogPostMatter = {
   category?: string[];
   type?: string[];
   mediumUrl?: string;
+  readingTime?: ReadTimeResults;
 };
 
 type BlogPostExports = {
