@@ -5,32 +5,21 @@ import { remarkMdxImages } from 'remark-mdx-images';
 import type { ProjectMatter } from '@pages/projects/[slug]';
 import { MDXContentType } from '@config/content.config';
 import { getAllMdxFiles } from './common/getAllMdxFiles';
-import { getMdxFile } from './common/getMdxFile';
-import { getCompiledMDX } from './common/getCompiledMDX';
+import { getCompiledMdx } from './common/getCompiledMdx';
 
 const remarkPlugins: PluggableList = [remarkMdxImages];
 
 export const getAllProjects = () => {
-  return getAllMdxFiles(MDXContentType.Project)
-    .map(file => matter(file).data as ProjectMatter)
-    .filter(frontmatter => !!frontmatter.slug);
+  return getAllMdxFiles(MDXContentType.Project).map(({ slug, file }) => {
+    return { slug, ...matter(file).data } as ProjectMatter;
+  });
 };
 
 export const getProject = async (slug: string) => {
-  const source = getMdxFile(MDXContentType.Project, slug);
-  if (!source) return undefined;
+  const contentType = MDXContentType.Project;
+  const mdx = await getCompiledMdx({ slug, remarkPlugins, contentType });
+  if (!mdx) return undefined;
 
-  const mdx = await getCompiledMDX({
-    slug,
-    source,
-    remarkPlugins,
-    contentType: MDXContentType.Project,
-  });
-
-  return mdx
-    ? {
-        code: mdx.code,
-        frontmatter: mdx.frontmatter as ProjectMatter,
-      }
-    : undefined;
+  const frontmatter = { slug, ...mdx.frontmatter } as ProjectMatter;
+  return { code: mdx.code, frontmatter };
 };

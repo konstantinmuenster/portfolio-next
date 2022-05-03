@@ -1,6 +1,6 @@
 import type { PluggableList } from 'unified';
 import matter from 'gray-matter';
-import readingTime from 'reading-time';
+import calculateReadingTime from 'reading-time';
 import remarkSlug from 'remark-slug';
 import remarkAutolinkHeadings from 'remark-autolink-headings';
 import { remarkMdxImages } from 'remark-mdx-images';
@@ -8,8 +8,7 @@ import { remarkMdxImages } from 'remark-mdx-images';
 import type { BlogPostMatter } from '@pages/blog/[slug]';
 import { MDXContentType } from '@config/content.config';
 import { getAllMdxFiles } from './common/getAllMdxFiles';
-import { getMdxFile } from './common/getMdxFile';
-import { getCompiledMDX } from './common/getCompiledMDX';
+import { getCompiledMdx } from './common/getCompiledMdx';
 
 const remarkPlugins: PluggableList = [
   remarkMdxImages,
@@ -18,29 +17,23 @@ const remarkPlugins: PluggableList = [
 ];
 
 export const getAllBlogPosts = () => {
-  return getAllMdxFiles(MDXContentType.BlogPost)
-    .map(file => matter(file).data as BlogPostMatter)
-    .filter(frontmatter => !!frontmatter.slug);
+  return getAllMdxFiles(MDXContentType.BlogPost).map(({ slug, file }) => {
+    return { slug, ...matter(file).data } as BlogPostMatter;
+  });
 };
 
 export const getBlogPost = async (slug: string) => {
-  const source = getMdxFile(MDXContentType.BlogPost, slug);
-  if (!source) return undefined;
+  const contentType = MDXContentType.BlogPost;
+  const mdx = await getCompiledMdx({ slug, remarkPlugins, contentType });
+  if (!mdx) return undefined;
 
-  const mdx = await getCompiledMDX({
+  const readingTime = calculateReadingTime(mdx.code);
+
+  const frontmatter = {
     slug,
-    source,
-    remarkPlugins,
-    contentType: MDXContentType.BlogPost,
-  });
+    readingTime,
+    ...mdx.frontmatter,
+  } as BlogPostMatter;
 
-  return mdx
-    ? {
-        code: mdx.code,
-        frontmatter: {
-          readingTime: readingTime(mdx.code),
-          ...mdx.frontmatter,
-        } as BlogPostMatter,
-      }
-    : undefined;
+  return { code: mdx.code, frontmatter };
 };

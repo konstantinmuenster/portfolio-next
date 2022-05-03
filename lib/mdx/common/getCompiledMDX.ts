@@ -8,22 +8,21 @@ import {
   MDXGeneratedImgDir,
 } from '@config/content.config';
 import { setEsbuildExecutable } from './setEsbuildExecutable';
+import { getMdxFilePath } from './getMdxFilePath';
 
-export const getCompiledMDX = async ({
-  contentType,
-  source,
+export const getCompiledMdx = async ({
   slug,
+  contentType,
   remarkPlugins,
 }: {
-  contentType: MDXContentType;
-  source: string;
   slug: string;
+  contentType: MDXContentType;
   remarkPlugins?: PluggableList | undefined;
 }) => {
   try {
     setEsbuildExecutable();
     return await bundleMDX({
-      source,
+      file: getMdxFilePath(contentType, slug),
       cwd: path.join(MDXContentDir[contentType], slug),
       mdxOptions(options) {
         options.remarkPlugins = [
@@ -46,7 +45,7 @@ export const getCompiledMDX = async ({
         return options;
       },
     });
-  } catch (error) {
+  } catch {
     return undefined;
   }
 };
