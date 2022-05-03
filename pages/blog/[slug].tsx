@@ -11,11 +11,14 @@ export type BlogPostMatter = {
   slug: string;
   publishedAt: string;
   summary?: string;
-  banner?: string;
-  bannerCaption?: string;
   category?: string[];
   type?: string[];
   mediumUrl?: string;
+};
+
+type BlogPostExports = {
+  banner?: string;
+  bannerCaption?: string;
 };
 
 type BlogPostProps = {
@@ -25,12 +28,20 @@ type BlogPostProps = {
 
 const BlogPost: FC<BlogPostProps> = ({ code, frontmatter }) => {
   const MDXBody = React.useMemo(() => getMDXComponent(code), [code]);
-  const { banner } = getMDXExport(code);
+  const mdxExports = getMDXExport<BlogPostExports, BlogPostMatter>(code);
+
   return (
     <div>
       <h1>{frontmatter.title}</h1>
-      {banner ? (
-        <Image src={banner} alt={frontmatter.title} layout="fill" />
+      {mdxExports.banner ? (
+        <div style={{ position: 'relative', width: 300, height: 400 }}>
+          <Image
+            src={mdxExports.banner}
+            alt={frontmatter.title}
+            layout="fill"
+          />
+          {mdxExports.bannerCaption}
+        </div>
       ) : undefined}
       <MDXBody />
     </div>

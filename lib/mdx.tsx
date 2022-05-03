@@ -9,7 +9,9 @@ import { bundleMDX } from 'mdx-bundler';
 import { BlogPostMatter } from 'pages/blog/[slug]';
 import { setEsbuildExecutable } from '@utils/setEsbuildExecutable';
 
-const BLOG_DIR = path.join(process.cwd(), 'content', 'blog');
+const CWD = process.cwd();
+const BLOG_DIR = path.join(CWD, 'content', 'blog');
+const BLOG_GENERATED_IMG_DIR = path.join(CWD, 'public', 'images', 'blog');
 
 const getMdxFilePath = (slug: string) => path.join(BLOG_DIR, slug, 'index.mdx');
 
@@ -44,8 +46,8 @@ const getCompiledMDX = async (source: string, slug: string) => {
         return options;
       },
       esbuildOptions: options => {
-        options.outdir = `../../public/images/generated/${slug}`;
-        options.publicPath = `images/generated/${slug}`;
+        options.outdir = path.join(BLOG_GENERATED_IMG_DIR, slug);
+        options.publicPath = `/images/blog/${slug}`;
         options.write = true;
         options.loader = {
           ...options.loader,
