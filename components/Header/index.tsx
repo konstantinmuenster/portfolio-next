@@ -117,7 +117,7 @@ export const Header: React.FC<HeaderProps> = props => {
   return (
     <StyledHeader
       variant={props.variant}
-      withBackground={lastScrollY > 10}
+      withBackground={lastScrollY > 50}
       hidden={!show}
     >
       <ContentWrapper>
