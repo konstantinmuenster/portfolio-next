@@ -42,7 +42,11 @@ const BlogPost: FC<BlogPostProps> = ({ code, frontmatter }) => {
             alt={frontmatter.title}
             layout="fill"
           />
-          {mdxExports.bannerCaption}
+          {mdxExports.bannerCaption ? (
+            <caption
+              dangerouslySetInnerHTML={{ __html: mdxExports.bannerCaption }}
+            />
+          ) : undefined}
         </div>
       ) : undefined}
       <MDXBody />
