@@ -4,7 +4,7 @@ import { styled, theme } from '@config/stitches.config';
 import { Emoji } from '../Emoji';
 import { Link } from '@components/Link';
 
-const StyledLinkWrapper = styled('div', {
+export const StyledLinkedCardWrapper = styled('div', {
   a: {
     transition: '$default',
 
@@ -16,13 +16,12 @@ const StyledLinkWrapper = styled('div', {
     p: { color: '$subtext' },
 
     '&:hover, &:active, &:focus-visible': {
-      filter: 'brightness(99%)',
+      filter: 'brightness(98%)',
       p: { filter: 'blur(0.5px)' },
       '[data-emoji]': { transform: 'rotateZ(720deg)' },
     },
   },
 });
-9;
 
 const StyledCard = styled('div', {
   position: 'relative',
@@ -84,9 +83,9 @@ export const Card: React.FC<CardProps> = props => {
   );
 
   return props.to ? (
-    <StyledLinkWrapper>
+    <StyledLinkedCardWrapper>
       <Link to={props.to}>{Card}</Link>
-    </StyledLinkWrapper>
+    </StyledLinkedCardWrapper>
   ) : (
     Card
   );
