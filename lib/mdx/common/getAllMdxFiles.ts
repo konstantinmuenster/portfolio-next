@@ -1,6 +1,10 @@
 import fs from 'fs';
 
-import { MDXContentDir, MDXContentType } from '@config/content.config';
+import {
+  ContentRoutes,
+  MDXContentDir,
+  MDXContentType,
+} from '@config/content.config';
 import { getMdxFilePath } from './getMdxFilePath';
 
 export const getAllMdxFiles = (contentType: MDXContentType) => {
@@ -13,6 +17,7 @@ export const getAllMdxFiles = (contentType: MDXContentType) => {
     })
     .map(dirent => {
       const filePath = getMdxFilePath(contentType, dirent.name);
-      return { slug: dirent.name, file: fs.readFileSync(filePath, 'utf-8') };
+      const slug = `${ContentRoutes[contentType]}/${dirent.name}`;
+      return { slug, file: fs.readFileSync(filePath, 'utf-8') };
     });
 };
