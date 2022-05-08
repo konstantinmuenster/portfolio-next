@@ -17,6 +17,7 @@ export const StyledLinkedCardWrapper = styled('div', {
 
     '&:hover, &:active, &:focus-visible': {
       filter: 'brightness(98%)',
+      transform: 'scale(0.99)',
       p: { filter: 'blur(0.5px)' },
       '[data-emoji]': { transform: 'rotateZ(720deg)' },
     },
