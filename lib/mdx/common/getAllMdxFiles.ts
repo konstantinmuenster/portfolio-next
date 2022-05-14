@@ -13,7 +13,7 @@ export const getAllMdxFiles = (contentType: MDXContentType) => {
     })
     .map(dirent => {
       const slug = dirent.name;
-      const path = `${contentType}/${slug}`;
+      const path = `/${contentType}/${slug}`;
       const filePath = getMdxFilePath(contentType, slug);
       return { slug, path, file: fs.readFileSync(filePath, 'utf-8') };
     });
