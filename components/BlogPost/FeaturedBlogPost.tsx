@@ -105,7 +105,7 @@ type FeaturedBlogPost = {
 export const FeaturedBlogPost: React.FC<FeaturedBlogPost> = props => {
   return (
     <StyledLinkedCardWrapper style={{ maxWidth: '37.5rem' }}>
-      <Link to={props.post.slug}>
+      <Link to={props.post.path}>
         <StyledFeaturedBlogPost>
           <div className="header">
             <span className="label">Featured Article</span>

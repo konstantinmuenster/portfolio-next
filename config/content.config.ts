@@ -26,11 +26,13 @@ export type ContentMatter = {
   [MDXContentType.Project]: ProjectMatter;
 };
 
-export const FeaturedPost = {
-  slug: '/blog/how-to-build-a-text-editor-like-notion',
-} as const;
-
 export const ContentRoutes = {
   [MDXContentType.BlogPost]: '/blog',
   [MDXContentType.Project]: '/projects',
 } as const;
+
+export const FeaturedPost = {
+  slug: 'how-to-build-a-text-editor-like-notion',
+} as const;
+
+export const LatestProjects = ['lazy'];

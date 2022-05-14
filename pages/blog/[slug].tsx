@@ -1,8 +1,8 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
+import type { ReadTimeResults } from 'reading-time';
+import type { GetStaticProps } from 'next';
 import Image from 'next/image';
-import { GetStaticProps } from 'next';
 import { getMDXComponent, getMDXExport } from 'mdx-bundler/client';
-import { ReadTimeResults } from 'reading-time';
 
 import { redirectTo } from '@utils/redirectTo';
 import { getAllBlogPosts, getBlogPost } from '@lib/mdx/blog';
@@ -10,6 +10,7 @@ import { getAllBlogPosts, getBlogPost } from '@lib/mdx/blog';
 export type BlogPostMatter = {
   title: string;
   slug: string;
+  path: string;
   publishedAt: string;
   summary?: string;
   category?: string[];
@@ -30,25 +31,30 @@ type BlogPostProps = {
 
 const BlogPost: FC<BlogPostProps> = ({ code, frontmatter }) => {
   const MDXBody = React.useMemo(() => getMDXComponent(code), [code]);
+  const [isMounted, setIsMounted] = useState(false);
   const mdxExports = getMDXExport<BlogPostExports, BlogPostMatter>(code);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  const Banner = useMemo(() => {
+    return mdxExports.banner ? (
+      <figure style={{ position: 'relative', width: 300, height: 400 }}>
+        <Image src={mdxExports.banner} alt={frontmatter.title} layout="fill" />
+        {mdxExports.bannerCaption ? (
+          <figcaption
+            dangerouslySetInnerHTML={{ __html: mdxExports.bannerCaption }}
+          />
+        ) : undefined}
+      </figure>
+    ) : undefined;
+  }, [frontmatter.title, mdxExports]);
 
   return (
     <div>
       <h1>{frontmatter.title}</h1>
-      {mdxExports.banner ? (
-        <div style={{ position: 'relative', width: 300, height: 400 }}>
-          <Image
-            src={mdxExports.banner}
-            alt={frontmatter.title}
-            layout="fill"
-          />
-          {mdxExports.bannerCaption ? (
-            <caption
-              dangerouslySetInnerHTML={{ __html: mdxExports.bannerCaption }}
-            />
-          ) : undefined}
-        </div>
-      ) : undefined}
+      {isMounted ? Banner : undefined}
       <MDXBody />
     </div>
   );

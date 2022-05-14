@@ -47,7 +47,7 @@ type BlogPostListItemProps = {
 export const BlogPostListItem: React.FC<BlogPostListItemProps> = props => {
   return (
     <StyledBlogPostListItem>
-      <Link to={props.post.slug}>
+      <Link to={props.post.path}>
         <div className="blog-post-list-item">
           <span className="published-at">
             {formatDate(props.post.publishedAt)}
