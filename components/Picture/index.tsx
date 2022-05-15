@@ -16,7 +16,6 @@ const StyledPicture = styled('div', {
 
   img: {
     borderRadius: '$default',
-    border: '2px solid $border !important',
   },
 });
 
@@ -25,7 +24,12 @@ type PictureProps = {
   alt: string;
   width?: string;
   height?: string;
-  emoji?: string;
+  emoji?:
+    | string
+    | {
+        type: string;
+        position?: { top?: number; left?: number };
+      };
 } & ComponentPropsWithoutRef<'div'>;
 
 export const Picture: React.FC<PictureProps> = ({
@@ -36,9 +40,17 @@ export const Picture: React.FC<PictureProps> = ({
   emoji,
   ...props
 }) => {
+  const isEmojiObject = typeof emoji !== 'string';
+
   return (
     <StyledPicture style={{ width, height }} {...props}>
-      {emoji ? <Emoji type={emoji} background="surface100" /> : undefined}
+      {emoji ? (
+        <Emoji
+          type={isEmojiObject ? emoji.type : emoji}
+          style={emoji && isEmojiObject ? emoji.position : {}}
+          background="surface100"
+        />
+      ) : undefined}
       <Image src={src} alt={alt} layout="fill" objectFit="cover" />
     </StyledPicture>
   );

@@ -213,7 +213,7 @@ export const applyGlobalStyles = globalCss({
   },
 
   a: {
-    fontWeight: 'bold',
+    fontWeight: 500,
     lineHeight: 'inherit',
     textDecoration: 'none',
     color: '$subtext',

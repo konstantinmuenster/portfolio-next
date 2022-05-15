@@ -6,20 +6,23 @@ import { redirectTo } from '@utils/redirectTo';
 import { getAllProjects, getProject } from '@lib/mdx/projects';
 
 export type ProjectMatter = {
-  slug: string;
   name: string;
+  slug: string;
+  path: string;
   website?: string;
   role?: string;
   period?: string;
+  category?: string;
+  emoji?: string;
   summary?: string;
   domain?: string[];
 };
 
-type ProjectExports = {
-  images?: string[];
+export type ProjectExports = {
+  bannerImages?: string[];
 };
 
-type ProjectProps = {
+export type ProjectProps = {
   code: string;
   frontmatter: ProjectMatter;
 };
@@ -31,7 +34,7 @@ const Project: FC<ProjectProps> = ({ code, frontmatter }) => {
   return (
     <div>
       <h1>{frontmatter.name}</h1>
-      {mdxExports.images?.[0]}
+      {mdxExports.bannerImages?.[0]}
       <MDXBody />
     </div>
   );

@@ -1,14 +1,18 @@
-import type { NextPage } from 'next';
+import type { GetStaticProps, NextPage } from 'next';
 
 import { getAllBlogPosts } from '@lib/mdx/blog';
+import { getAllProjects, getProject } from '@lib/mdx/projects';
 import { HeroSection } from '@sections/Hero';
 import { IntroductionSection } from '@sections/Introduction';
 import { LatestPostsSection } from '@sections/LatestPosts';
+import { LatestProjectsSection } from '@sections/LatestProjects';
 
-import { BlogPostMatter } from './blog/[slug]';
+import type { BlogPostMatter } from './blog/[slug]';
+import type { ProjectMatter, ProjectProps } from './projects/[slug]';
 
 type HomePageProps = {
   posts: BlogPostMatter[];
+  projects: ProjectProps[];
 };
 
 const HomePage: NextPage<HomePageProps> = props => {
@@ -17,6 +21,7 @@ const HomePage: NextPage<HomePageProps> = props => {
       <HeroSection />
       <IntroductionSection />
       <LatestPostsSection posts={props.posts} />
+      <LatestProjectsSection projects={props.projects} />
       <p>hello</p>
     </>
   );
@@ -24,7 +29,22 @@ const HomePage: NextPage<HomePageProps> = props => {
 
 export default HomePage;
 
-export async function getStaticProps() {
-  const posts = getAllBlogPosts();
-  return { props: { posts } };
-}
+export const getStaticProps: GetStaticProps = async () => {
+  return {
+    props: {
+      posts: getAllBlogPosts(),
+      projects: await buildProjectProps(getAllProjects()),
+    },
+  };
+};
+
+const buildProjectProps = async (
+  projects: ProjectMatter[]
+): Promise<ProjectProps[]> => {
+  return await Promise.all(
+    projects.map(async frontmatter => {
+      const mdxCode = (await getProject(frontmatter.slug))?.code;
+      return { frontmatter, code: mdxCode ?? '' };
+    })
+  );
+};

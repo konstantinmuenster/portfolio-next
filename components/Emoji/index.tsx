@@ -1,3 +1,5 @@
+import type { CSSProperties } from 'react';
+
 import { styled, theme } from '@config/stitches.config';
 import { generateColorPaletteVariants } from '@utils/generateColorPaletteVariants';
 
@@ -32,6 +34,7 @@ type EmojiProps = {
   background?: keyof typeof theme.colors;
   className?: string;
   size?: 'small' | 'big';
+  style?: CSSProperties;
 };
 
 export const Emoji: React.FC<EmojiProps> = props => {
@@ -40,6 +43,7 @@ export const Emoji: React.FC<EmojiProps> = props => {
       background={props.background ?? 'secondary50'}
       size={props.size ?? 'big'}
       className={props.className}
+      style={props.style}
       data-emoji
     >
       <span>{props.type}</span>
