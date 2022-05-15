@@ -21,10 +21,9 @@ const BaseButton = (as: 'button' | FC<LinkProps>) =>
     transition: '$default',
     cursor: 'pointer',
 
-    '&:not(:disabled):hover, &:not(:disabled):active, &:not(:disabled):focus-visible':
-      {
-        boxShadow: 'inset 0 -44px 0 0 $colors$primary50',
-      },
+    '&:not(:disabled):hover': {
+      boxShadow: 'inset 0 -44px 0 0 $colors$primary50',
+    },
 
     '&:disabled': {
       filter: 'brightness(95%)',
@@ -37,10 +36,9 @@ const BaseButton = (as: 'button' | FC<LinkProps>) =>
       },
       bgHoverColor: {
         ...generateColorPaletteVariants({
-          '&:not(:disabled):hover, &:not(:disabled):active, &:not(:disabled):focus-visible':
-            {
-              boxShadow: 'inset 0 -44px 0 0 $colors$$––color––',
-            },
+          '&:not(:disabled):hover': {
+            boxShadow: 'inset 0 -44px 0 0 $colors$$––color––',
+          },
         }),
       },
     },

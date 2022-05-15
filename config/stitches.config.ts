@@ -135,7 +135,7 @@ export const {
         transition: '$default',
         background: `${color}`,
       },
-      '&:hover:before,  &:focus-visible:before, &:active:before': {
+      '&:hover:before': {
         transform: 'scale(1) perspective(1px)',
         opacity: 1,
       },

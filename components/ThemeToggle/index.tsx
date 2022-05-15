@@ -10,7 +10,7 @@ const StyledThemeButton = styled('button', {
   padding: '0.8rem',
   '@md': { padding: '0.4rem' },
 
-  '&:hover, &:focus-visible': {
+  '&:hover': {
     svg: { fill: '$primary900' },
   },
 

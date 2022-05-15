@@ -32,7 +32,7 @@ const StyledNavigation = styled('nav', {
         a: {
           hoverBg: '$colors$surface50',
 
-          '&:hover, &:focus-visible, &:active': {
+          '&:hover': {
             color: '$primary900',
           },
         },

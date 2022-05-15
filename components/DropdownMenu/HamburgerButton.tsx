@@ -26,7 +26,7 @@ const StyledSvgWrapper = styled('div', {
     line: { stroke: '$subtext' },
   },
 
-  '&:hover, &:focus-visible': {
+  '&:hover': {
     backgroundColor: '$surface50',
     svg: { line: { stroke: '$primary900' } },
   },
