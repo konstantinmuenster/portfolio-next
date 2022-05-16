@@ -25,13 +25,18 @@ const StyledProjectPreview = styled('div', {
     '> div': {
       position: 'relative',
       display: 'inline-block',
-      width: '52rem',
-      height: '30rem',
+      width: '18rem',
+      height: '10.5rem',
       my: '1rem',
       marginRight: '1rem',
       transition: '$default',
 
+      '@sm': { width: '35rem', height: '20rem' },
+      '@md': { width: '52rem', height: '30rem' },
+
       '&:hover': { transform: 'scale(1.015)' },
+
+      '&:first-of-type': { marginLeft: '1rem', '@md': { marginLeft: 0 } },
     },
   },
 

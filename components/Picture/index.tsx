@@ -8,10 +8,13 @@ const StyledPicture = styled('div', {
   position: 'relative',
 
   '> [data-emoji]': {
+    display: 'none',
     position: 'absolute',
     zIndex: 1,
     top: -10,
     left: -30,
+
+    '@md': { display: 'block', }
   },
 
   img: {
