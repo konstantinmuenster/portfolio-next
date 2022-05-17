@@ -25,9 +25,14 @@ export const useHorizontalScroll = () => {
         const isAtEndAndDownwards =
           element.offsetWidth + element.scrollLeft >= element.scrollWidth &&
           e.deltaY >= 0;
-        if (isAtStartAndUpwards || isAtEndAndDownwards) return;
+
+        if (isAtStartAndUpwards || isAtEndAndDownwards) {
+          document.body.style['overflowY'] = 'visible';
+          return;
+        }
 
         e.preventDefault();
+        document.body.style['overflowY'] = 'hidden';
         element.scrollTo({ left: element.scrollLeft + e.deltaY });
       };
 

@@ -22,7 +22,6 @@ const HomePage: NextPage<HomePageProps> = props => {
       <IntroductionSection />
       <LatestPostsSection posts={props.posts} />
       <LatestProjectsSection projects={props.projects} />
-      <p>hello</p>
     </>
   );
 };

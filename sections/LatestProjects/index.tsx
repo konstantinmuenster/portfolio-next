@@ -9,8 +9,16 @@ import { TextDecoration } from '@components/TextDecoration';
 import { ProjectPreview } from '@components/Project';
 
 const StyledSection = styled('section', {
+  '> .latest-projects-list': {
+    '> div:not(:last-of-type)': {
+      marginBottom: '3rem',
+      '@sm': { marginBottom: '4rem' },
+      '@md': { marginBottom: '6rem' },
+    },
+  },
+
   '> .latest-projects-content': {
-    paddingTop: '4rem',
+    paddingTop: '3rem',
     paddingBottom: '2rem',
 
     '.description': {
