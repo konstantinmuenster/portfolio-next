@@ -35,4 +35,4 @@ export const FeaturedPost = {
   slug: 'how-to-build-a-text-editor-like-notion',
 } as const;
 
-export const LatestProjects = ['lazy'];
+export const LatestProjects = ['lazy', 'notion-clone'];
