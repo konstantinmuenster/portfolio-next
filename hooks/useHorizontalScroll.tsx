@@ -1,7 +1,5 @@
 import { useRef, useEffect } from 'react';
 
-type onWheelHandler = (e: WheelEvent) => void;
-
 export const useHorizontalScroll = () => {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -9,15 +7,18 @@ export const useHorizontalScroll = () => {
     const element = ref.current;
 
     if (element) {
-      const onWheel = (e: WheelEvent & { wheelDeltaY: number }) => {
+      const onWheel = (e: WheelEvent) => {
         // If the user didn't scroll some pixels, do nothing
         if (e.deltaY === 0) return;
 
-        // If the user uses a trackpad instead an actual mouse, do nothing
-        const isTrackpad = e.wheelDeltaY
-          ? e.wheelDeltaY === e.deltaY * -3
-          : e.deltaMode === 0;
-        if (isTrackpad) return;
+        // Only start scrolling horizontally, if we are within the center area of the image
+        const imageStart = element.offsetTop;
+        const imageEnd = imageStart + element.offsetHeight;
+        const distanceBeforeScroll = element.offsetHeight * 0.4;
+        const centerRangeStart = imageStart + distanceBeforeScroll;
+        const centerRangeEnd = imageEnd - distanceBeforeScroll;
+
+        if (e.pageY < centerRangeStart || e.pageY > centerRangeEnd) return;
 
         // If the user reached the start or end of the container, do nothing
         const isAtStartAndUpwards = element.scrollLeft === 0 && e.deltaY <= 0;
@@ -30,10 +31,9 @@ export const useHorizontalScroll = () => {
         element.scrollTo({ left: element.scrollLeft + e.deltaY });
       };
 
-      element.addEventListener('wheel', onWheel as onWheelHandler);
+      element.addEventListener('wheel', onWheel);
 
-      return () =>
-        element.removeEventListener('wheel', onWheel as onWheelHandler);
+      return () => element.removeEventListener('wheel', onWheel);
     }
   }, []);
 
