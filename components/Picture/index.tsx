@@ -14,7 +14,7 @@ const StyledPicture = styled('div', {
     top: -10,
     left: -30,
 
-    '@md': { display: 'block', }
+    '@md': { display: 'block' },
   },
 
   img: {
