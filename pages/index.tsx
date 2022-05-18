@@ -2,10 +2,10 @@ import type { GetStaticProps, NextPage } from 'next';
 
 import { getAllBlogPosts } from '@lib/mdx/blog';
 import { getAllProjects, getProject } from '@lib/mdx/projects';
-import { HeroSection } from '@sections/Hero';
-import { IntroductionSection } from '@sections/Introduction';
-import { LatestPostsSection } from '@sections/LatestPosts';
-import { LatestProjectsSection } from '@sections/LatestProjects';
+import { HeroSection } from '@sections/HomePage/Hero';
+import { IntroductionSection } from '@sections/HomePage/Introduction';
+import { LatestPostsSection } from '@sections/HomePage/LatestPosts';
+import { LatestProjectsSection } from '@sections/HomePage/LatestProjects';
 import { ContactAppendix } from '@components/ContactAppendix';
 
 import type { BlogPostMatter } from './blog/[slug]';
