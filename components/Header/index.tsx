@@ -1,5 +1,5 @@
 import { headerNavigation } from '@config/navigation.config';
-import { styled } from '@config/stitches.config';
+import { darkTheme, styled } from '@config/stitches.config';
 
 import { useVisibilityOnScroll } from '@hooks/useVisibilityOnScroll';
 
@@ -40,8 +40,10 @@ const StyledHeader = styled('header', {
   variants: {
     withBackground: {
       true: {
-        backgroundColor: '$background',
+        backgroundColor: 'rgba(255,255,255,0.9)',
+        backdropFilter: 'blur(5px)',
         borderBottom: '2px solid $subtext',
+        [`.${darkTheme} &`]: { backgroundColor: 'rgba(20, 20, 21, 0.9)' },
       },
     },
     hidden: {
