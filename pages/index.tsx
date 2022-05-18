@@ -6,6 +6,7 @@ import { HeroSection } from '@sections/Hero';
 import { IntroductionSection } from '@sections/Introduction';
 import { LatestPostsSection } from '@sections/LatestPosts';
 import { LatestProjectsSection } from '@sections/LatestProjects';
+import { ContactAppendix } from '@components/ContactAppendix';
 
 import type { BlogPostMatter } from './blog/[slug]';
 import type { ProjectMatter, ProjectProps } from './projects/[slug]';
@@ -22,6 +23,7 @@ const HomePage: NextPage<HomePageProps> = props => {
       <IntroductionSection />
       <LatestPostsSection posts={props.posts} />
       <LatestProjectsSection projects={props.projects} />
+      <ContactAppendix />
     </>
   );
 };
