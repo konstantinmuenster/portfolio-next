@@ -7,9 +7,6 @@ const StyledSocialProfiles = styled('div', {
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'center',
-  justifyContent: 'flex-end',
-
-  '@md': { justifyContent: 'flex-start' },
 
   a: {
     display: 'flex',
@@ -35,16 +32,31 @@ const StyledSocialProfiles = styled('div', {
       display: 'none',
     },
   },
+
+  variants: {
+    alignment: {
+      right: {
+        justifyContent: 'flex-end',
+        '@md': { justifyContent: 'flex-start' },
+      },
+      left: {
+        justifyContent: 'flex-start',
+      },
+    },
+  },
 });
 
 type SocialProfilesProps = {
   profiles: Profile[];
   className?: string;
+  alignment?: 'left' | 'right';
 };
 
 export const SocialProfiles: React.FC<SocialProfilesProps> = props => {
+  const align = props.alignment ?? 'left';
+
   return (
-    <StyledSocialProfiles className={props.className}>
+    <StyledSocialProfiles className={props.className} alignment={align}>
       {props.profiles.map(({ icon: Icon, label, to }, key) => {
         return (
           <Link key={key} to={to}>

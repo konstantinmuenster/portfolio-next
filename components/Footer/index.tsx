@@ -54,7 +54,7 @@ export const Footer: React.FC = () => {
     <StyledFooter>
       <ContentWrapper>
         <div>
-          <SocialProfiles profiles={socialProfiles} />
+          <SocialProfiles profiles={socialProfiles} alignment="right" />
           <span className="copyright">
             © {new Date().getFullYear()} Konstantin Münster. All rights
             reserved.
