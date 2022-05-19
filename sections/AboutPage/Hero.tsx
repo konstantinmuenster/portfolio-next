@@ -39,7 +39,7 @@ const StyledSection = styled('section', {
       },
 
       '.hero-introduction': {
-        h1: { fontWeight: 500, color: '$primary900', my: '1rem' },
+        h1: { fontWeight: 500, color: '$primary900', my: '2rem' },
         p: { marginBottom: '2rem' },
       },
     },
