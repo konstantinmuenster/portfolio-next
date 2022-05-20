@@ -41,7 +41,7 @@ const StyledContactAppendix = styled('div', {
   '.contact-me': {
     display: 'flex',
     columnGap: '0.5rem',
-    background: '$secondary100',
+    background: '$primary50',
     paddingLeft: '1rem',
     paddingRight: '3rem',
     py: '0.75rem',
