@@ -3,7 +3,7 @@ import { darkTheme, styled, theme } from '@config/stitches.config';
 import { HEADER_HEIGHT } from '@components/Header';
 import { ContentWrapper } from '@components/Layout';
 import { TextDecoration } from '@components/TextDecoration';
-import { ProfileCard } from '@components/ProfileCard';
+import { ProfileCard } from '@components/Card';
 
 const StyledSection = styled('section', {
   paddingTop: `calc(${HEADER_HEIGHT}px + 3rem)`,

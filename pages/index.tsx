@@ -6,10 +6,10 @@ import { HeroSection } from '@sections/HomePage/Hero';
 import { IntroductionSection } from '@sections/HomePage/Introduction';
 import { LatestPostsSection } from '@sections/HomePage/LatestPosts';
 import { LatestProjectsSection } from '@sections/HomePage/LatestProjects';
-import { ContactAppendix } from '@components/ContactAppendix';
 
 import type { BlogPostMatter } from './blog/[slug]';
 import type { ProjectMatter, ProjectProps } from './projects/[slug]';
+import { ContactCard } from '@components/Card';
 
 type HomePageProps = {
   posts: BlogPostMatter[];
@@ -23,7 +23,7 @@ const HomePage: NextPage<HomePageProps> = props => {
       <IntroductionSection />
       <LatestPostsSection posts={props.posts} />
       <LatestProjectsSection projects={props.projects} />
-      <ContactAppendix />
+      <ContactCard />
     </>
   );
 };

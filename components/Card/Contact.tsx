@@ -5,7 +5,7 @@ import { SparkSvg } from '@components/TextDecoration/SparkSvg';
 import { styled } from '@config/stitches.config';
 import { avatarSrc } from '@config/profiles.config';
 
-const StyledContactAppendix = styled('div', {
+const StyledContactCard = styled('div', {
   '> div': {
     position: 'relative',
     display: 'flex',
@@ -60,9 +60,9 @@ const StyledContactAppendix = styled('div', {
   },
 });
 
-export const ContactAppendix: React.FC = () => {
+export const ContactCard: React.FC = () => {
   return (
-    <StyledContactAppendix>
+    <StyledContactCard>
       <ContentWrapper>
         <SparkSvg aria-hidden={true} />
         <div className="need-help">
@@ -85,6 +85,6 @@ export const ContactAppendix: React.FC = () => {
           </div>
         </div>
       </ContentWrapper>
-    </StyledContactAppendix>
+    </StyledContactCard>
   );
 };

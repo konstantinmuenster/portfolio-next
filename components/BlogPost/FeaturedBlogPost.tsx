@@ -2,8 +2,8 @@ import type { BlogPostMatter } from '@pages/blog/[slug]';
 import { styled } from '@config/stitches.config';
 import { Link } from '@components/Link';
 import { Toast } from '@components/Toast';
-import { StyledLinkedCardWrapper } from '@components/Card';
 import { TextDecoration } from '@components/TextDecoration';
+import { StyledLinkedBaseCardWrapper } from '@components/Card/Base';
 
 const StyledFeaturedBlogPost = styled('div', {
   position: 'relative',
@@ -104,7 +104,7 @@ type FeaturedBlogPost = {
 
 export const FeaturedBlogPost: React.FC<FeaturedBlogPost> = props => {
   return (
-    <StyledLinkedCardWrapper style={{ maxWidth: '37.5rem' }}>
+    <StyledLinkedBaseCardWrapper style={{ maxWidth: '37.5rem' }}>
       <Link to={props.post.path}>
         <StyledFeaturedBlogPost>
           <div className="header">
@@ -129,6 +129,6 @@ export const FeaturedBlogPost: React.FC<FeaturedBlogPost> = props => {
           <p className="summary">{props.post.summary}</p>
         </StyledFeaturedBlogPost>
       </Link>
-    </StyledLinkedCardWrapper>
+    </StyledLinkedBaseCardWrapper>
   );
 };
