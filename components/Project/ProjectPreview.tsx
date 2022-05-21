@@ -3,43 +3,13 @@ import { getMDXExport } from 'mdx-bundler/client';
 
 import type { ProjectExports, ProjectProps } from '@pages/projects/[slug]';
 import { styled } from '@config/stitches.config';
-import { useHorizontalScroll } from '@hooks/useHorizontalScroll';
 import { Link } from '@components/Link';
 import { TextDecoration } from '@components/TextDecoration';
 import { Toast } from '@components/Toast';
-import { Picture } from '@components/Picture';
+import { Carousel, Picture } from '@components/Picture';
 import { ContentWrapper } from '@components/Layout';
 
 const StyledProjectPreview = styled('div', {
-  '.project-image-slider': {
-    position: 'relative',
-    overflowX: 'auto',
-    overflowY: 'hidden',
-    whiteSpace: 'nowrap',
-    width: '100%',
-    px: 'calc(50% - 400px)',
-    marginBottom: '1rem',
-
-    '&:hover': { cursor: 'ew-resize' },
-
-    '> div': {
-      position: 'relative',
-      display: 'inline-block',
-      width: '18rem',
-      height: '10.5rem',
-      my: '1rem',
-      marginRight: '1rem',
-      transition: '$default',
-
-      '@sm': { width: '35rem', height: '20rem' },
-      '@md': { width: '52rem', height: '30rem' },
-
-      '&:hover': { transform: 'scale(1.015)' },
-
-      '&:first-of-type': { marginLeft: '1rem', '@md': { marginLeft: 0 } },
-    },
-  },
-
   '.project-content': {
     '> div': { width: '100%', maxWidth: '37.5rem' },
 
@@ -74,7 +44,6 @@ type ProjectPreviewProps = {
 
 export const ProjectPreview: React.FC<ProjectPreviewProps> = props => {
   const [images, setImages] = useState<string[]>([]);
-  const scrollRef = useHorizontalScroll();
 
   useEffect(() => {
     if (!props.project.code) return;
@@ -108,9 +77,7 @@ export const ProjectPreview: React.FC<ProjectPreviewProps> = props => {
 
   return (
     <StyledProjectPreview>
-      <div className="project-image-slider" ref={scrollRef}>
-        {imageList}
-      </div>
+      <Carousel>{imageList}</Carousel>
       <ContentWrapper className="project-content">
         <div className="project-description">
           <span className="project-role">{props.project.frontmatter.role}</span>
