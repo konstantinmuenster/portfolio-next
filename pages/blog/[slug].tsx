@@ -9,6 +9,17 @@ import { BlogPostHeroSection } from '@sections/BlogPostPage/Hero';
 import { BlogPostBanner } from '@sections/BlogPostPage/Banner';
 import { ContentWrapper } from '@components/Layout';
 import { BlogPicture } from '@components/Picture';
+import { styled } from '@config/stitches.config';
+
+const StyledBlogPost = styled('article', {
+  '.blog-post-content': {
+    maxWidth: '42rem',
+
+    p: { fontSize: '$big', lineHeight: '$big' },
+
+    'ol > li, ul > li': { fontSize: '$big' },
+  },
+});
 
 export type BlogPostMatter = {
   title: string;
@@ -37,17 +48,17 @@ const BlogPost: React.FC<BlogPostProps> = ({ code, frontmatter }) => {
   const mdxExports = getMDXExport<BlogPostExports, BlogPostMatter>(code);
 
   return (
-    <article>
+    <StyledBlogPost>
       <BlogPostHeroSection {...frontmatter} />
       <BlogPostBanner
         title={frontmatter.title}
         banner={mdxExports.banner}
         bannerCaption={mdxExports.bannerCaption}
       />
-      <ContentWrapper style={{ maxWidth: '42rem' }}>
+      <ContentWrapper className="blog-post-content">
         <MDXBody components={{ BlogPicture }} />
       </ContentWrapper>
-    </article>
+    </StyledBlogPost>
   );
 };
 
