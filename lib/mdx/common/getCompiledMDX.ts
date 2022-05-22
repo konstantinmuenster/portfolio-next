@@ -40,7 +40,7 @@ export const getCompiledMdx = async ({
           '.png': 'file',
           '.jpeg': 'file',
           '.jpg': 'file',
-          '.JPG': 'file',
+          '.gif': 'file',
         };
         return options;
       },

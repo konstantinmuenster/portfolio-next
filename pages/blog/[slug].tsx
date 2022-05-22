@@ -1,11 +1,13 @@
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import type { ReadTimeResults } from 'reading-time';
 import type { GetStaticProps } from 'next';
-import Image from 'next/image';
 import { getMDXComponent, getMDXExport } from 'mdx-bundler/client';
 
 import { redirectTo } from '@utils/redirectTo';
 import { getAllBlogPosts, getBlogPost } from '@lib/mdx/blog';
+import { BlogPostHeroSection } from '@sections/BlogPostPage/Hero';
+import { BlogPostBanner } from '@sections/BlogPostPage/Banner';
+import { ContentWrapper } from '@components/Layout';
 
 export type BlogPostMatter = {
   title: string;
@@ -19,7 +21,7 @@ export type BlogPostMatter = {
   readingTime?: ReadTimeResults;
 };
 
-type BlogPostExports = {
+export type BlogPostExports = {
   banner?: string;
   bannerCaption?: string;
 };
@@ -29,42 +31,32 @@ type BlogPostProps = {
   frontmatter: BlogPostMatter;
 };
 
-const BlogPost: FC<BlogPostProps> = ({ code, frontmatter }) => {
-  const MDXBody = React.useMemo(() => getMDXComponent(code), [code]);
-  const [isMounted, setIsMounted] = useState(false);
+const BlogPost: React.FC<BlogPostProps> = ({ code, frontmatter }) => {
+  const MDXBody = useMemo(() => getMDXComponent(code), [code]);
   const mdxExports = getMDXExport<BlogPostExports, BlogPostMatter>(code);
 
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  const Banner = useMemo(() => {
-    return mdxExports.banner ? (
-      <figure style={{ position: 'relative', width: 300, height: 400 }}>
-        <Image src={mdxExports.banner} alt={frontmatter.title} layout="fill" />
-        {mdxExports.bannerCaption ? (
-          <figcaption
-            dangerouslySetInnerHTML={{ __html: mdxExports.bannerCaption }}
-          />
-        ) : undefined}
-      </figure>
-    ) : undefined;
-  }, [frontmatter.title, mdxExports]);
-
   return (
-    <div>
-      <h1>{frontmatter.title}</h1>
-      {isMounted ? Banner : undefined}
-      <MDXBody />
-    </div>
+    <article>
+      <BlogPostHeroSection {...frontmatter} />
+      <BlogPostBanner
+        title={frontmatter.title}
+        banner={mdxExports.banner}
+        bannerCaption={mdxExports.bannerCaption}
+      />
+      <ContentWrapper>
+        <MDXBody />
+      </ContentWrapper>
+    </article>
   );
 };
 
 export const getStaticProps: GetStaticProps = async context => {
   const slug = context.params?.slug;
   if (!slug || Array.isArray(slug)) return redirectTo('/404');
+
   const post = await getBlogPost(slug);
   if (!post) return redirectTo('/404');
+
   return { props: { code: post.code, frontmatter: post.frontmatter } };
 };
 
