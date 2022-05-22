@@ -9,12 +9,6 @@ import { HamburgerButton } from './HamburgerButton';
 
 const StyledDropdownMenu = styled('nav', {
   position: 'relative',
-
-  'a > svg[data-external-hint]': {
-    top: 6,
-    right: 6,
-    size: '20px',
-  },
 });
 
 type DropdownMenuProps = {

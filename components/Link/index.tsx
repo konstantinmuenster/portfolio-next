@@ -2,10 +2,9 @@ import NextLink from 'next/link';
 import { ComponentPropsWithoutRef } from 'react';
 import { useRouter } from 'next/router';
 
-import { ExternalLink } from './ExternalLink';
-
 export type LinkProps = ComponentPropsWithoutRef<'a'> & {
   to: string;
+  hideExternalHint?: boolean;
 };
 
 export const Link: React.FC<LinkProps> = ({ to, ...props }) => {
@@ -21,9 +20,15 @@ export const Link: React.FC<LinkProps> = ({ to, ...props }) => {
 
   if (isExternal)
     return (
-      <ExternalLink to={to} {...linkProps}>
+      <a
+        href={to}
+        rel="nofollow noopener noreferrer"
+        target="_blank"
+        data-hide-external-hint={props.hideExternalHint}
+        {...linkProps}
+      >
         {props.children}
-      </ExternalLink>
+      </a>
     );
 
   return (

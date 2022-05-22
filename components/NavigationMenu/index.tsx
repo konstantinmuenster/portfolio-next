@@ -19,11 +19,6 @@ const StyledNavigation = styled('nav', {
     padding: '0.5rem 1rem',
     marginLeft: '2rem',
     borderRadius: '$less',
-
-    '& svg[data-external-hint]': {
-      top: 6,
-      right: 4,
-    },
   },
 
   variants: {

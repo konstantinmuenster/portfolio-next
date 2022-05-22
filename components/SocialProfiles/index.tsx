@@ -27,10 +27,6 @@ const StyledSocialProfiles = styled('div', {
       marginRight: '0.5rem',
       '@sm': { marginRight: '1rem' },
     },
-
-    'svg[data-external-hint]': {
-      display: 'none',
-    },
   },
 
   variants: {
@@ -59,7 +55,7 @@ export const SocialProfiles: React.FC<SocialProfilesProps> = props => {
     <StyledSocialProfiles className={props.className} alignment={align}>
       {props.profiles.map(({ icon: Icon, label, to }, key) => {
         return (
-          <Link key={key} to={to}>
+          <Link key={key} to={to} hideExternalHint>
             {Icon ? <Icon title={label} size={24} /> : `Open ${label}`}
           </Link>
         );
