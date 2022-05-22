@@ -7,6 +7,7 @@ const StyledTooltip = styled('div', {
   display: 'inline-block',
 
   '.tooltip-tip': {
+    display: 'none',
     position: 'absolute',
     zIndex: 100,
     top: -35,
@@ -20,6 +21,8 @@ const StyledTooltip = styled('div', {
     fontSize: '$mini',
     lineHeight: '$mini',
     whiteSpace: 'nowrap',
+
+    '@lg': { display: 'block' },
 
     '&:before': {
       position: 'absolute',
