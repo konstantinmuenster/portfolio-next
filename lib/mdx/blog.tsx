@@ -3,6 +3,7 @@ import matter from 'gray-matter';
 import calculateReadingTime from 'reading-time';
 import remarkSlug from 'remark-slug';
 import remarkAutolinkHeadings from 'remark-autolink-headings';
+import rehypeExternalLinks from 'rehype-external-links';
 import { remarkMdxImages } from 'remark-mdx-images';
 
 import type { BlogPostMatter } from '@pages/blog/[slug]';
@@ -16,6 +17,8 @@ const remarkPlugins: PluggableList = [
   remarkSlug,
 ];
 
+const rehypePlugins: PluggableList = [rehypeExternalLinks];
+
 export const getAllBlogPosts = () => {
   return getAllMdxFiles(MDXContentType.BlogPost).map(({ slug, path, file }) => {
     return { slug, path, ...matter(file).data } as BlogPostMatter;
@@ -24,7 +27,12 @@ export const getAllBlogPosts = () => {
 
 export const getBlogPost = async (slug: string) => {
   const contentType = MDXContentType.BlogPost;
-  const mdx = await getCompiledMdx({ slug, remarkPlugins, contentType });
+  const mdx = await getCompiledMdx({
+    slug,
+    remarkPlugins,
+    rehypePlugins,
+    contentType,
+  });
   if (!mdx) return undefined;
 
   const readingTime = calculateReadingTime(mdx.code);

@@ -14,10 +14,12 @@ export const getCompiledMdx = async ({
   slug,
   contentType,
   remarkPlugins,
+  rehypePlugins,
 }: {
   slug: string;
   contentType: MDXContentType;
   remarkPlugins?: PluggableList | undefined;
+  rehypePlugins?: PluggableList | undefined;
 }) => {
   try {
     setEsbuildExecutable();
@@ -28,6 +30,10 @@ export const getCompiledMdx = async ({
         options.remarkPlugins = [
           ...(options.remarkPlugins ?? []),
           ...(remarkPlugins ?? []),
+        ];
+        options.rehypePlugins = [
+          ...(options.rehypePlugins ?? []),
+          ...(rehypePlugins ?? []),
         ];
         return options;
       },
