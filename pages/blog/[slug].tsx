@@ -8,6 +8,7 @@ import { getAllBlogPosts, getBlogPost } from '@lib/mdx/blog';
 import { BlogPostHeroSection } from '@sections/BlogPostPage/Hero';
 import { BlogPostBanner } from '@sections/BlogPostPage/Banner';
 import { ContentWrapper } from '@components/Layout';
+import { BlogPicture } from '@components/Picture';
 
 export type BlogPostMatter = {
   title: string;
@@ -43,8 +44,8 @@ const BlogPost: React.FC<BlogPostProps> = ({ code, frontmatter }) => {
         banner={mdxExports.banner}
         bannerCaption={mdxExports.bannerCaption}
       />
-      <ContentWrapper>
-        <MDXBody />
+      <ContentWrapper style={{ maxWidth: '42rem' }}>
+        <MDXBody components={{ BlogPicture }} />
       </ContentWrapper>
     </article>
   );

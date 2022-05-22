@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { styled } from '@config/stitches.config';
 import { Emoji } from '@components/Emoji';
 
-const StyledSinglePicture = styled('div', {
+const StyledSinglePicture = styled('figure', {
   position: 'relative',
 
   '> [data-emoji]': {
@@ -18,15 +18,30 @@ const StyledSinglePicture = styled('div', {
   },
 
   img: {
+    transition: 'all 1s ease',
     borderRadius: '$default',
+    border: '2px solid $surface100 !important',
+  },
+
+  figcaption: {
+    position: 'absolute',
+    left: 0,
+    bottom: '-2.25rem',
+    width: '100%',
+    height: 'auto',
+    color: '$subtext',
+    lineHeight: '$small',
+    fontSize: '$small',
+    textAlign: 'center',
   },
 });
 
-type SinglePictureProps = {
+export type SinglePictureProps = {
   src: string;
   alt: string;
   width?: string;
   height?: string;
+  caption?: string;
   emoji?:
     | string
     | {
@@ -41,6 +56,7 @@ export const SinglePicture: React.FC<SinglePictureProps> = ({
   width,
   height,
   emoji,
+  caption,
   ...props
 }) => {
   const isEmojiObject = typeof emoji !== 'string';
@@ -55,6 +71,7 @@ export const SinglePicture: React.FC<SinglePictureProps> = ({
         />
       ) : undefined}
       <Image src={src} alt={alt} layout="fill" objectFit="cover" />
+      {caption ? <figcaption>{caption}</figcaption> : undefined}
     </StyledSinglePicture>
   );
 };
