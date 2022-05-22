@@ -343,6 +343,11 @@ export const applyGlobalStyles = globalCss({
     },
   },
 
+  hr: {
+    borderTop: '1px solid $surface100',
+    my: '2rem',
+  },
+
   // https://www.a11yproject.com/posts/how-to-hide-content/#alternatives-to-display%3A-none
   '[hidden]': {
     display: 'none !important',
