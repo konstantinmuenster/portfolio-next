@@ -319,6 +319,16 @@ export const applyGlobalStyles = globalCss({
     background: '$secondary100',
   },
 
+  'ol, ul': {
+    paddingLeft: '1rem',
+    my: '-1rem',
+    'li::marker': { color: '$primary250' },
+  },
+
+  ul: { listStyleType: 'circle' },
+
+  ol: { listStyleType: 'auto' },
+
   // https://gist.github.com/pepebe/1176777
   'ul.reset, ol.reset': {
     margin: '0',
