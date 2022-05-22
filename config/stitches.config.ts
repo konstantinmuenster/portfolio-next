@@ -296,17 +296,17 @@ export const applyGlobalStyles = globalCss({
   },
 
   h4: {
-    fontFamily: '$serif',
-    fontWeight: 400,
-    fontSize: '1.75rem',
-    lineHeight: '2.25rem',
+    fontFamily: '$sans',
+    fontWeight: 500,
+    fontSize: '1.5rem',
+    lineHeight: '2rem',
   },
 
   h5: {
-    fontFamily: '$serif',
-    fontWeight: 400,
-    fontSize: '1.5rem',
-    lineHeight: '2rem',
+    fontFamily: '$sans',
+    fontWeight: 500,
+    fontSize: '1.25rem',
+    lineHeight: '1.75rem',
   },
 
   '::selection': {

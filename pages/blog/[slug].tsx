@@ -18,6 +18,8 @@ const StyledBlogPost = styled('article', {
     p: { fontSize: '$big', lineHeight: '$big' },
 
     'ol > li, ul > li': { fontSize: '$big' },
+    'h2, h3': { marginBottom: '1rem' },
+    'h4, h5': { marginBottom: '-0.5rem' },
   },
 });
 
