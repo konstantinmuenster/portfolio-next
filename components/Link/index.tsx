@@ -7,7 +7,11 @@ export type LinkProps = ComponentPropsWithoutRef<'a'> & {
   hideExternalHint?: boolean;
 };
 
-export const Link: React.FC<LinkProps> = ({ to, ...props }) => {
+export const Link: React.FC<LinkProps> = ({
+  to,
+  hideExternalHint,
+  ...props
+}) => {
   const router = useRouter();
   const label = typeof props.children === 'string' ? props.children : to;
   const isExternal = isExternalLink(to);
@@ -24,7 +28,7 @@ export const Link: React.FC<LinkProps> = ({ to, ...props }) => {
         href={to}
         rel="nofollow noopener noreferrer"
         target="_blank"
-        data-hide-external-hint={props.hideExternalHint}
+        data-hide-external-hint={hideExternalHint}
         {...linkProps}
       >
         {props.children}
