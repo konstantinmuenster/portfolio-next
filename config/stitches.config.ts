@@ -22,7 +22,7 @@ export const {
     fonts: {
       sans: '"IBM Plex Sans", sans-serif',
       serif: '"Bree Serif", serif',
-      mono: '"IBM Plex Mono", monospace',
+      mono: '"JetBrains Mono", monospace',
     },
     colors: {
       background: '#FFFFFF',

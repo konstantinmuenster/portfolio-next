@@ -31,7 +31,7 @@ By doing this, we will discover and learn some essential frontend skills:
 
 Here is how our application will look like in the end. In my opinion, a perfect project for your portfolio if you are new to React.
 
-<BlogPicture
+<Image
   src={NotionCloneGif}
   alt="Notion clone"
   caption="The final application!"
@@ -62,18 +62,18 @@ The concept gets clear in an example:
 
 Let’s say a user adds a new block with the type of Heading. This produces the following HTML output:
 
-```js
-<h1 contenteditable="true"> I am editable by the user </h1>
+```html
+<h1 contenteditable="true">I am editable by the user</h1>
 ```
 
 Since the user selected Heading as the block type, we append an h1 element to the DOM. Thus, it gets an appropriate heading styling. The user could now directly edit the content of that h1 element by placing the cursor inside it.
 
-```js
+```jsx
 // Imports
 
 const initialBlock = { id: uid(), html: '', tag: 'p' };
 
-class EditablePage extends React.Component {
+class EditablePage extends __React__.Component {
   constructor(props) {
     super(props);
     this.state = { blocks: [initialBlock] };

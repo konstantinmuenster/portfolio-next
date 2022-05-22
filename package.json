@@ -15,24 +15,31 @@
     "postinstall": "npx husky install"
   },
   "dependencies": {
-    "@fontsource/ibm-plex-mono": "^4.5.9",
     "@fontsource/ibm-plex-sans": "^4.5.10",
+    "@fontsource/jetbrains-mono": "^4.5.8",
     "@headlessui/react": "^1.6.1",
     "@stitches/react": "^1.2.8",
     "esbuild": "^0.14.38",
+    "hast-util-to-html": "^8.0.3",
+    "hast-util-to-string": "^2.0.0",
     "mdx-bundler": "^9.0.0",
     "motion": "^10.8.1",
     "next": "12.1.6",
     "next-themes": "^0.1.1",
+    "parse-numeric-range": "^1.3.0",
     "react": "18.1.0",
     "react-dom": "18.1.0",
     "reading-time": "^1.5.0",
+    "refractor": "^4.7.0",
     "rehype-external-links": "^1.0.1",
+    "rehype-parse": "^8.0.4",
     "remark-autolink-headings": "^7.0.1",
     "remark-mdx-images": "^1.0.3",
     "remark-slug": "^7.0.1",
     "stitches-reset": "^1.0.0",
-    "styled-icons": "^10.45.0"
+    "styled-icons": "^10.45.0",
+    "unified": "^10.1.2",
+    "unist-util-visit": "^4.1.0"
   },
   "devDependencies": {
     "@types/node": "17.0.21",

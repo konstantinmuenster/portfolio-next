@@ -10,6 +10,7 @@ import type { BlogPostMatter } from '@pages/blog/[slug]';
 import { ContentRoutes, MDXContentType } from '@config/content.config';
 import { getAllMdxFiles } from './common/getAllMdxFiles';
 import { getCompiledMdx } from './common/getCompiledMdx';
+import { rehypeCodeHighlight, rehypeMetaAttribute } from './rehype';
 
 const remarkPlugins: PluggableList = [
   remarkMdxImages,
@@ -17,7 +18,11 @@ const remarkPlugins: PluggableList = [
   remarkSlug,
 ];
 
-const rehypePlugins: PluggableList = [rehypeExternalLinks];
+const rehypePlugins: PluggableList = [
+  rehypeExternalLinks,
+  rehypeMetaAttribute,
+  rehypeCodeHighlight,
+];
 
 export const getAllBlogPosts = () => {
   return getAllMdxFiles(MDXContentType.BlogPost).map(({ slug, path, file }) => {
