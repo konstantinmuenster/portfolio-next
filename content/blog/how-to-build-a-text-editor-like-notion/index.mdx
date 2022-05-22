@@ -11,25 +11,15 @@ export { default as banner } from './notion-clone-cover.png';
 export const bannerCaption =
   'Slash commands are a building block in Notions text editor.';
 
-Without a doubt, [Notion.so](https://notion.so) is one of my favorite apps when
-it comes to organizing notes. I love their minimal designed text editor because
-it focuses your attention on the content — and not on unnecessary UI elements.
+Without a doubt, [Notion.so](https://notion.so) is one of my favorite apps when it comes to organizing notes. I love their minimal designed text editor because it focuses your attention on the content — and not on unnecessary UI elements.
 
-Yet it provides you a ton of powerful features that lead to a better writing
-experience.
+Yet it provides you a ton of powerful features that lead to a better writing experience.
 
-For instance, the slash command is one of those features that really enhanced my
-writing flow. It allows you to add and style content without leaving the
-keyboard. Instead of clicking a UI button to add a new heading, you can just
-type /h1, hit ‘Enter’, and there you go.
+For instance, the slash command is one of those features that really enhanced my writing flow. It allows you to add and style content without leaving the keyboard. Instead of clicking a UI button to add a new heading, you can just type /h1, hit ‘Enter’, and there you go.
 
-Another cool thing about Notion is that it is a fully web-based application.
-Because of that, I was interested in how it was actually built — especially the
-text editor. In fact, I realized that it is not that difficult as I expected it
-to be.
+Another cool thing about Notion is that it is a fully web-based application. Because of that, I was interested in how it was actually built — especially the text editor. In fact, I realized that it is not that difficult as I expected it to be.
 
-In this article, we take a closer look at how a text editor like Notion works
-and how we can build one ourselves with React.js.
+In this article, we take a closer look at how a text editor like Notion works and how we can build one ourselves with React.js.
 
 By doing this, we will discover and learn some essential frontend skills:
 
@@ -37,8 +27,7 @@ By doing this, we will discover and learn some essential frontend skills:
 - Working with Event Listeners
 - Advanced State Management
 
-Here is how our application will look like in the end. In my opinion, a perfect
-project for your portfolio if you are new to React.
+Here is how our application will look like in the end. In my opinion, a perfect project for your portfolio if you are new to React.
 
 ![Notion clone](./notion-clone-medium-short.gif)
 
@@ -59,37 +48,26 @@ project for your portfolio if you are new to React.
 
 ### Editable Blocks
 
-The core concept of a Notion-like text editor is what I would like to call
-blocks. Each time you hit ‘Enter’ on your keyboard, you create a new block. So
-essentially, each page consists of one or many blocks.
+The core concept of a Notion-like text editor is what I would like to call blocks. Each time you hit ‘Enter’ on your keyboard, you create a new block. So essentially, each page consists of one or many blocks.
 
-From a user perspective, a block contains content and has a specific styling
-that is associated with the block type. Types of blocks could be headings,
-quotes, or paragraphs. Each of those has a unique styling.
+From a user perspective, a block contains content and has a specific styling that is associated with the block type. Types of blocks could be headings, quotes, or paragraphs. Each of those has a unique styling.
 
-From a technical perspective, a block is a so-called contenteditable element.
-Nearly every HTML element can be turned into an editable one. You just have to
-add the contenteditable="true" attribute to it. This indicates if the element
-should be editable by the user. If so, users can edit their content directly in
-the HTML document as if it would be an input or textarea element.
+From a technical perspective, a block is a so-called contenteditable element. Nearly every HTML element can be turned into an editable one. You just have to add the contenteditable="true" attribute to it. This indicates if the element should be editable by the user. If so, users can edit their content directly in the HTML document as if it would be an input or textarea element.
 
 The concept gets clear in an example:
 
-Let’s say a user adds a new block with the type of Heading. This produces the
-following HTML output:
+Let’s say a user adds a new block with the type of Heading. This produces the following HTML output:
 
 ```js
 <h1 contenteditable="true"> I am editable by the user </h1>
 ```
 
-Since the user selected Heading as the block type, we append an h1 element to
-the DOM. Thus, it gets an appropriate heading styling. The user could now
-directly edit the content of that h1 element by placing the cursor inside it.
+Since the user selected Heading as the block type, we append an h1 element to the DOM. Thus, it gets an appropriate heading styling. The user could now directly edit the content of that h1 element by placing the cursor inside it.
 
 ```js
 // Imports
 
-const initialBlock = { id: uid(), html: "", tag: "p" };
+const initialBlock = { id: uid(), html: '', tag: 'p' };
 
 class EditablePage extends React.Component {
   constructor(props) {
