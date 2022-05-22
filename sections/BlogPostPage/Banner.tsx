@@ -52,6 +52,7 @@ export const BlogPostBanner: React.FC<BlogPostBannerProps> = props => {
             alt={props.title}
             layout="fill"
             objectFit="cover"
+            priority
           />
           {props.bannerCaption ? (
             <figcaption
