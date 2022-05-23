@@ -309,6 +309,11 @@ export const applyGlobalStyles = globalCss({
     lineHeight: '1.75rem',
   },
 
+  blockquote: {
+    paddingLeft: '1rem',
+    borderLeft: '4px solid $secondary100',
+  },
+
   '::selection': {
     color: '$text',
     background: '$secondary100',
