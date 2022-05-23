@@ -3,8 +3,11 @@ import path from 'path';
 import { BlogPostMatter } from 'pages/blog/[slug]';
 import { ProjectMatter } from 'pages/projects/[slug]';
 
+export const REPOSITORY_NAME = 'portfolio-next';
+export const CONTENT_DIR_NAME = 'content';
+
 const CWD = process.cwd();
-const CONTENT_DIR = path.join(CWD, 'content');
+const CONTENT_DIR = path.join(CWD, CONTENT_DIR_NAME);
 
 export enum MDXContentType {
   BlogPost = 'blog',
