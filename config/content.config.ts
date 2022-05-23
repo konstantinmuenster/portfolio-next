@@ -39,3 +39,15 @@ export const FeaturedPost = {
 } as const;
 
 export const LatestProjects = ['lazy', 'notion-clone'];
+
+export const CategoryColorMap = {
+  'Web Development': 'purple',
+  Career: 'blue',
+  Productivity: 'green',
+} as const;
+
+export const TypeColorMap = {
+  Guide: 'green',
+  Tutorial: 'green',
+  Essay: 'green',
+} as const;

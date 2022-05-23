@@ -14,6 +14,7 @@ import { styled } from '@config/stitches.config';
 import { Pre } from '@lib/mdx/rehype/rehype-code-highlight';
 import { Preview } from '@lib/mdx/rehype/rehype-code-highlight/components/Preview';
 import { Code } from '@lib/mdx/rehype/rehype-code-highlight/components/Code';
+import { CategoryColorMap, TypeColorMap } from '@config/content.config';
 
 const StyledBlogPost = styled('article', {
   '.blog-post-content': {
@@ -62,8 +63,9 @@ export type BlogPostMatter = {
   path: string;
   publishedAt: string;
   summary?: string;
-  category?: string[];
-  type?: string[];
+  category?: keyof typeof CategoryColorMap;
+  type?: keyof typeof TypeColorMap;
+  tags?: string[];
   mediumUrl?: string;
   readingTime?: ReadTimeResults;
 };

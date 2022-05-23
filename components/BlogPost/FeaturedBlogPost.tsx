@@ -4,6 +4,7 @@ import { Link } from '@components/Link';
 import { Toast } from '@components/Toast';
 import { TextDecoration } from '@components/TextDecoration';
 import { StyledLinkedBaseCardWrapper } from '@components/Card/Base';
+import { CategoryColorMap, TypeColorMap } from '@config/content.config';
 
 const StyledFeaturedBlogPost = styled('div', {
   position: 'relative',
@@ -113,12 +114,16 @@ export const FeaturedBlogPost: React.FC<FeaturedBlogPost> = props => {
               <div className="category-list">
                 {props.post.type ? (
                   <span className="type">
-                    <Toast color="green">{props.post.type}</Toast>
+                    <Toast color={TypeColorMap[props.post.type]}>
+                      {props.post.type}
+                    </Toast>
                   </span>
                 ) : undefined}
                 {props.post.category ? (
                   <span className="category">
-                    <Toast color="blue">{props.post.category}</Toast>
+                    <Toast color={CategoryColorMap[props.post.category]}>
+                      {props.post.category}
+                    </Toast>
                   </span>
                 ) : undefined}
               </div>

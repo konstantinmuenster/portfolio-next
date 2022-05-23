@@ -1,7 +1,12 @@
 import { ChevronLeft } from '@styled-icons/evaicons-solid';
 
 import type { BlogPostMatter } from '@pages/blog/[slug]';
-import { ContentRoutes, MDXContentType } from '@config/content.config';
+import {
+  CategoryColorMap,
+  ContentRoutes,
+  MDXContentType,
+  TypeColorMap,
+} from '@config/content.config';
 import { darkTheme, styled } from '@config/stitches.config';
 import { HEADER_HEIGHT } from '@components/Header';
 import { ContentWrapper } from '@components/Layout';
@@ -109,20 +114,14 @@ export const BlogPostHeroSection: React.FC<
             </Tooltip>
           </div>
           <div className="blog-post-categorization">
-            {props.category?.map((category, key) => {
-              return (
-                <Toast key={key} color="purple">
-                  {category}
-                </Toast>
-              );
-            })}
-            {props.type?.map((type, key) => {
-              return (
-                <Toast key={key} color="green">
-                  {type}
-                </Toast>
-              );
-            })}
+            {props.type ? (
+              <Toast color={TypeColorMap[props.type]}>{props.type}</Toast>
+            ) : undefined}
+            {props.category ? (
+              <Toast color={CategoryColorMap[props.category]}>
+                {props.category}
+              </Toast>
+            ) : undefined}
           </div>
         </div>
         <h1 className="title">{props.title}</h1>
