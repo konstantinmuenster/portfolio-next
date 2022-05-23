@@ -78,7 +78,7 @@ const StyledPre = styled('pre', {
   },
 
   '.highlight-word': {
-    background: '$primary500',
+    background: '$primary100',
     padding: '0.125rem',
     borderRadius: '$less',
   },
