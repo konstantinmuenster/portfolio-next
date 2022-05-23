@@ -1,10 +1,9 @@
 import { Menu } from '@headlessui/react';
-import Image from 'next/image';
 
 import type { NavigationItem } from '@config/navigation.config';
-import { avatarSrc } from '@config/profiles.config';
 import { styled } from '@config/stitches.config';
 import { Link } from '@components/Link';
+import { Avatar } from '@components/Avatar';
 
 import { BUTTON_SIZE } from './HamburgerButton';
 
@@ -85,12 +84,7 @@ export const MenuItems: React.FC<{ items: NavigationItem[] }> = props => (
     <Menu.Item>
       {({ active }) => (
         <Link to="/contact" data-focused={active} data-profile-link>
-          <Image
-            src={avatarSrc}
-            alt="Konstantin Münster Avatar"
-            width={32}
-            height={32}
-          />
+          <Avatar size={32} />
           <div>
             Konstantin Münster
             <span>Get To Know Me</span>

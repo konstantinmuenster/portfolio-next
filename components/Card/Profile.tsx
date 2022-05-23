@@ -1,10 +1,9 @@
-import Image from 'next/image';
-
 import { styled } from '@config/stitches.config';
-import { avatarSrc, socialProfiles } from '@config/profiles.config';
+import { socialProfiles } from '@config/profiles.config';
 
 import { Button } from '@components/Button';
 import { SocialProfiles } from '@components/SocialProfiles';
+import { Avatar } from '@components/Avatar';
 
 const StyledProfileCard = styled('div', {
   width: '100%',
@@ -29,10 +28,6 @@ const StyledProfileCard = styled('div', {
       justifyContent: 'flex-start',
       alignItems: 'center',
       columnGap: '0.875rem',
-
-      img: {
-        borderRadius: '$round',
-      },
 
       '.name': {
         fontSize: '$big',
@@ -78,12 +73,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = props => {
     <StyledProfileCard accent={props.accent}>
       <div className="profile-card">
         <div className="profile-details">
-          <Image
-            src={avatarSrc}
-            height={60}
-            width={60}
-            alt="Konstantin Münster Avatar"
-          />
+          <Avatar size={60} />
           <div>
             <span className="name">Konstantin Münster</span>
             <span className="role">Product Developer</span>

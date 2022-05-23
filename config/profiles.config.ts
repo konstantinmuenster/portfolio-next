@@ -23,5 +23,3 @@ export const socialProfiles: Profile[] = [
     label: 'Email',
   },
 ];
-
-export const avatarSrc = '/images/avatar.jpg';

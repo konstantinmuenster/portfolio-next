@@ -1,15 +1,14 @@
-import Image from 'next/image';
 import { ChevronLeft } from '@styled-icons/evaicons-solid';
 
 import type { BlogPostMatter } from '@pages/blog/[slug]';
 import { ContentRoutes, MDXContentType } from '@config/content.config';
 import { darkTheme, styled } from '@config/stitches.config';
-import { avatarSrc } from '@config/profiles.config';
 import { HEADER_HEIGHT } from '@components/Header';
 import { ContentWrapper } from '@components/Layout';
 import { Link } from '@components/Link';
 import { Toast } from '@components/Toast';
 import { Tooltip } from '@components/Tooltip';
+import { Avatar } from '@components/Avatar';
 import { formatDate } from '@utils/formatDate';
 
 const StyledSection = styled('section', {
@@ -73,7 +72,6 @@ const StyledSection = styled('section', {
       alignItems: 'center',
       columnGap: '0.5rem',
 
-      img: { borderRadius: '$round' },
       span: { fontSize: '$small', color: '$primary900' },
     },
 
@@ -131,12 +129,7 @@ export const BlogPostHeroSection: React.FC<
         <p className="summary">{props.summary}</p>
         <div className="blog-post-hero-footer">
           <div className="blog-post-hero-avatar">
-            <Image
-              src={avatarSrc}
-              height={28}
-              width={28}
-              alt="Konstantin Münster Avatar"
-            />
+            <Avatar size={28} />
             <span>Konstantin Münster</span>
           </div>
           <div className="blog-post-hero-details">
