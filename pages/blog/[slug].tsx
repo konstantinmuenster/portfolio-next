@@ -12,6 +12,7 @@ import { BlogPicture } from '@components/Picture';
 import { styled } from '@config/stitches.config';
 import { Pre } from '@lib/mdx/rehype/rehype-code-highlight';
 import { Preview } from '@lib/mdx/rehype/rehype-code-highlight/components/Preview';
+import { Code } from '@lib/mdx/rehype/rehype-code-highlight/components/Code';
 
 const StyledBlogPost = styled('article', {
   '.blog-post-content': {
@@ -65,6 +66,7 @@ const BlogPost: React.FC<BlogPostProps> = ({ code, frontmatter }) => {
             Preview: Preview,
             Image: BlogPicture,
             pre: Pre,
+            code: Code,
           }}
         />
       </ContentWrapper>

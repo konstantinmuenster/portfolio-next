@@ -96,3 +96,18 @@ class EditablePage extends __React__.Component {
 
 export default EditablePage;
 ```
+
+```jsx collapsible
+import React from 'react';
+
+export function Counter({ initialCount = 0 }) {
+  const [count, setCount] = React.useState(initialCount);
+  return (
+    <button type="button" onClick={() => setCount(prevCount => prevCount + 1)}>
+      {count}
+    </button>
+  );
+}
+```
+
+Here is how our application will look like in the end. In my opinion, a perfect project for your portfolio if you are new to React.

@@ -26,8 +26,8 @@ const StyledPre = styled('pre', {
 
   '&:hover': { borderColor: '$primary50' },
 
-  '& > code': { display: 'block' },
-  '& > code > div ': { paddingLeft: '1.75rem' },
+  '& code': { display: 'block' },
+  '& code > div ': { paddingLeft: '1.75rem' },
 
   '.token.comment': { color: '$$grey' },
 
