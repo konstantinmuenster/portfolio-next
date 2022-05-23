@@ -10,19 +10,28 @@ const StyledPre = styled('pre', {
   $$purple: '#d1a6e8',
   $$blue: '#81b8e1',
   $$white: '#EAEAEA',
+  $$black: '#1A1A1A',
 
-  padding: '1rem',
-  fontFamily: '$mono',
-  fontSize: '14px',
-  lineHeight: '20px',
-  whiteSpace: 'pre',
-  backgroundColor: '#1a1a1a',
+  backgroundColor: '$$black',
   color: '$$white',
   borderRadius: '$default',
   border: '2px solid transparent',
+
+  padding: '1rem',
+  whiteSpace: 'pre',
+  overflow: 'scroll',
+
+  fontFamily: '$mono',
+  fontSize: '0.75rem',
+  lineHeight: '1rem',
   transition: 'all 1s ease',
 
-  '@lg': { width: '46rem', marginLeft: 'calc((46rem - 42rem) * -1 / 2)' },
+  '@lg': {
+    width: '46rem',
+    marginLeft: 'calc((46rem - 42rem) * -1 / 2)',
+    fontSize: '0.875rem',
+    lineHeight: '1.25rem',
+  },
 
   '&:hover': { borderColor: '$primary50' },
 
