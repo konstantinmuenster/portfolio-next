@@ -25,19 +25,30 @@ const StyledBlogPost = styled('article', {
     'h2, h3': { marginBottom: '1rem' },
     'h4, h5': { marginBottom: '-0.5rem' },
 
+    'h2[id], h3[id], h4[id], h5[id]': {
+      position: 'relative',
+
+      '&:hover > a > .icon-link:after': { visibility: 'visible' },
+    },
+
     'h2[id] > a > .icon-link, h3[id] > a > .icon-link, h4[id] > a > .icon-link, h5[id] > a > .icon-link':
       {
-        position: 'relative',
+        position: 'absolute',
+        top: 0,
+        left: '-1em',
+        width: '100%',
+        height: '2rem',
+        transition: '$default',
 
         '&:after': {
+          visibility: 'hidden',
           content: '#',
-          position: 'absolute',
-          top: 0,
-          left: '-1em',
           opacity: 0.25,
           fontSize: '90%',
           fontFamily: '$sans',
         },
+
+        '&:hover:after': { visibility: 'visible' },
       },
 
     'h2[id] > a > .icon-link:after': { top: 4 },
