@@ -1,8 +1,8 @@
 import type { PluggableList } from 'unified';
 import matter from 'gray-matter';
 import calculateReadingTime from 'reading-time';
-import remarkSlug from 'remark-slug';
-import remarkAutolinkHeadings from 'remark-autolink-headings';
+import rehypeSlug from 'rehype-slug';
+import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeExternalLinks from 'rehype-external-links';
 import { remarkMdxImages } from 'remark-mdx-images';
 
@@ -12,16 +12,14 @@ import { getAllMdxFiles } from './common/getAllMdxFiles';
 import { getCompiledMdx } from './common/getCompiledMdx';
 import { rehypeCodeHighlight, rehypeMetaAttribute } from './rehype';
 
-const remarkPlugins: PluggableList = [
-  remarkMdxImages,
-  remarkAutolinkHeadings,
-  remarkSlug,
-];
+const remarkPlugins: PluggableList = [remarkMdxImages];
 
 const rehypePlugins: PluggableList = [
   rehypeExternalLinks,
   rehypeMetaAttribute,
   rehypeCodeHighlight,
+  rehypeSlug,
+  rehypeAutolinkHeadings,
 ];
 
 export const getAllBlogPosts = () => {

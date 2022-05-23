@@ -23,6 +23,24 @@ const StyledBlogPost = styled('article', {
     'ol > li, ul > li': { fontSize: '$big' },
     'h2, h3': { marginBottom: '1rem' },
     'h4, h5': { marginBottom: '-0.5rem' },
+
+    'h2[id] > a > .icon-link, h3[id] > a > .icon-link, h4[id] > a > .icon-link, h5[id] > a > .icon-link':
+      {
+        position: 'relative',
+
+        '&:after': {
+          content: '#',
+          position: 'absolute',
+          top: 0,
+          left: '-1em',
+          opacity: 0.25,
+          fontSize: '90%',
+          fontFamily: '$sans',
+        },
+      },
+
+    'h2[id] > a > .icon-link:after': { top: 4 },
+    'h3[id] > a > .icon-link:after': { top: 2 },
   },
 });
 
