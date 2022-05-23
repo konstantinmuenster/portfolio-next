@@ -8,7 +8,14 @@ type CommitData =
 
 type Collaborator = { user: string; avatar: string };
 
-export const getCollaboratorsByFilePath = async (filePath: string) => {
+export type GetCollaboratorsByFilePathResponse = {
+  lastEdited: string | undefined;
+  collaborators: Collaborator[];
+};
+
+export const getCollaboratorsByFilePath = async (
+  filePath: string
+): Promise<GetCollaboratorsByFilePathResponse> => {
   const result = await request<CommitData>({
     method: 'GET',
     url: '/repos/{owner}/{repo}/commits?path={path}',
@@ -21,7 +28,10 @@ export const getCollaboratorsByFilePath = async (filePath: string) => {
     },
   });
 
-  return getUniqueListOfCollaborators(result.data);
+  return {
+    lastEdited: result.headers['last-modified'],
+    collaborators: getUniqueListOfCollaborators(result.data),
+  };
 };
 
 const getUniqueListOfCollaborators = (data: CommitData): Collaborator[] => {

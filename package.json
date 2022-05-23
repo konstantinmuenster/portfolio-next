@@ -39,6 +39,7 @@
     "remark-mdx-images": "^1.0.3",
     "stitches-reset": "^1.0.0",
     "styled-icons": "^10.45.0",
+    "swr": "^1.3.0",
     "unified": "^10.1.2",
     "unist-util-visit": "^4.1.0"
   },

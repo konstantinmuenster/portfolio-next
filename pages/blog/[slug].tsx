@@ -7,6 +7,7 @@ import { redirectTo } from '@utils/redirectTo';
 import { getAllBlogPosts, getBlogPost } from '@lib/mdx/blog';
 import { BlogPostHeroSection } from '@sections/BlogPostPage/Hero';
 import { BlogPostBanner } from '@sections/BlogPostPage/Banner';
+import { BlogPostFooterSection } from '@sections/BlogPostPage/Footer';
 import { ContentWrapper } from '@components/Layout';
 import { BlogPicture } from '@components/Picture';
 import { styled } from '@config/stitches.config';
@@ -88,6 +89,7 @@ const BlogPost: React.FC<BlogPostProps> = ({ code, frontmatter }) => {
           }}
         />
       </ContentWrapper>
+      <BlogPostFooterSection {...frontmatter} />
     </StyledBlogPost>
   );
 };

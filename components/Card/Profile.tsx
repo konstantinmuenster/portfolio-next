@@ -66,11 +66,12 @@ const StyledProfileCard = styled('div', {
 
 type ProfileCardProps = {
   accent?: boolean;
+  className?: string;
 };
 
 export const ProfileCard: React.FC<ProfileCardProps> = props => {
   return (
-    <StyledProfileCard accent={props.accent}>
+    <StyledProfileCard accent={props.accent} className={props.className}>
       <div className="profile-card">
         <div className="profile-details">
           <Avatar size={60} />
