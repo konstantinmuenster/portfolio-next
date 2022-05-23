@@ -11,6 +11,7 @@ import { ContentWrapper } from '@components/Layout';
 import { BlogPicture } from '@components/Picture';
 import { styled } from '@config/stitches.config';
 import { Pre } from '@lib/mdx/rehype/rehype-code-highlight';
+import { Preview } from '@lib/mdx/rehype/rehype-code-highlight/components/Preview';
 
 const StyledBlogPost = styled('article', {
   '.blog-post-content': {
@@ -59,7 +60,13 @@ const BlogPost: React.FC<BlogPostProps> = ({ code, frontmatter }) => {
         bannerCaption={mdxExports.bannerCaption}
       />
       <ContentWrapper className="blog-post-content">
-        <MDXBody components={{ Image: BlogPicture, pre: Pre }} />
+        <MDXBody
+          components={{
+            Preview: Preview,
+            Image: BlogPicture,
+            pre: Pre,
+          }}
+        />
       </ContentWrapper>
     </StyledBlogPost>
   );
