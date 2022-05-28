@@ -1,5 +1,6 @@
 import type { StyledIcon } from '@styled-icons/styled-icon';
 import { SocialLinkedin, SocialGithub } from '@styled-icons/foundation';
+import { Medium } from '@styled-icons/boxicons-logos';
 
 export type Profile = {
   to: string;
@@ -17,6 +18,11 @@ export const socialProfiles: Profile[] = [
     to: 'https://github.com/konstantinmuenster/',
     label: 'Github',
     icon: SocialGithub,
+  },
+  {
+    to: 'https://medium.com/@konstantinmuenster',
+    label: 'Medium',
+    icon: Medium,
   },
   {
     to: 'mailto:mail@konstantin.digital',
