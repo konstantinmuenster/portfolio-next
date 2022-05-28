@@ -264,8 +264,24 @@ export const applyGlobalStyles = globalCss({
     fontWeight: 500,
   },
 
+  em: {
+    fontStyle: 'italic',
+  },
+
   b: {
     fontWeight: 500,
+  },
+
+  'code[data-inline-code]': {
+    background: '$secondary250',
+    px: '0.25rem',
+    py: '0.2rem',
+    borderRadius: '$default',
+
+    fontFamily: '$mono',
+    fontSize: '$small',
+    lineHeight: '$small',
+    letterSpacing: '-0.5px',
   },
 
   p: {

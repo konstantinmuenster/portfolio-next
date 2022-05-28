@@ -34,7 +34,16 @@ type CodeProps = {
 
 export const Code = (props: CodeProps): ReactElement => {
   const isCollapsible = typeof props.collapsible !== 'undefined';
-  const content = <code id={props.id}>{props.children}</code>;
+
+  const content = (
+    <code
+      data-inline-code={!Array.isArray(props.children) ? 'true' : undefined}
+      data-code-block={Array.isArray(props.children) ? 'true' : undefined}
+      id={props.id}
+    >
+      {props.children}
+    </code>
+  );
 
   if (!isCollapsible) return content;
 
