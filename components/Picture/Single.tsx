@@ -1,4 +1,4 @@
-import type { ComponentPropsWithoutRef } from 'react';
+import type { ComponentPropsWithoutRef, CSSProperties } from 'react';
 import Image from 'next/image';
 
 import { styled } from '@config/stitches.config';
@@ -42,6 +42,7 @@ export type SinglePictureProps = {
   width?: string;
   height?: string;
   caption?: string;
+  objectFit?: CSSProperties['objectFit'];
   emoji?:
     | string
     | {
@@ -57,6 +58,7 @@ export const SinglePicture: React.FC<SinglePictureProps> = ({
   height,
   emoji,
   caption,
+  objectFit,
   ...props
 }) => {
   const isEmojiObject = typeof emoji !== 'string';
@@ -70,7 +72,12 @@ export const SinglePicture: React.FC<SinglePictureProps> = ({
           background="surface100"
         />
       ) : undefined}
-      <Image src={src} alt={alt} layout="fill" objectFit="cover" />
+      <Image
+        src={src}
+        alt={alt}
+        layout="fill"
+        objectFit={objectFit ?? 'cover'}
+      />
       {caption ? (
         <figcaption dangerouslySetInnerHTML={{ __html: caption }} />
       ) : undefined}

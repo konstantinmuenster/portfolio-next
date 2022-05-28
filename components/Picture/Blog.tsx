@@ -26,7 +26,7 @@ const StyledBlogPicture = styled('div', {
 export const BlogPicture = (props: SinglePictureProps): ReactElement => {
   return (
     <StyledBlogPicture>
-      <Picture {...props} />
+      <Picture {...props} objectFit="contain" />
     </StyledBlogPicture>
   );
 };
