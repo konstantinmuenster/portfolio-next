@@ -3,8 +3,8 @@ import { getMDXExport } from 'mdx-bundler/client';
 
 import type { ProjectExports, ProjectProps } from '@pages/projects/[slug]';
 import { styled } from '@config/stitches.config';
-import { Link } from '@components/Link';
-import { TextDecoration } from '@components/TextDecoration';
+// import { Link } from '@components/Link';
+// import { TextDecoration } from '@components/TextDecoration';
 import { Toast } from '@components/Toast';
 import { Carousel, Picture } from '@components/Picture';
 import { ContentWrapper } from '@components/Layout';
@@ -81,12 +81,12 @@ export const ProjectPreview: React.FC<ProjectPreviewProps> = props => {
       <ContentWrapper className="project-content">
         <div className="project-description">
           <span className="project-role">{props.project.frontmatter.role}</span>
-          <Link to={props.project.frontmatter.path}>
-            <h5>
-              {props.project.frontmatter.name}{' '}
-              <TextDecoration variant="arrow" />
-            </h5>
-          </Link>
+          {/* <Link to={props.project.frontmatter.path}> */}
+          <h5>
+            {props.project.frontmatter.name}{' '}
+            {/* <TextDecoration variant="arrow" /> */}
+          </h5>
+          {/* </Link> */}
           <p>{props.project.frontmatter.summary}</p>
         </div>
         <div className="project-tags">

@@ -1,11 +1,11 @@
 import { useMemo } from 'react';
 
 import type { ProjectProps } from '@pages/projects/[slug]';
-import { ContentRoutes, LatestProjects } from '@config/content.config';
+import { LatestProjects } from '@config/content.config';
 import { styled } from '@config/stitches.config';
 import { ContentWrapper } from '@components/Layout';
-import { Link } from '@components/Link';
-import { TextDecoration } from '@components/TextDecoration';
+// import { Link } from '@components/Link';
+// import { TextDecoration } from '@components/TextDecoration';
 import { ProjectPreview } from '@components/Project';
 
 const StyledSection = styled('section', {
@@ -70,12 +70,12 @@ export const LatestProjectsSection: React.FC<
         ))}
       </div>
       <ContentWrapper className="latest-projects-content">
-        <div className="discover-projects">
+        {/* <div className="discover-projects">
           <Link to={ContentRoutes.projects}>
             Discover all {props.projects.length} projects{' '}
             <TextDecoration variant="arrow" />
           </Link>
-        </div>
+        </div> */}
       </ContentWrapper>
     </StyledSection>
   );

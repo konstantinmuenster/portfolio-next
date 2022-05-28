@@ -12,10 +12,10 @@ export const headerNavigation: NavigationItem[] = [
     to: '/blog',
     label: 'Blog',
   },
-  {
-    to: '/about',
-    label: 'About',
-  },
+  // {
+  //   to: '/about',
+  //   label: 'About',
+  // },
 ];
 
 export const footerNavigation: NavigationItem[] = [
