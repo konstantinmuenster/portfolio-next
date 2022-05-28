@@ -71,7 +71,9 @@ export const SinglePicture: React.FC<SinglePictureProps> = ({
         />
       ) : undefined}
       <Image src={src} alt={alt} layout="fill" objectFit="cover" />
-      {caption ? <figcaption>{caption}</figcaption> : undefined}
+      {caption ? (
+        <figcaption dangerouslySetInnerHTML={{ __html: caption }} />
+      ) : undefined}
     </StyledSinglePicture>
   );
 };
