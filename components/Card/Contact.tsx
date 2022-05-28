@@ -1,9 +1,10 @@
-import Image from 'next/image';
+import { useMemo, useState } from 'react';
 
 import { ContentWrapper } from '@components/Layout';
 import { SparkSvg } from '@components/TextDecoration/SparkSvg';
+import { Avatar } from '@components/Avatar';
 import { styled } from '@config/stitches.config';
-import { avatarSrc } from '@config/profiles.config';
+import { socialProfiles } from '@config/profiles.config';
 
 const StyledContactCard = styled('div', {
   '> div': {
@@ -28,7 +29,7 @@ const StyledContactCard = styled('div', {
       px: '1.5rem',
     },
 
-    svg: {
+    '> svg': {
       display: 'none',
       position: 'absolute',
       top: -30,
@@ -43,28 +44,69 @@ const StyledContactCard = styled('div', {
     columnGap: '0.5rem',
     background: '$primary50',
     paddingLeft: '1rem',
-    paddingRight: '3rem',
+    paddingRight: '2rem',
     py: '0.75rem',
     borderRadius: '$default',
-
-    img: { borderRadius: '$round' },
 
     '.contact-name': {
       display: 'block',
       fontWeight: 500,
+      color: '$primary900',
     },
 
     '.contact-email': {
-      fontSize: '$small',
+      button: {
+        fontSize: '$mini',
+        fontWeight: 500,
+        color: '$secondary900',
+        transition: '$default',
+        width: '100%',
+
+        '&:hover': { color: '$secondary500' },
+      },
     },
   },
 });
 
 export const ContactCard: React.FC = () => {
+  const [isHoveringCopy, setIsHoveringCopy] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
+
+  const email = useMemo(() => {
+    return socialProfiles
+      .find(({ label }) => label.toLowerCase() === 'email')
+      ?.to.split('mailto:')
+      .pop();
+  }, []);
+
+  const handleCopyClick = async () => {
+    await navigator.clipboard.writeText(email ?? '');
+    setIsCopied(true);
+    setTimeout(() => {
+      setIsCopied(false);
+    }, 1000);
+  };
+
+  const setHoveringState = (value: boolean) => {
+    setTimeout(() => {
+      if (value === true && !isHoveringCopy) {
+        setIsHoveringCopy(true);
+      } else if (value === false && isHoveringCopy) {
+        setIsHoveringCopy(false);
+      }
+    }, 100);
+  };
+
+  const buttonLabel = isCopied
+    ? 'Copied!'
+    : isHoveringCopy
+    ? 'Copy Email Address'
+    : email;
+
   return (
     <StyledContactCard>
       <ContentWrapper>
-        <SparkSvg aria-hidden={true} />
+        <SparkSvg aria-hidden={true} data-text-decoration />
         <div className="need-help">
           <h5>Need help or advice?</h5>
           <p>
@@ -73,15 +115,20 @@ export const ContactCard: React.FC = () => {
           </p>
         </div>
         <div className="contact-me">
-          <Image
-            src={avatarSrc}
-            height={40}
-            width={40}
-            alt="Konstantin Münster Avatar"
-          />
+          <Avatar size={40} />
           <div className="contact-details">
             <span className="contact-name">Konstantin Münster</span>
-            <span className="contact-email">mail@konstantin.digital</span>
+            <div className="contact-email">
+              <button
+                onClick={handleCopyClick}
+                onMouseEnter={() => setHoveringState(true)}
+                onMouseLeave={() => setHoveringState(false)}
+                disabled={isCopied}
+                aria-label={buttonLabel}
+              >
+                {buttonLabel}
+              </button>
+            </div>
           </div>
         </div>
       </ContentWrapper>
