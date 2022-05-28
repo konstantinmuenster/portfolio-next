@@ -5,6 +5,15 @@ summary: Build this beautiful, small weather app and learn how to best plan and
   React.
 category: ['Web Development']
 type: ['Guide']
+tags:
+  [
+    'React.js',
+    'Beginner',
+    'Introduction',
+    'Components',
+    'Weather App',
+    'Structuring Apps',
+  ]
 publishedAt: '2019/07/28'
 mediumUrl: https://konstantinmuenster.medium.com/how-to-plan-and-organize-a-react-project-by-building-a-weather-app-95175b11bd01
 ---
@@ -12,7 +21,267 @@ mediumUrl: https://konstantinmuenster.medium.com/how-to-plan-and-organize-a-reac
 export { default as banner } from './weather-app-banner.png';
 export const bannerCaption = 'The weather app we are going to build';
 
-# First blog post
+import ComponentsOverview from './Components.png';
+import FolderStructure from './how-to-organize-react-project-folder-structure.png';
+import FunctionalComponents from './how-to-organize-react-project-functional-vs-class-based-components.png';
+import CSSModules from './how-to-organize-react-project-using-css-modules.png';
+import Build1 from './how-to-organize-react-project-build-1.png';
+import Build2 from './how-to-organize-react-project-build-2.png';
+import Build3 from './how-to-organize-react-project-build-3.png';
+import Build4 from './how-to-organize-react-project-build-4.png';
+import Gif from './Weather-app-react-js-open-weather-map-api.gif';
 
-This is my first blog post. Feel free to reach me at
-[Praveen Yadav](https://twitter.com/osfreak)
+_Build this beautiful, small weather app and learn how to best plan and organize a React project. A beginner-friendly introduction to thinking in React._
+
+In this article, we are going to build a beautiful, simple weather app with React.js. By doing this, we will discover and learn some essential skills:
+
+- How to best **plan** your React project in advance
+- How to **organize** your code meaningfully and maintainable
+- How to prevent common mistakes while **building**
+
+Unfortunately, learning these theoretical things is often rather boring than excited, although it is important. That’s why I like to put it in a more practical-approached context by building a real app. In the process, we will cover all the steps you need to create a well-structured and easy-maintainable React application.
+
+Especially for beginners, this knowledge is essential. Because if you are coming from a vanilla-Javascript-world, writing React can be difficult at first. With this article, I would like to help beginners applying thinking in React. Most of the stuff I write about can be found in the [official React docs](https://reactjs.org/docs/thinking-in-react.html). However, by putting it in a practical context, this article hopefully clarifies some aspects even more.
+
+## Contents
+
+1.  **Planning** our application
+2.  **Organizing** our project
+3.  **Building** the application
+4.  Wrap up
+5.  Design resources
+
+## 1\. Planning our application
+
+Before we start building our application, we need to think about what exactly should be built. In React, an application consists of reusable, independent components which are used to display certain UI elements. Therefore, defining which UI elements our application has is utterly important as a first step. Without, we don’t know what components to create.
+
+#### 1.1 Create a mockup
+
+Splitting the UI into independent elements and thus React components can be done by creating a mockup first. This doesn’t necessarily have to be done in Sketch, Adobe XD, or other design tools. You can use pen and paper as well. In this case, create a minimalist mockup just by drawing rectangles and shapes which represent the UI elements.
+
+#### 1.2 Break the UI into components
+
+With the mockup in place, we can start identifying our app’s components.
+
+<Image
+  src={ComponentsOverview}
+  alt="Thinking in React - Component Breakdown"
+  caption="Break the UI into components by using a mockup"
+/>
+
+If you have problems with defining which element should be in its own component and which don’t, the [_single responsibility principle_](https://en.wikipedia.org/wiki/Single_responsibility_principle) can help you out. It states that every element should have responsibility for a specific, single part of the functionality provided by the application — not more and not less. So, even though a search bar is responsible for the functionality of handling user input, the bar itself exists of several elements which again have all a responsibility for some sort of functionality that can be entirely encapsulated too.
+
+#### 1.3 Arrange all components in a hierarchy
+
+After we identified all components, arranging them in a hierarchy is the next step in our planning process. This hierarchy will help us later on when we implement data flows in our application. Additionally, it makes a component’s dependencies clear and thus helps to build the app.
+
+You can create such a hierarchy by having a look at the mockup and see which components are nested inside each other. For instance, the search bar component contains the input field and button as child components. So these two children are hierarchy-seen below the search bar component.
+
+```bash
+App
+|__Header
+| |__Logo
+|__Search bar
+| |__Input field
+| |__Button
+|__Card
+| |__Weather details
+| |__Icon
+| |__Temperature
+| |__Description
+| |__Date
+|__Footer
+| |__Logo
+
+```
+
+#### 1.4 Define where state should live
+
+As a last step in the planning process, we need to define components which should manage the application’s state. As recommended in the React docs, we want to have a top-down data flow. This means that ideally there is one single source of truth at the top of our main application and from this source, all information flows downwards like a waterfall.
+
+Usually, the source of truth is implemented in the component that needs it for rendering. So in our case, we manage state in our containing app component at the very top. From this app component, data is passed down the component tree via props.
+
+In general, it is recommended to have as few stateful components as possible. If you don’t use any state managing package like [Redux](https://redux.js.org/), having only one stateful component for each bigger feature of your app is a good choice, in my opinion. Thus, you have your business logic and state responsibility encapsulated in a single component which makes your app well-structured and better debuggable.
+
+Since our weather app has only one bigger feature — getting current weather information — we therefore only have one stateful component. However, if we were about to add another feature like getting a weather forecast, we could manage state for that in an additional stateful component.
+
+## 2\. Organizing our project
+
+Even though we talked a lot about planning and theory in general, I would like to add a few more words on how to organize your project. But this time, we focus more on how you can organize your code while building. Here as well, React namely has a huge advantage: It doesn’t have any strict rules you have to follow. However, doing it wrong, this also can be a huge downside, of course. Thus, I want to share with you how I structure my project directory and code. Because having certain patterns throughout the building procedure really helps you in keeping the app manageable.
+
+#### 2.1 Folder structure
+
+An often discussed aspect of organizing your React project is the folder structure. There are tons of approaches, all coming with different pro’s and con’s along. I personally like the following approach:
+
+<Image
+  src={FolderStructure}
+  alt="Thinking in React - Folder structure"
+  caption="Be consistent with your folder structure"
+/>
+
+We distinguish between three different types of components in our application which can be ordered hierarchically, again:
+
+**Elements**:
+Buttons, Icons, Inputs, etc. — all those are elements which are used over and over again. They are low-level items, reused in multiple components.
+
+**Components**:
+Even though almost everything is called a component in React, I use a more precise definition for the term in my folder structure. There, a component has to fulfill a certain standalone function for the user or the app’s appearance. Therefore, it is not just an element. Elements, in contrast, doesn’t provide standalone functions. So whilst a search bar component allows the user to submit a search query, an input field alone won’t.
+
+**Containers**:
+As a third and last type of component, there are containers. Containers are our state-managing components. They are at the very top of our hierarchy and usually consist of several components. In our project, we only have one container, our app container/component. Yet, I wanted to add it in a separate folder so you can see how our final folder structure looks like in the end.
+
+Of course, the pictured directory tree might look a bit over-structured for such a small application. But I really wanted to give you an easily understandable example, so that you can better apply that pattern to your own projects as well. Important here to note is also that the component hierarchy we previously outlined doesn’t have to be the same as your folder structure. Whereas your component hierarchy helps you more in implementing the application and its data, the folder structure is only for organizational purposes.
+
+Finally, the structure of your directory depends on the type of application you build too. Meaning that if you are using Redux or React Router, there are probably other schemas you should rather follow.
+
+#### 2.2 Class-based vs. functional components
+
+In React, we can write our components as class-based ones or functional ones. To always know which type you should use, here is a rule of thumb:
+
+> _If your class-based component only has a render method, make it a functional component._
+
+Using functional components has a lot of benefits: They make your code cleaner and easier readable, they are better debuggable, and they are easier testable. So using them as often as you can, won’t hurt your application. Regarding my three component types I mentioned before (_elements, components, containers_), only containers are written as class-based components. Elements and components are written as functional ones — like the Header component you can see below.
+
+<Image
+  src={FunctionalComponents}
+  alt="Thinking in React - Functional components"
+  caption="Use functional components like this as often as possible"
+/>
+
+#### 2.3 CSS modules
+
+Fortunately, CSS modules is shipped with the newest version of _create-react-app_ automatically. This feature makes you no longer worrying about CSS conflicts that are due to same class names or similar. In the past, naming classes was quite challenging. Since CSS classes were not locally scoped to a component, you have had to ensure that no CSS class name is used twice throughout the project. With CSS modules, that problem is solved. So, if you want to write CSS code in React that is not error-prone, this is the way to go.
+
+<Image
+  src={CSSModules}
+  alt="Thinking in React - CSS Modules"
+  caption="With CSS modules, you can avoid a lot of CSS bugs"
+/>
+
+As you can see, using CSS modules is pretty straightforward. Rename your CSS file to `<name>.module.css` and import it. Then, you can use your CSS classes by using the dot syntax just like you would access a regular class property. By using classes this way, CSS modules automatically generates for each class a unique name and we as developers no longer have to worry about using the same name twice within our application. For instance, the class `Separator` which we used in our above-pictured Footer component will be changed to `Footer_Separator__1Oeys` in the app’s build process. Thus, the CSS class is locally scoped to our Footer component.
+
+In this second section, we had a look at three patterns to better structure your project. If you stick to these three throughout the whole building process, you will write much better and easier maintainable code. So, keep in mind: Have a good folder structure, use class-based components only for components that manage state, and use CSS modules to prevent CSS bugs.
+
+## 3\. Building the app
+
+Having the planning done, we can start building our application — finally. Here again, it is recommendable to follow a certain pattern which is stated in the [official React docs](https://reactjs.org/docs/thinking-in-react.html) and helps us in understanding how we should best build our application. The pattern consists of three steps:
+
+1.  Build a static version of your application
+2.  Identify and implement the minimal state your app needs
+3.  Add functions to mutate the state and thus make the UI interactive
+
+#### 3.1 Build a static version of your application
+
+As a first step, we build a static version of the frontend which we outlined in the mockup. So do not think about any functionalities or state manipulations. First, we focus on designing the app. For that, we take every component we previously identified and implement it in our app. Since we don’t have any data to use at that point, we can temporarily use placeholders.
+
+<Image
+  src={Build1}
+  alt="Thinking in React - Build a static version"
+  caption="Our static App component — without state or functions"
+/>
+
+So this basically is our App component. As you can see, there is no state or any state manipulating functionality implemented yet. We do that as the next step. But before, let’s have a look at how our weather app actually looks in the browser so far.
+
+<Image
+  src={Build2}
+  alt="Thinking in React - Build a static version"
+  caption="Frontend of our weather app — static and filled with placeholders"
+/>
+
+#### 3.2 Identify and implement the minimal state your app needs
+
+So far, so good. But without any possibility to interact quite boring, or? To make our app interactive, we need to implement state. In React, every change in the UI is triggered by a change in the state object. Therefore, if we, for instance, want to display a loading spinner and thereafter an error notice, we have to change the data of our state accordingly. This change in data, then, triggers a re-rendering of our application.
+
+Before we implement state, we have to think about which data should be in there. Here as well, the React team did a great job and outlined [some questions](https://reactjs.org/docs/thinking-in-react.html#step-3-identify-the-minimal-but-complete-representation-of-ui-state) you should ask yourself in order to figure out if some piece of data is state or not. In general, the state should be as lean as possible. Only add data to your state that is necessarily needed by your app and compute everything else on-demand.
+
+As an example, our app switches the background color of the header based on the current weather condition. You could argue now that storing the color scheme information in state is necessary in order to change the UI, or here in specific the header’s background color. But in effect, this information would be redundant. A better approach would be to store only the weather condition in state and then compute the background color accordingly when needed. Hence, we can omit a color scheme information in state.
+
+If you think like this for each piece of data in your application, you will end up with a minimal set of state that your app really needs. So for our weather app, the state object looks like:
+
+```js
+state = {
+  searchBarInput: '',
+  weatherDetails: {
+    temperature: '',
+    description: '',
+  },
+  loading: false,
+  error: false,
+};
+```
+
+Basically, we only need to save the city (_searchBarInput_) and the weather information (_weatherDetails_), respectively. Everything else is computed on-demand. Additionally, it is handy to have some boolean variables _loading_ and _error_ to conditionally render spinners or error notifications.
+
+Having the state object implemented in our App class, we can start writing functions to mutate it.
+
+#### 3.3 Add functions to mutate state and thus make the UI interactive
+
+Our third and last step is the toughest one. But it is also the most fun one as well. Now you can finally bring your app to life. To do that, we create all functions that are being run in the background to modify and update our state correctly. Thus, we make the app and its UI interactive. In the end, the user should be able to enter whatever city he wants to and receives the current weather condition, respectively.
+
+Due to the fact that this article should be more about building principles and patterns, I will only mention general aspects you should care about while building — instead of explaining every single line of code to you. And I think, especially for beginners, handling and modifying state correctly is one of the most important things to learn first in React. So, my two tips here will reference exactly this.
+
+_Never modify state directly_
+One concern, every React beginner should be aware of, is the appropriate way to modify state. This always has to be done in an immutable way. Meaning, every state mutation should be done by using the _setState_ method. If you change a state property directly, like in the example below, React might not track that change and hence it won’t re-render your component. This is due to the fact that even though you changed a state property, the object reference for that state object is still the same. For React, this means there is no need to re-render the component. A good tip here is to treat the _this.state_ object always as if it were immutable.
+
+<Image
+  src={Build3}
+  alt="Thinking in React - Immutable State"
+  caption="How to modify state in React correctly"
+/>
+
+_State updates may be asynchronous_
+Another essential thing to know (which can save you a lot of debugging time), is the fact that state updates may be asynchronous in React. As stated in the docs, “React may batch multiple _setState_ calls into a single update for performance”. That means if we have subsequent _setState_ calls in e.g. a function, React can combine those and call _setState_ only once in the end. Resulting, we would lose previous changes to state since those will be overwritten by the last call. Additionally, we can’t rely on values of state properties for calculating the next state.
+
+So what do we do if we have such a situation, where we want to make sure that state is updated before we execute further code? A solution could be to pass a callback function to the _setState_ method as a second argument. By doing that, you ensure that state is updated before it executes the callback function. You can have a look at our _setWeather_ method where we fetch the weather information in the callback function of _setState_.
+
+<Image
+  src={Build4}
+  alt="Thinking in React - Asyncronous State"
+  caption="Using the callback function of setState"
+/>
+
+If you try to avoid these two common pitfalls while using state in React, you will move away a lot of bugs. So, therefore, never modify state directly and keep in mind that _setState_ is asynchronous.
+
+## 4\. Wrap up
+
+Alright, I think we learned a lot throughout this article. Let me quickly wrap up the most important stuff:
+
+#### Planning our application
+
+1.  **Create a mockup** — Either by using a design tool or pen and paper.
+2.  **Break the UI into components** — Draw boxes around every component in your mockup. Use the [_single responsibility principle_](https://en.wikipedia.org/wiki/Single_responsibility_principle) to identify what should be its own component and not.
+3.  **Arrange all components in a hierarchy** — Create a hierarchy by identifying components that are nested inside each other. This will help you to implement data flows later on.
+4.  **Define where state should live** — Try to have as few stateful components as possible. Best would be to encapsulate state responsibility in a single component at the very top of your previously created hierarchy.
+
+#### Organizing our project
+
+1.  **Have a consistent, though-out folder structure** — Look for structuring patterns that are applicable to your project and be consistent with it.
+2.  **Write functional components if possible** — Rule of thumb: If your class-based component only has a render method, make it a functional component.
+3.  **Use CSS modules** — Don’t worry about same class names within your project by scoping classes locally to a component.
+
+#### Building the application
+
+1.  **Built a static version of your app first** — Create the frontend with all its components before you implement state or any other functionalities.
+2.  **Implement the minimal state your app needs** — Only add data to state that is necessarily needed by your app and compute everything else on-demand.
+3.  **Add functions to mutate state and thus make the UI interactive** – Treat this.state as if it were immutable. So, never modify state directly and keep in mind that _setState_ is asynchronous.
+
+Finally, I hope this article was interesting for you and you got something out of it. If a lot of concepts were quite new to you, I really recommend to you to rebuild the application on your own. You find all resources for that as well as the link to the repository at the end of this article. Not only you will have a small and good-looking app for your portfolio afterward, you additionally prove yourself and outsiders as well what you have learned throughout this article.
+
+**Thanks for reading!**  
+As I am a React beginner myself, I always look for ways to learn more. So if you have any ideas to improve the app we have built, please let me know. I will fix it then! Also, I would love to hear about your planning and building patterns in React.
+
+<Image
+  src={Gif}
+  alt="Thinking in React - Finaly Weather App"
+  caption="Our final weather app"
+/>
+
+### 5\. Resources
+
+Design stuff (incl. images, colors, fonts, mockups) can be found here: [https://drive.google.com/drive/folders/1AIPKlFZzX-TNkHI0wXDS0dtgmX-rRL6c?usp=sharing](https://drive.google.com/drive/folders/1AIPKlFZzX-TNkHI0wXDS0dtgmX-rRL6c?usp=sharing)
+
+Source code can be downloaded on GitHub: [https://github.com/konstantinmuenster/simple-react-js-weather-app](https://github.com/konstantinmuenster/simple-react-js-weather-app)
+
+You can test the final application here: [https://konstantinmuenster.github.io/simple-react-js-weather-app/](https://konstantinmuenster.github.io/simple-react-js-weather-app/)
+
+As mentioned, most of this content is based on the React docs: [https://reactjs.org](https://reactjs.org/)
