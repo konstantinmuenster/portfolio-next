@@ -22,7 +22,7 @@ const StyledCarousel = styled('div', {
 
     '&:first-of-type': { marginLeft: '1rem', '@md': { marginLeft: 0 } },
 
-    '.carousel-item-content > *': {
+    '.carousel-item-content .image-wrapper': {
       width: '18rem',
       height: '10.5rem',
 

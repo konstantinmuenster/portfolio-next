@@ -8,7 +8,7 @@ const StyledBanner = styled(ContentWrapper, {
   marginTop: '-6rem',
   marginBottom: '6rem',
 
-  figure: {
+  '.image-wrapper': {
     position: 'relative',
     width: '100%',
     height: '12rem',
@@ -24,20 +24,6 @@ const StyledBanner = styled(ContentWrapper, {
       border: '2px solid $surface100 !important',
     },
   },
-
-  figcaption: {
-    position: 'absolute',
-    left: 0,
-    bottom: '-3.25rem',
-    width: '100%',
-    height: 'auto',
-    color: '$subtext',
-    lineHeight: '$small',
-    fontSize: '$small',
-    textAlign: 'center',
-
-    '@sm': { bottom: '-2.25rem' },
-  },
 });
 
 type BlogPostBannerProps = BlogPostExports & { title: string };
@@ -47,13 +33,15 @@ export const BlogPostBanner: React.FC<BlogPostBannerProps> = props => {
     <StyledBanner>
       {props.banner ? (
         <figure>
-          <Image
-            src={props.banner}
-            alt={props.title}
-            layout="fill"
-            objectFit="cover"
-            priority
-          />
+          <div className="image-wrapper">
+            <Image
+              src={props.banner}
+              alt={props.title}
+              layout="fill"
+              objectFit="cover"
+              priority
+            />
+          </div>
           {props.bannerCaption ? (
             <figcaption
               dangerouslySetInnerHTML={{ __html: props.bannerCaption }}

@@ -8,7 +8,7 @@ const StyledBlogPicture = styled('div', {
   marginTop: '2rem',
   marginBottom: '3rem',
 
-  figure: {
+  '.image-wrapper': {
     width: '100%',
     height: '10rem',
 

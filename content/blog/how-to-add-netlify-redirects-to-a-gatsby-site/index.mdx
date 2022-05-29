@@ -1,0 +1,90 @@
+---
+title: How To Add Netlify Redirects To A Gatsby Site
+summary: 'Either choose the Netlify-like way via _redirects file or stick with the Gatsby approach which uses the createRedirect action.'
+publishedAt: '2019/12/23'
+category: 'Web Development'
+type: 'Tutorial'
+tags: ['Gatsby', 'Netlify', 'Redirects', 'Hosting']
+mediumUrl: https://medium.com/@konstantinmuenster/how-to-add-netlify-redirects-to-a-gatsby-site-ae678518cc91
+---
+
+export { default as banner } from './0__NUMywiwxz5KPJBcr.jpg';
+export const bannerCaption =
+  'Photo by <a href="https://unsplash.com/@bdchu614" target="_blank" rel="noopener noreferrer">Brendan Church</a> on Unsplash';
+
+Hosting your Gatsby site with Netlify is a perfect pairing. The whole development workflow gets so smooth using both. However, redirects, for instance, don’t work out of the box yet, or at least not the way you would expect it to work. Therefore, this article should show you two ways how you can add redirects to your Gatsby site hosted on Netlify.
+
+**Option 1**
+Adding redirects via `_redirects` file
+
+**Option 2**
+Adding redirects via `createRedirect` action
+
+Which one you choose is up to you, whatever you prefer. However, since both don’t work out of the box in Gatsby, we, first of all, have to install a plugin called [gatsby-plugin-netlify](https://www.gatsbyjs.org/packages/gatsby-plugin-netlify/). It is an official Gatsby plugin and will handle the redirects we set up during the build process. You can check the link for more information. To install the plugin, use the following command: `npm install gatsby-plugin-netlify`
+
+After the installation has finished, don’t forget to add the plugin to your `gatsby-config.js` file. Simply add `` `gatsby-plugin-netlify` `` to your array of plugins. Having that done, you are ready to start with one of the options.
+
+## Option 1 — Adding redirects via \_redirects file
+
+> Make sure you have installed `gatsby-plugin-netlify` ([see here](#de8f))
+
+The first option we have is to add redirects via a `_redirects` file. If you have worked with Netlify before, this is most likely familiar to you. It is the most common way to handle redirects with Netlify. Usually, you would add this file to your build directory. But since Gatsby creates this directory dynamically during the build, there is no way of putting anything in it before.
+
+To bypass this problem, we can use the `static` folder Gatsby offers. Everything we put into that folder will be copied into our build directory during the build. Therefore, we can create a `_redirects` file, place it in the `static` folder, and the previously installed plugin will handle everything else. So, what we need to do is the following:
+
+1.  If you haven’t done yet, create a folder named `static` at the root of your Gatsby site (so directly next to the `src` folder).
+2.  In the `static` folder, create a file named `_redirects`
+3.  In the `_redirects` file, you can write all of your redirects. These redirects should follow t[he redirect syntax Netlify uses](https://docs.netlify.com/routing/redirects/). You can check if your redirects are correct on the [Netlify playground](https://play.netlify.com/redirects).
+4.  Deploy your project to Netlify and enjoy your redirects!
+
+#### Example:
+
+A common use-case for redirects on Netlify is forwarding all visitors from your default Netlify subdomain to your custom primary domain. If you would like to do something like that, your `_redirects` file should look like this:
+
+```bash
+# Redirect default Netlify subdomain to primary domain
+https://yoursubdomain.netlify.com/* https://www.yourcustomdomain.com/:splat 301!
+```
+
+## Option 2 — Adding redirects via createRedirect action
+
+> Make sure you have installed `_gatsby-plugin-netlify_` ([see here](#de8f))
+
+Typically in Gatsby, client-side redirects are created via the `createRedirect` action during the build process. But with our previously installed plugin, we can use that same action to create server-side redirects too. Hence, you can use the same Gatsby-like syntax to create Netlify redirects.
+
+To start creating redirects, we need to do the following:
+
+1.  Navigate to your `gatsby-node.js` file. Code in here is run once in the process of building and hence a perfect place for creating our redirects.
+2.  Generally you create redirects while creating pages. Therefore, we must first call the `createPages` action inside the `gatsby-node.js` file with `exports.createPages = ({ actions }) => {}`
+3.  Inside the `createPages` function, we can then destruct the `actions` argument and thus access the `createRedirect` method.
+4.  By using the `createRedirect` method, we can finally create redirects!
+
+#### Example
+
+What may sound complicated is actually pretty straightforward. Let’s stick to the example we already used in option 1. There, we created a redirect to forward all visitors from our default Netlify subdomain to our custom primary domain. We want to do the same with the `createRedirect` action now.
+
+```js
+// gatsby-node.js
+exports.createPages = ({ actions }) => {
+  const { createRedirect } = actions;
+  createRedirect({
+    fromPath: 'https://yoursubdomain.netlify.com/*',
+    toPath: 'https://www.yourcustomdomain.com/:splat',
+    isPermanent: true,
+    force: true,
+  });
+};
+```
+
+As you see, we can access the `createRedirect` method inside the `createPages` action. The `createRedirect` method takes an object as an argument with the following properties:
+
+- `fromPath` : The old URL to redirect from
+- `toPath` : The new URL to redirect to
+- `isPermanent` : Sets the status code to 301
+- `force` : A Netlify-specific property which we need here in order to create a domain alias redirect
+
+If you like to dive deeper, the `createRedirect` action has a couple more properties that you can check out [in the Gatsby docs](https://www.gatsbyjs.org/docs/actions/#createRedirect).
+
+In conclusion, Netlify redirects in Gatsby don’t work out of the box yet but are straightforward to implement anyways. You can either choose the Netlify-like way via a `_redirects` file or stick with the Gatsby approach which makes use of the `createRedirect` action in `gatsby-node.js`.
+
+I hope this brief tutorial has helped you and you could follow along. If you have any further questions or found some mistakes, please let me know!

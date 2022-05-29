@@ -272,6 +272,16 @@ export const applyGlobalStyles = globalCss({
     fontWeight: 500,
   },
 
+  figcaption: {
+    marginTop: '0.5rem',
+    width: '100%',
+    height: 'auto',
+    color: '$subtext',
+    lineHeight: '$small',
+    fontSize: '$small',
+    textAlign: 'center',
+  },
+
   'code[data-inline-code]': {
     background: '$secondary250',
     px: '0.25rem',
