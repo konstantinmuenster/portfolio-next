@@ -1,0 +1,148 @@
+---
+title: 'Progressive Web Apps in 2020: Which Challenges to Overcome?'
+summary: 'Being around for 5 years, Progressive Web Apps still are a niche in our app market. But why? Let’s figure out what challenges to overcome.'
+publishedAt: '2019/12/30'
+category: 'Web Development'
+type: 'Essay'
+tags: ['PWA', 'Progressive Web Apps', 'Javascript', 'Service Worker']
+mediumUrl: https://medium.com/@konstantinmuenster/progressive-web-apps-in-2020-which-challenges-to-overcome-2a3526da5615
+---
+
+export { default as banner } from './0__bKRA8XgsY41zuvTK.jpg';
+export const bannerCaption =
+  'Photo by <a href="https://unsplash.com/@paige_cody" target="_blank" rel="noopener noreferrer">Paige Cody</a> on Unsplash';
+
+import AppLifecycle from './App-Lifecycle.png';
+import GoogleTrends from './PWA-vs-Flutter-Google-Trends.png';
+import ChromiumTracker from './Project-Fugu-Progressive-Web-Apps-Chromium-Tracker.png';
+import SamsungAppStore from './Samsung-App-Store-PWA.png';
+import UIPattern from './Platform-Specific-UI-Pattern-iOS-Android-Navigation-Bar.png';
+import BiggerPicture from './Overview-Problems-And-Challenges-Of-Progressive-Web-Apps-2020.png';
+
+Progressive Web Apps have been hyped for quite a long time. Since the term was coined by Google’s engineer Alex Russell back in 2015, a lot of people referred to it as the future of app development and enumerated its advantages over and over again.
+
+But let’s face the truth: People and businesses haven’t yet adapted to Progressive Web Apps. Even though we have seen [some great case studies](https://www.pwastats.com) in the past, it feels like neither corporates nor users have been embracing this new technology thoroughly. Or how many PWAs do you use in your daily life?
+
+In this article, we want to analyze how mature Progressive Web Apps are today. We want to have a look at the brief history of this new technology and its challenges, in particular. By identifying what may have caused a lack of acceptance in the past, we can draw conclusions about areas where this new technology needs to grow in the future.
+
+### The Path Towards Adoption
+
+But first, let’s take a step back and think about how app development works in general. This foundation will later help us to understand where the main issues of Progressive Web Apps are. Let’s think about app development as a life cycle. First of all, there is the development of the app, followed by its distribution (e.g. via app store), and finally its usage by consumers. Sketched out in its simplest form, it can look like this:
+
+<Image src={AppLifecycle} alt="PWA App Lifecycle" />
+
+To be user- and industry-wide embraced, Progressive Web Apps, and other app development approaches too, have to excel in all three acts of life. The development has to be feasible and feature-rich, the distribution has to be accessible and standardized, and the user experience has to be smooth and joyful too. You can look at these three key areas as the path towards adoption. If Progressive Web Apps shine in all of them, a much broader acceptance for this technology will most likely eventuate. So let’s find out how the current state of Progressive Web Apps is in each key area.
+
+### 1\. Development of Progressive Web Apps
+
+In the very beginning, each app has to be developed. This part, therefore, covers everything around the process of building Progressive Web Apps. What are the hurdles when it comes to developing modern web apps?
+
+#### 1.1 — PWA Features Are Still Relatively New To Most Developers
+
+Even though Google already announced Progressive Web Apps back in 2015, it is still a relatively new technology. And this newish touch often poses a high barrier to entry for a lot of developers. Because it can be quite tough to work in an environment where a community, its expertise, and common best practices haven’t been established yet, new people won’t come in that easily. But those new people are especially needed to build a thriving community around PWA development. Hence, we need more people who aren’t afraid to take this first step.
+
+Fortunately, Google is putting a lot of effort into promoting Progressive Web Apps right now. By educating people in working with things like modern WebAPIs, hopefully, more and more developers will finally embrace these new features. With more people on board, tutorials and best practices will evolve more rapidly, and that, in turn, will also accelerate the community growth.
+
+<Image
+  src={GoogleTrends}
+  alt="PWA vs. Flutter Google Trends"
+  caption="If you, for example, compare PWAs with Flutter, you see that the interest for other cross-development approaches like Flutter is significantly higher."
+/>
+
+#### 1.2 — No Budget For PWA Development Within Companies
+
+The second issue in PWA development is its budget. For me, it feels like development budgets within companies are often relatively conservative allocated. If you want to reach a mobile audience, you build a native app. Even though you might not even need native features like access to sensors, you build a native app since this is the common approach. Which in turn means that there is often no budget for app development approaches like Progressive Web Apps.
+
+Therefore, if companies don’t start embracing this new technology for their businesses and shift some money towards PWA development, we most likely won’t see any appealing web apps out there in the future. My advice here would be: Give web developers the space they need, money-wise and time-wise, to explore new technologies. Then, we will hopefully see a lot more impressive case studies soon.
+
+#### 1.3 — Missing Native Device Features
+
+As developers, we want to use the full capacity of a device. Undoubtedly, with Progressive Web Apps we can’t do that at the moment. There are still a bunch of native device features missing. For instance, you can’t access the clipboard or file system within your PWA — even though that might be an important requirement for a lot of apps. Not having the right tools to work with, makes app development even harder. This, of course, hinders the integration of Progressive Web Apps altogether.
+
+But… once again, Google took the lead for this issue. They recently founded a new initiative called “Project Fugu”. Its aim is to release a new, standardized WebAPI for each native device feature we currently miss in the browser. Hence, we hopefully can build PWAs without any lack of native device features soon. You can see all features that are currently covered by the initiative in the [issue-tracker of Chromium](https://bugs.chromium.org/p/chromium/issues/list?q=proj-fugu).
+
+<Image
+  src={ChromiumTracker}
+  alt="PWA Native Device Features to come"
+  caption="New Web APIs that will make it into Chrome soon"
+/>
+
+### 2\. Distribution of Progressive Web Apps
+
+In the context of this article, distribution itself can be divided into to main areas: You have the distribution part, i.e. how an app is actually shipped to the user, and you have the marketing part, i.e. how an app is being promoted to the user. Let’s start with the distribution part.
+
+#### 2.1 — Users Look For Apps in the App Store
+
+A huge hurdle on the path towards adopting PWAs, is user’s behavior when it comes to installing new apps. If you, for instance, want to have a new weather app for your smartphone, you most likely look for it within the pre-installed app store on your phone. However, PWAs are not distributed via the app store. You install them through the browser by visiting the app’s website and then adding it manually to your home screen. But since nearly nobody knows about this installation possibility and your behavioral pattern forces you to go into the app store anyway, Progressive Web Apps have a really hard time to even come in touch with users. Therefore, a major issue of PWAs is the missing of a proven way of distribution. If they don’t establish one that is well-known and easily accessible by users, they will never become a standard.
+
+Solving this problem, you could take two approaches: Either place PWAs within the pre-installed app store on your phone or change user’s behaviors regarding the app installation process (so that they automatically choose the installation through the browser). I personally would argue for the first. Just because I think it is pretty damn hard to change a person’s behavior patterns.
+
+Samsung, for instance, demonstrated how it can be done. They recently introduced a whole section just for PWAs within the regular app store. I think this is an important first step to make more users aware of this new type of app. Hopefully, more app stores will follow with the same approach soon.
+
+<Image
+  src={SamsungAppStore}
+  alt="PWA as Web Apps in Samsung App Store"
+  caption="Web Apps have been introduced in the Samsung App Store recently"
+/>
+
+#### 2.2 — Browser And Platform Support Is… Let’s Say Improvable.
+
+A requirement for a Progressive Web App to run is appropriate browser support. If that is not given, it doesn’t matter how good your app is. So the user can’t use it, it becomes obsolete. Therefore, browser support from the big ones — Chrome, Firefox, Edge, and Safari — is mandatory for a broad acceptance of PWAs. Fortunately, the support for service workers, which are the foundation of most PWA features, is finally implemented in most modern browsers. This is a first huge step. However, feature-wise, the support is not given yet. We still see a lot of platforms and browsers not supporting important PWA-related features. If you want a further look, this [blog post of GoodBarber](https://www.goodbarber.com/blog/progressive-web-apps-browser-support-compatibility-a883/) summarizes the compatibility and browser support of PWAs.
+
+Especially Apple users are limited and cannot experience the same feature richness as Android users do. For instance, iPhone users aren’t able to receive push notifications from a Progressive Web App. Though, this is an important feature. Moreover, such fact is a perfect example of how poor browser and platform support hinders the embracement of PWAs. How should a user adopt to something if that particular thing isn’t even provided by the device?
+
+#### 2.3 — Businesses And Developers Don’t Spread The Word For PWAs
+
+As the last point for this section, we have a brief look at the marketing aspect. Here again, what we currently miss is proactive marketing for Progressive Web Apps. Have you ever visited a website and got a hint that this website is also as a PWA installable on the home screen? Probably not. Businesses cover PWAs not boldly enough. Why not actively promote an app and its features on the website? It could be a first step to introduce more and more users to PWAs.
+
+Chrome’s “Add To Home Screen” prompt is a perfect example of this. Based on the user’s behavior, a hint that you can bookmark the page on your home screen is automatically shown as a small pop up. Interested users will try out this new approach and thus experience the smooth and easy installation process of a Progressive Web App.
+
+### 3 — User Experience of Progressive Web Apps
+
+Finally, we look at the user experience part of Progressive Web Apps. Having the app built and distributed, it is time to look at how it is ultimately embraced by the user. Therefore, in this part, we look for certain problems in the UX — especially when you compare it to other types of applications such as native mobile apps.
+
+Fair enough, we have to point out that in this part a lot of previously mentioned aspects accumulate (e.g. a bad user experience can be caused by missing development features). Hence, for this article, user experience should only focus on the joy of use aspect. So we don’t cover things again that we already mentioned in previous parts.
+
+#### 3.1 — Native Apps Still Win The UX Battle
+
+If we narrow down our focus to the user experience in mobile apps specifically, we have to admit that native apps are still ahead of PWAs. We identified earlier that PWAs still miss a lot of features (e.g. file system access) This, of course, does also contribute to relatively bad user experience. But moreover, Progressive Web Apps lack in the joy of use aspect of user experience as well. Even though, web apps can provide an app-like experience through approaches like Single-Page-Applications, not all UI interaction patterns work that well in the browser yet.
+
+Gestures, for example, are natural for mobile users nowadays. Dragging, pinching, and swapping are well-known patterns and part of every good UX. But so far, PWAs and web apps, in general, can’t really provide similar experiences. Also in terms of performance, native apps are ahead of web apps. Especially in complex animations, web apps often feel laggy and slow.
+
+Hopefully, all these problems will be solved in the future — but since all of them were technical, I am sure they will. Eventually, this could be a huge step for PWAs. If there are no differences in the user experience of Progressive Web Apps and native apps, it won’t matter to the user which one he is using right now. That in effect could accelerate the overall adoption rapidly. If the user as a key player in the process is embracing this new technology, businesses and developers most likely tend to do so as well.
+
+#### 3.2 — Lack Of Platform-Specific UI Patterns
+
+Since Progressive Web Apps are an approach to cross-platform development, they face the same downsides that are well-known related to it. If you don’t develop your app specifically for a platform, it is hard to implement the UI patterns that are associated with the particular platform. For example, in iOS world, the navigation bar is often positioned at the bottom of the screen. Whereas Android uses tabs at the top of the screen to navigate. Even though web development offers quite a lot of possibilities today, these requirements will cause headaches for you as a developer.
+
+But especially regarding platform-specific development, opinions diverge widely. While a lot of designers say you have to make use of platform-specific UI patterns, others say it is better to have one unified design approach throughout all platforms. The fact is, it is difficult to provide a platform-specific design in a PWA. Whether it is a problem in terms of minor user acceptance, can be discussed.
+
+<Image
+  src={UIPattern}
+  alt="Plattform specific UI patterns in Progressive Web Apps"
+  caption="While Android often uses a Tab Navigation at the top, iOS prefers a Navigation at the bottom."
+/>
+
+In my opinion, we saw a lot of apps that had a unified design approach for all platforms (e.g. YouTube and Instagram) and yet succeeded thoroughly. For me, this clearly shows that what matters is the overall user experience — and not the presence of certain platform-specific UI elements. If you have a great UX, users won’t think about whether your navigation bar should be at the top or bottom — they just use it and be happy with it.
+
+### Conclusion
+
+In our analysis, we covered a lot of individual aspects. Let’s summarize what we identified and sketch up the bigger picture.
+
+Taking all aspects into consideration, we can frankly say that Progressive Web Apps as a technology is still in its infancy. Even though the feature-richness and overall user experience are quite good, there are still many things to fix and to develop. Especially, the developer community has to grow quite a bit, and with it, its expertise and established best practices. Moreover, the distribution issue poses a great challenge for the embracement of Progressive Web Apps. If web apps don’t make it into the app store, aspects like ease of development and user experience can be no matter how good — if nobody gets to know your app, it doesn’t matter how good it is.
+
+#### The Bigger Picture
+
+To get a good overview of how mature Progressive Web Apps actually are and in which areas they have to grow, I sketched out the elaborated path below.
+
+<Image
+  src={BiggerPicture}
+  alt="Overview Problems And Challenges Of Progressive Web Apps 2020"
+  caption="While Android often uses a Tab Navigation at the top, iOS prefers a Navigation at the bottom."
+/>
+
+#### The Future Of Progressive Web Apps?
+
+Finally, I want to emphasize that PWAs don’t stand as bad as you might think right now. Just because we deliberately enumerated all these problems, it doesn’t mean that there are no achievements and advantages on the other side. I personally am a great fan of Progressive Web Apps and I think this technology will play a major role in the future. Just as every new technology, it, however, needs time to grow and develop — it won’t be adopted by developers and consumers overnight. Therefore, all the issues are no reason for concern. I am sure a lot of them will be solved in the future. I think Progressive Web Apps have the potential to do so. And especially since they are strongly pushed by Google, it will be quicker the case than a lot of people might think. I am really looking forward to what the future holds and encourage everybody to give PWAs a try — it’s worth it.
+
+I hope this article was interesting for you and you got something out of it. As always, I really like to hear your thoughts about Progressive Web Apps. How would you evaluate this app development approach in terms of maturity? Do you think the PWA community is big enough to tackle all those identified problems?
