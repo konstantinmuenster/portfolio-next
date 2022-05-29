@@ -1,9 +1,17 @@
 ---
-title: What Is Project Fugu — Google's Initiative To Unlock All Native Device
-  Features For The Web
-summary: \"We believe web apps should be able to do anything native apps can.\"
-category: ['Web Development']
-type: ['Essay']
+title: What Is Project Fugu — Google's Initiative To Unlock All Native Device Features For The Web
+summary: 'After PWAs, Project Fugu is Google’s next effort to reach parity with native.'
+category: 'Web Development'
+type: 'Essay'
+tags:
+  [
+    'PWA',
+    'Progressive Web Apps',
+    'Project Fugu',
+    'Web Apps',
+    'Native Apps',
+    'File System API',
+  ]
 publishedAt: '2020/05/05'
 mediumUrl: https://medium.com/swlh/what-is-project-fugu-googles-initiative-to-unlock-all-native-device-features-for-the-web-892fafa726f9
 ---
@@ -12,7 +20,79 @@ export { default as banner } from './google-unsplash.png';
 export const bannerCaption =
   'Photo by <a href="https://unsplash.com/@rajeshwerbatchu" target="_blank" rel="noopener noreferrer">Rajeshwar Bachu</a> on Unsplash';
 
-# First blog post
+import FuguTracker from './project-fugu-tracker.png';
+import AbstractionLayer from './abstraction-layer-project-fugu.png';
 
-This is my first blog post. Feel free to reach me at
-[Praveen Yadav](https://twitter.com/osfreak)
+The web is a great platform. It’s an open-ecosystem that anyone can use and build on. Sometimes, however, it is not possible to build exactly what you want due to missing capabilities.
+
+Think about a messaging application that should use the contact list on your smartphone to select friends to chat with. In today’s web, you can’t build an app like this because you don’t have access to native features like contact lists.
+
+Google calls this the app gap.
+
+It describes the gap between what’s possible on the web and what’s possible on native. And this is exactly where Google’s new initiative Project Fugu steps into: It tries to bridge the gap.
+
+### What Is Project Fugu?
+
+It is a project also known as the Web Capabilities Project which was initiated by Google, Microsoft, and Intel. Their ambition is striking:
+
+> We believe web apps should be able to do anything native apps can.
+
+However, while exposing native capabilities to the web, all core tenets of the web like user security, trust, and privacy should be maintained.
+
+By the way, with this resolution in mind, the name Fugu originated. Fugu is a pufferfish and a celebrated dish in Japanese cuisine. The Japanese say it is delicious if prepared correctly but deadly if not. Likewise, it is with Google’s Web Capabilities Project. It is great to have access to all native device features but it should not be done at the expense of a web’s core tenets.
+
+#### Abstracting Platform Differences
+
+The idea behind Fugu is to continuously evaluate which native capabilities the web misses. Based on those identified needs, they design and build new Web APIs to expose more and more features to the browser.
+
+If a new Web API has been shipped, you as a web developer can use it easily to access the associated native API — no matter which device the client has. This is because every Web API acts as an additional layer between the application and the device. It abstracts platform and device differences that exist in accessing the native API.
+
+<Image
+  src={AbstractionLayer}
+  alt="Google Project Fugu Abstracting Platform Differences"
+  caption="Depending on which device you use, the Web Share API will choose the appropriate native API."
+/>
+
+In today’s world, native wrappers like Electron or Cordova have a similar approach. They unlock native capabilities for web-based applications by bundling the web app in a native wrapper. These bundled apps, however, don’t work without the wrapper and cannot be shared cross-platform. Hence, integrating these capabilities directly into the web platform eliminates the need for native wrappers as well as other downsides.
+
+### Native Features That Will Come To The Web
+
+The cool thing about Project Fugu is that everyone can share his/her suggestions for new capabilities. If you have a good idea, you can [submit a feature request](https://goo.gl/qWhHXU).
+
+Here are a few examples of APIs that are currently being developed:
+
+#### 1\. Native File System API
+
+This API enables web applications to interact with files on the user’s local device. Thinking of applications like Photoshop or Visual Studio Code. They all work with files on your local device. With the Native File System API, you can build a web-based version of it that reads and saves changes directly to your local files and folders (after you granted the required access, of course). If you want to learn more about this exciting new API, you can find more information about it on Google’s web.dev documentation.
+
+[Native File System API on Web.dev](https://web.dev/native-file-system/)
+
+#### 2\. Badging API
+
+With Progressive Web Apps, web apps could be placed right next to native apps on our home screens. But so far, they have been missing an important feature to make them even more indistinguishable — a badge to notify the user there’s something new. This is now possible with the Badging API. It is really simple yet effective. If you want to learn how to use it, here you go.
+
+[Badging API on Web.dev](https://web.dev/badging-api/)
+
+#### 3\. App Icon Shortcut Menu
+
+Another native capability that is related to our device’s home screen is the shortcut menu. If you long-tap or right-click on a native app, you typically see a shortcut menu allowing you to trigger specific actions directly from your home screen. With the Shortcuts API, this will be possible for Progressive Web Apps as well. You can define specific shortcut actions in the Web App Manifest of your PWA to enable a custom shortcut menu. Even though the draft of this API is rather new, you find a design doc [here](https://docs.google.com/document/d/1KhHWikx1z-604LIjDKEdnL9MyezJklxM8kEYNnMLIQs/edit) to get some more insights.
+
+Moreover, if you want to see all new capabilities that will potentially come to the web, there is an official issue tracker that lists all features. It’s called the [Fugu API Tracker](https://docs.google.com/spreadsheets/d/1de0ZYDOcafNXXwMcg4EZhT0346QM-QFvZfoD8ZffHeA/edit).
+
+<Image
+  src={FuguTracker}
+  alt="Google Project Fugu Tracker"
+  caption="The Fugu API Tracker lists all new and potential capabilities."
+/>
+
+### A Bright Future For Web Developers
+
+If you take a look at all these missing capabilities, you can definitely say that Google’s initiative has set itself an ambitious goal. However, it seems like Project Fugu can be the next big step towards a more capable web.
+
+What started with Progressive Web Apps and their approach to building web apps with a native look and feel, is now conclusively followed by Project Fugu which aims to finally expose all native device features to the web.
+
+From a web developer’s perspective, this is great because it enables us to build even more powerful applications that better satisfy end-user needs. Hence, I am really curious about how well and fast these projects will move forward.
+
+For an overview of what web can do today, I recommend this site: [What Web Can Do Today](https://whatwebcando.today)
+
+And finally, thanks for reading!

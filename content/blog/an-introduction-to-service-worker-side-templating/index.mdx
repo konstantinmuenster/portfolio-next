@@ -1,0 +1,122 @@
+---
+title: An Introduction To Service-Worker-Side Templating
+summary: 'This article shows you what service worker rendering is, why it can be beneficial, and how you can implement it.'
+publishedAt: '2020/01/26'
+category: 'Web Development'
+type: 'Guide'
+tags:
+  ['PWA', 'Progressive Web Apps', 'Javascript', 'Service Worker', 'Handlebars']
+mediumUrl: https://medium.com/@konstantinmuenster/an-introduction-to-service-worker-side-templating-858b835d5062
+---
+
+export { default as banner } from './service-worker-rendering-cover.jpeg';
+
+import ServiceWorkerSideTemplating from './SWST-App.jpeg';
+
+Traditionally, platforms like PHP or Ruby on Rails took care of the rendering process server-side. Lately, new frameworks like React or Angular took that process from the server to the client. With service workers, we now have a third place where we can implement a template engine — between client and server. This article shows you what I mean by that, the advantages that come with it, and how you can use it.
+
+### What is Service-Worker-Side Templating?
+
+Service-Worker-Side Templating works like any other template engine. You have your templates, e.g. an article page, stored within your cache. For any intercepted requests, the service worker will fetch the data from an external API or its cache, populate the merge fields within your template, and return the rendered HTML to the client.
+
+That’s how template engines like PHP or React work in general either server-side or client-side. To let this process work inside our service worker, we, however, need to add a template engine to it beforehand. In our example, later on, we will use Handlebars.js as a lightweight template engine that will allow us to dynamically render a response in the service worker.
+
+### Advantages of Service-Worker-Side Templating
+
+So, why don’t we just use server- or client-side rendering instead? What are the advantages of service worker rendering that could make all the work worth?
+
+#### Caching stateful pages
+
+First, service-worker-side rendering gives you the ability to cache pages that otherwise wouldn’t be cacheable. Imagine having a page including state data (e.g. “Logged in as Michael” in the navigation bar), that you want to cache. If you cache the entire HTML page, a new logged-in user would still see the “Logged in as Michael” notice. Since the HTML page is available in the cache, the service worker will respond with it— regardless of changes that may have occurred. With Service-Worker-Side-Templating, you can prevent issues like this. By only pre-caching the template, you can easily handle user changes since all user data is retrieved separately.
+
+#### Reducing cache storage volume
+
+Second, the usage of a template engine can significantly reduce the cache storage volume of your web app — depending on what type of site you are running. For example, if you have a blog with a couple of hundred articles on it and you store for each article the entire HTML page in the cache, you more or less blow up the client’s storage with a hundred times the same HTML template. It would be sufficient if you store the HTML template only once and for every article just the content. With rendering article pages dynamically in the service worker, you can do that easily. And you furthermore save a lot of unnecessary storage volume in your cache.
+
+### Implementing Service-Worker-Side Templating
+
+To give you an example of how service worker rendering can look like, we will build a small app called SWST. It only consists of two pages: An index page (lists all posts), and a post page (represents an individual post).
+
+<Image src={ServiceWorkerSideTemplating} alt="Service Worker Side Templating" />
+
+Now, instead of caching the already rendered HTML page for each post, we only want to cache their shared page template. Thus, we can store the individual post data separately and reduce the needed cache storage volume significantly. As you can see below, we use Handlebars.js as the template engine inside our service worker. It’s pretty handy because you just need a template (like our imported `post.precompiled.js` template), pass in some data or context, and get a rendered HTML markup back. If you haven’t worked with Handlebars yet, you will see later on that it’s pretty easy to understand.
+
+```js
+// sw.install.js
+importScripts('./js/handlebars.min.js');
+importScripts('./templates/post.precompiled.js');
+
+var CACHE_NAME = 'cache-v1';
+var urlsToCache = [
+  '/',
+  '/templates/index.precompiled.js',
+  '/post/',
+  '/templates/post.precompiled.js',
+  '/css/style.css',
+  '/js/handlebars.min.js',
+  '/js/main.js',
+  'https://jsonplaceholder.typicode.com/posts',
+];
+
+self.addEventListener('install', function (event) {
+  console.log('Service Worker Registration', event);
+  event.waitUntil(
+    caches
+      .open(CACHE_NAME)
+      .then(function (cache) {
+        return cache.addAll(urlsToCache);
+      })
+      .catch(function (err) {
+        return console.log(err);
+      })
+  );
+});
+```
+
+So far, nothing special. We import Handlebars.js as well as our post page template. Then, we precache all the stuff we need later on. For convenience, I cached all the post data in one chunk. If you want to build something similar, it might be better to cache post data on demand.
+
+More interesting is our fetch event because here the rendering process takes place. If we intercept a request, we parse the URL and test if it matches our URL pattern for a single post. If it does, we retrieve the `/post/` HTML file and all the post data from the cache. To be precise, the `/post/` file is not our Handlebars post page template that we imported before. The `/post/` HTML file is a raw page layout, containing the `<head>` section and all static stuff. The Handlebars template we imported, however, is only responsible for populating the `<main>` section of our page. Later on, we will merge the static page layout with our dynamically created HTML from Handlebars.
+
+```js
+// sw.fetch.js
+self.addEventListener('fetch', function (event) {
+  var requestURL = new URL(event.request.url);
+
+  if (/^\/post\//.test(requestURL.pathname)) {
+    event.respondWith(
+      Promise.all([
+        caches
+          .match('/post/', { ignoreSearch: true })
+          .then(function (response) {
+            return response.text();
+          }),
+        caches
+          .match('https://jsonplaceholder.typicode.com/posts')
+          .then(function (response) {
+            return response.json();
+          }),
+      ]).then(function (responses) {
+        var html = responses[0];
+        var data = responses[1];
+        var postData = data.find(
+          x => x.id == requestURL.searchParams.get('id')
+        );
+        var template = Handlebars.templates.post;
+        var postHtml = template(postData);
+        var finalHtml = html.replace('<div id="output"></div>', postHtml);
+        return new Response(finalHtml, {
+          headers: { 'content-type': 'text/html' },
+        });
+      })
+    );
+  } else {
+    // Other caching strategies
+  }
+});
+```
+
+So, if we got both responses from the cache, we find the requested post data in our data object (line 45) and pass it into our Handlebars template. The Handlebars template basically works like a function. You pass the data in, the template is being populated, and it returns a rendered HTML markup. In line 48, we finally merge the dynamically created HTML with the static layout and return all together as a new response.
+
+Even though, it seems and feels a bit clunky to work with, I think it is an interesting approach to rendering HTML neither client- nor server-side. And it definitely has some use-cases where it can be beneficial — otherwise Jake Archibald wouldn’t have mentioned it in his [Offline Cookbook](https://jakearchibald.com/2014/offline-cookbook/). Also, let me know what you think about this technique. Does it make sense to move the rendering process to the service worker?
+
+Also, if you there is something you didn’t understand right away, feel free to ask anything or have a look on the source files on [GitHub](https://github.com/konstantinmuenster/service-worker-side-templating-app). The app is also hosted on [Netlify](https://naughty-bhabha-4b3ae8.netlify.com/).

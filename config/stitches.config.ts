@@ -232,7 +232,7 @@ export const applyGlobalStyles = globalCss({
       '&:after': {
         content: '',
         position: 'absolute',
-        top: 5,
+        bottom: 2,
         right: 0,
         width: 14,
         height: 14,
