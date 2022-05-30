@@ -283,11 +283,12 @@ export const applyGlobalStyles = globalCss({
   },
 
   'code[data-inline-code]': {
-    background: '$secondary250',
+    background: '$secondary100',
     px: '0.25rem',
     py: '0.2rem',
     borderRadius: '$default',
 
+    whiteSpace: 'nowrap',
     fontFamily: '$mono',
     fontSize: '$small',
     lineHeight: '$small',

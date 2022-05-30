@@ -1,18 +1,630 @@
 ---
-title: How To Build A Portfolio With Gatsby — From Scratch To Deployment
-summary:
-  This article should provide a general understanding of how Gatsby works and
-  how it can be used to create a personal website from scratch. If you are new
-  to Gatsby, this article is for you.
-category: ['Web Development']
-type: ['Guide']
-publishedAt: '2020/06/20'
-mediumUrl: https://konstantinmuenster.medium.com/how-to-build-a-portfolio-with-gatsby-from-scratch-to-deployment-cacbf7a1527
+title: How To Build A Portfolio With Gatsby — From Scratch To Deployment
+summary: 'Learn how Gatsby works and how you can build a personal website with it — step by step!'
+publishedAt: '2020/06/06'
+category: 'Web Development'
+type: 'Tutorial'
+tags:
+  [
+    'Gatsby',
+    'Portfolio',
+    'Static Site Generation',
+    'Hosting',
+    'Markdown',
+    'Netlify',
+  ]
+mediumUrl: https://medium.com/@konstantinmuenster/how-to-build-a-portfolio-with-gatsby-from-scratch-to-deployment-cacbf7a1527
 ---
 
 export { default as banner } from './how-to-build-gatsby-portfolio-cover.png';
 
-# First blog post
+import Screenshot from './screenshot.png';
+import SSG from './static-site-generator.png';
+import Layout from './index-js-layout-added.png';
+import NetlifyDeployment from './netlify-deployment-720p.gif';
 
-This is my first blog post. Feel free to reach me at
-[Praveen Yadav](https://twitter.com/osfreak)
+_This article should provide a general understanding of how Gatsby works and how it can be used to create a personal website from scratch. If you are new to Gatsby, this article is for you._
+
+I recently published the first iteration of my personal website. Since I haven’t had a chance to try Gatsby prior to the project, it was the first time for me to dive into this new ecosystem.
+
+Even though I got more and more enthusiastic about Gatsby throughout development, it was admittedly quite overwhelming at first. Especially because I haven’t worked much with GraphQL and Markdown before.
+
+Hence, I decided to write this article as an introductory guide about building websites with Gatsby. In this article, we will not only build a simplified version of my own portfolio from scratch, but we will also have a look at what Gatsby exactly is and how it works under the hood.
+
+## Contents
+
+1.  Introduction to Gatsby
+2.  Creating A New Gatsby Project
+3.  Explaining Gatsby’s Folder Structure
+4.  Introduction to Gatsby Plugins
+5.  Creating A Basic Page Layout
+6.  Creating Page Sections
+7.  Adding Content via Markdown Files
+8.  Deploying To Netlify
+
+As you see, we have a lot of exciting stuff to dive into. By the end of this article, we will have created a portfolio that has a reusable page layout and retrieves content dynamically through Markdown files.
+
+<Image
+  src={Screenshot}
+  alt="Personal Website with Gatsby.js"
+  caption="This is how our mini-portfolio will look like in the end!"
+/>
+
+## 1\. Introduction To Gatsby
+
+Before we start, I want to briefly explain what Gatsby exactly is and how it works. This background knowledge will help us later on during development.
+
+Gatsby started out as a static site generator. This means that Gatsby merges templates (e.g. React components) and content (e.g. Markdown files) during the build process and generates fully-rendered HTML pages. Therefore, Gatsby sites are often considered _blazing-fast_. Because there is no additional rendering on the client or server needed, you can instantly serve the requested HTML pages to the user.
+
+<Image
+  src={SSG}
+  alt="Static Site Generation with Gatsby.js"
+  caption="What Gatsby does at build time"
+/>
+
+Meanwhile, Gatsby, however, is more than just a static site generator. It is a framework that sits on top of React and tries to abstract many low-level complexities that make the life of a developer unnecessarily hard. This is also reflected in Gatsby’s overall vision.
+
+> Our vision is to construct higher-level web building blocks.
+
+If you start working with Gatsby, you will recognize that Gatsby makes building complex things very easy. A perfect example of this is the Gatsby Image component. It can be used in place of the regular `<img />` tag. The cool thing about it is that it provides features like resizing, lazy-loading, and image compression out-of-the-box. This not only enhances and accelerates the development process significantly, but it is also much more fun because you can build powerful apps with ease!
+
+Therefore, let’s start with our next Gatsby project right away!
+
+## 2\. Creating A New Gatsby Project
+
+If you haven’t worked with Gatsby before, you need to install the Gatsby CLI first. The command-line interface is needed to access functionalities like starting a development server or creating a production build. To install it, run the following command:
+
+```bash
+npm install -g gatsby-cli
+
+```
+
+Having the CLI installed, we can now use it to create a new Gatsby project with the `gatsby new` command. This command takes to arguments: A name and an URL which points to a Gatsby Starter project.
+
+A Gatsby Starter can be seen as a boilerplate project that lays down the foundation for your site. For example, it could provide you certain functionalities like a Redux setup right away. However, if we omit the URL when running the `gatsby new` command, Gatsby uses a default starter that only provides the minimum required configuration needed.
+
+Since we want to start from scratch, we run:
+
+```bash
+gatsby new gatsby-portfolio
+
+```
+
+When the setup is done, we can navigate to the directory and run `gatsby develop` to start a development server.
+
+```bash
+cd gatsby-portfolio
+gatsby develop
+```
+
+## 3\. Explaining Gatsby’s Folder Structure
+
+Before we get into coding, let’s have a brief look at Gatsby’s folder structure. While React itself doesn’t provide any guidelines regarding project structuring, Gatsby is a bit more opinionated here. Therefore, it is important to understand how things in Gatsby play together.
+
+If you open the project in your code editor, you should see a similar directory tree.
+
+```
+|--src
+ |--components
+ |--images
+ |--pages
+|--gatsby-browser.js
+|--gatsby-config.js
+|--gatsby-node.js
+|--gatsby-ssr.js
+|--...
+```
+
+Inside the `src` directory, we have three predefined folders: components, images, and pages. If you are familiar with React, a `components` folder may not be new to you, likewise a `pages` folder if you have worked with frameworks like Next.js before.
+
+While the `components` folder can be renamed to whatever you like, the `pages` folder cannot. Gatsby uses this folder to create URL-accessible HTML pages for each file during the build process. For example, the output of an `about.js` file inside the `pages` folder will later be accessible on the `/about` route.
+
+Like the `components` folder, the `images` folder is not mandatory too. However, since it is by default configured as a data source to pull images into our components as needed, deleting the folder will break our application for now. Since we will start working with our own data sources, later on, we don’t have to care about the `images` folder right now.
+
+Lastly, we have several `.js` files that provide access to different Gatsby-specific APIs as well as configuration settings. Especially in the beginning, the `gatsby-config.js` file will be the most important one for you. You can use it to configure plugins as we will see later on.
+
+### Let’s Clean Up
+
+To have a clean start, I like to remove all unnecessary files inside the `src` directory. The only two files we need are the SEO component and the Index page. So, our cleaned-up `src` directory should look like this:
+
+```
+|--src
+ |--components
+ |--seo.js
+ |--pages
+ |-index.js
+
+```
+
+Since our app crashes now, we have to remove any dependencies in our `index.js` file:
+
+```jsx
+// index.js
+import React from 'react';
+
+const IndexPage = () => {
+  return <h1>Hi there</h1>;
+};
+
+export default IndexPage;
+```
+
+We can now visit our `index.js` page on the `/` route and should hopefully see a friendly greeting. Let’s move on and add some content and styling to it!
+
+## 4\. Introducing Gatsby Plugins
+
+As I mentioned in the introductory part, Gatsby’s ambition is to provide higher-level building blocks to make our life as developers easier. Gatsby Plugins essentially are these building-blocks.
+
+Even though it might be a lot of theory upfront, it is crucial to understand the concept of plugins within the Gatsby ecosystem because it can enhance and leverage our portfolio development. Fortunately, it is quickly explained.
+
+> Gatsby Plugins are Node.js packages that add certain functionalities to your site in a very simple manner.
+
+These functionalities can be everything. For instance, a third-party service integration like Google Analytics. By using a Gatsby Plugin for it, you can add such functionality without writing a single line of code.
+
+We will use a few plugins as we go along, so we will learn how to add them in a second. If you, however, want to get an overview of which plugins exist first, have a look at [Gatsby’s Plugin Library](https://www.gatsbyjs.org/plugins/)
+
+### Let’s Add Our First Plugin
+
+A commonly used plugin is `gatsby-plugin-styled-components`. It covers the configuration process that comes with the usage of Styled Components in a server-side-rendered environment.
+
+If you haven’t used Styled Components before, I highly recommend it to you. It is a regular and quite popular Node.js package that allows you to write CSS-in-JS.
+
+However, using this package in a Gatsby project requires some efforts to work properly. Fortunately, this can be avoided by using the `gatsby-plugin-styled-components` plugin.
+
+To use the plugin in our project, we have to install all required NPM packages first. So let’s run the following command:
+
+```bash
+npm install --save gatsby-plugin-styled-components styled-components babel-plugin-styled-components
+
+```
+
+After the installation has finished, we can configure the plugin in the `gatsby-config.js` file. As you see, there are already some preinstalled plugins listed. In this case, all we have to do is to add the plugin name `gatsby-plugin-styled-components` to the list of plugins.
+
+Other plugins may require more configuration. This can be done by adding the plugin as an object containing an `options` property. The `options` property can then be used to set specific plugin settings.
+
+Since the Styled Components plugin doesn’t require any configuration settings, our plugin list should look like this now:
+
+```js
+// gatsby-config.js
+module.exports = {
+  ...
+  },
+  plugins: [
+    `gatsby-plugin-react-helmet`,
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `images`,
+        path: `${__dirname}/src/images`,
+      },
+    },
+    `gatsby-transformer-sharp`,
+    `gatsby-plugin-sharp`,
+    {
+      resolve: `gatsby-plugin-manifest`,
+      options: {
+        name: `gatsby-starter-default`,
+        short_name: `starter`,
+        start_url: `/`,
+        background_color: `#663399`,
+        theme_color: `#663399`,
+        display: `minimal-ui`,
+        icon: `src/images/gatsby-icon.png`, // This path is relative to the root of the site.
+      },
+    },
+    `gatsby-plugin-styled-components`, // I AM NEW
+  ],
+}
+```
+
+Making changes to the Gatsby configuration sometimes require a restart of the development server. So if yours is still running, quit the process and restart it with `gatsby develop`.
+
+## 5\. Creating A Page Layout
+
+Now that our initial setup is done, we can finally start creating a basic page layout. For this, we create a new file called `layout.js` in the `components` folder.
+
+This component wraps the page-specific content and provides basic styling as well as static elements like header and footer. So basically everything that should appear on every page in our application. Such a component could look like this:
+
+```jsx
+// layout.js
+import React from 'react';
+import styled from 'styled-components';
+
+import GlobalStyle from './globalStyle';
+import Header from './header';
+import Footer from './footer';
+
+const StyledLayout = styled.div`
+  width: 100%;
+  min-height: 100vh;
+  margin: 0 auto;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  grid-template-columns: 100%;
+  #main-content {
+    width: 100%;
+    max-width: 62.5rem;
+    margin: 0 auto;
+    padding: 0 2.5rem;
+  }
+`;
+
+const Layout = ({ children }) => {
+  return (
+    <StyledLayout>
+      <GlobalStyle />
+      <Header />
+      <main id="main-content">{children}</main>
+      <Footer />
+    </StyledLayout>
+  );
+};
+
+export default Layout;
+```
+
+> For the sake of simplicity, I won’t explicitly define imported components like Header and Footer in this article. The full source code of this project is available on GitHub — I’ll add a link to the repository at the end of the article.
+
+We can now import the `layout` component in our `index.js` file to give our page some appropriate styling.
+
+```js
+import React from 'react';
+
+import Layout from '../components/layout';
+
+const IndexPage = () => {
+  return <Layout>I am a good-looking page, right?</Layout>;
+};
+
+export default IndexPage;
+```
+
+If we would have multiple pages in our portfolio, we could reuse the layout component to add the same styling to each individual page. After we’ve added a basic layout to our index page, it should look like this:
+
+<Image
+  src={Layout}
+  alt="Layout with Gatsby.js"
+  caption="So far, we’ve added a re-useable page layout!"
+/>
+
+## 6\. Creating Page Sections
+
+Now that we have a foundation to build upon, we can add any number of sections to our page. These may be sections where you showcase your latest projects or just tell about more about yourself!
+
+As an example, we start with building a hero section that briefly states who we are and what we do. This should give you an idea of how it works so that you can add more sections if you like.
+
+In our project, each section is represented by a component. Hence, we create a new file called `hero.js` inside the `components` folder.
+
+```jsx
+import React from 'react';
+import styled from 'styled-components';
+
+const StyledSection = styled.section`
+  .title {
+    margin-bottom: 0;
+  }
+  .subtitle {
+    margin-top: 0;
+  }
+  .highlighted {
+    box-shadow: inset 0 -2.5rem 0 #cdf3e1;
+  }
+`;
+
+const Hero = () => {
+  return (
+    <StyledSection id="hero">
+      <h1 className="title">
+        Hello{' '}
+        <span role="img" aria-label="emoji">
+          👋
+        </span>
+        <br />
+        I'm Konstantin Münster
+      </h1>
+      <h2 className="subtitle">
+        I design and build{' '}
+        <span className="highlighted">things for the web</span>.
+      </h2>
+      <div className="description">
+        Product Manager and Freelance Web Developer. Based in Hamburg.
+      </div>
+    </StyledSection>
+  );
+};
+
+export default Hero;
+```
+
+For now, we just hardcode any content inside our hero component. In the next step, we will define our content in a Markdown file and use this as a data source.
+
+Having our `hero.js` component defined, we can import it in `index.js`, wrap it with our layout, and voila, we should have our first section in place!
+
+```jsx
+import React from 'react';
+
+import Layout from '../components/layout';
+import Hero from '../components/hero';
+
+const IndexPage = () => {
+  return (
+    <Layout>
+      <Hero />
+    </Layout>
+  );
+};
+
+export default IndexPage;
+```
+
+## 7\. Adding Content via Markdown Files
+
+Thus far, we hardcoded content within our templates. This might be fine in our case since the project is rather simple, but as your project grows it is not a recommendable approach.
+
+An application that separates content and templates is easier to maintain and to extend. Think of a blog post area on your website. If you add the content directly to the post template, you would have to duplicate the entire template to add another post. Yet, if you store the content of a post separately, e.g. in a Markdown file, each post could share the same template file and you wouldn’t have to duplicate anything.
+
+To see how it works, let’s create our first Markdown file. Within the `src` directory, we create a new folder called `content`. Inside the content folder, we then create a new file called `hero.md`. This will be the Markdown file for our hero section content.
+
+Now it’s time to move our hardcoded content from `hero.js` to `hero.md`:
+
+```md
+---
+greetings: 'Hello'
+emoji: '👋'
+title: "I'm Konstantin Münster"
+subtitlePrefix: 'I build and design '
+subtitleHighlight: 'things for the web.'
+---
+
+Product Manager and Freelance Web Developer. Based in Hamburg.
+```
+
+To better select individual text elements in our `hero.js` component, later on, we use a Markdown feature called _Frontmatter_. A frontmatter block is denoted by the triple dashes and can be used to provide additional information as key-value pairs. A classic example of such information would be metadata for a blog post (e.g. category information).
+
+Below the frontmatter block, we set the description which we use in our `hero.js` component as the Markdown body.
+
+### Let’s Use Markdown As A Data Source
+
+Now that we have our content added as Markdown, we need to configure the newly created `content` folder as a data source. If we do so, we can later write GraphQL queries to access this content in our components.
+
+For this, navigate to your `gatsby-config.js` file. In there, we have to do two things:
+
+1.  Tell Gatsby to read from our Markdown files.
+2.  Tell Gatsby how it should parse those files.
+
+Gladly, both steps are really easy. To tell Gatsby to read from our files, we can use the `gatsby-source-filesystem` plugin which is preinstalled by default. If you have a look at your plugin list, you should see an existing entry for it. Right now, it tells Gatsby to source files from the `images` directory.
+
+Since we don’t use images in our app, we can reconfigure the filesystem, so it sources files from our `content` folder instead. We just have to give the filesystem a name and a location to source from. That’s it for the first step.
+
+```jsx lines=10-11
+// gatsby-config.js
+module.exports = {
+  ...
+  },
+  plugins: [
+    `gatsby-plugin-react-helmet`,
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `content`,
+        path: `${__dirname}/src/content`,
+      },
+    },
+    `gatsby-transformer-sharp`,
+    `gatsby-plugin-sharp`,
+    {
+      resolve: `gatsby-plugin-manifest`,
+      options: {
+        name: `gatsby-starter-default`,
+        short_name: `starter`,
+        start_url: `/`,
+        background_color: `#663399`,
+        theme_color: `#663399`,
+        display: `minimal-ui`,
+        icon: `src/images/gatsby-icon.png`, // This path is relative to the root of the site.
+      },
+    },
+    `gatsby-plugin-styled-components`, // I AM NEW
+  ],
+}
+```
+
+Second, we need to tell Gatsby what it should do with those sourced files. In our case, it should parse the Markdown content and make it accessible for us. For this, we need another plugin called `gatsby-transformer-remark`. Since it is not installed by default, we have to install it manually via npm.
+
+```bash
+npm install --save gatsby-transformer-remark
+
+```
+
+After that, we can configure it by adding the plugin name to the plugin list. Make sure you add the entry after the `gatsby-source-filesystem`, like this:
+
+```jsx lines=14
+// gatsby-config.js
+module.exports = {
+  ...
+  },
+  plugins: [
+    `gatsby-plugin-react-helmet`,
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `content`,
+        path: `${__dirname}/src/content`,
+      },
+    },
+    `gatsby-transformer-remark`,
+    `gatsby-transformer-sharp`,
+    `gatsby-plugin-sharp`,
+    {
+      resolve: `gatsby-plugin-manifest`,
+      options: {
+        name: `gatsby-starter-default`,
+        short_name: `starter`,
+        start_url: `/`,
+        background_color: `#663399`,
+        theme_color: `#663399`,
+        display: `minimal-ui`,
+        icon: `src/images/gatsby-icon.png`, // This path is relative to the root of the site.
+      },
+    },
+    `gatsby-plugin-styled-components`, // I AM NEW
+  ],
+}
+```
+
+### Let’s Write A GraphQL Query
+
+We are almost done! Now that we have added our content as Markdown and configured a new Markdown data source, we need to use the content in our components. In Gatsby, we do that easily with the help of GraphQL.
+
+GraphQL is a query language that might look unfamiliar at first but is actually pretty easy to grasp. You basically write queries in a JSON-like shape that define which parts of the content you want to retrieve.
+
+Gatsby, for instance, allows you to write so-called _Page Queries_. These are queries that retrieve all the content for a given page. So in our application, we could write a Page Query to get all the data we need in our `index.js` component.
+
+To do this, we need to import the `graphql` tag function from `gatsby` inside `index.js`. Using the tag function, we can write a GraphQL query that retrieves the content that we had previously added in our Markdown file:
+
+```jsx
+// index.js
+export const pageQuery = graphql`
+  {
+    hero: allMarkdownRemark {
+      edges {
+        node {
+          frontmatter {
+            title
+            greetings
+            emoji
+            subtitlePrefix
+            subtitleHighlight
+          }
+          rawMarkdownBody
+        }
+      }
+    }
+  }
+`;
+```
+
+You can add the `pageQuery` const below your `IndexPage` component in `index.js`.
+
+With this GraphQL query in place, Gatsby, fortunately, does all the remaining work behind the scenes. At build time, it will run the query, retrieve the content, and passes it as props to our `index.js` component.
+
+The last thing to do is to take the content and pass it to the Hero component since this is the place where we want to use it. So finally, our `index.js` component should look like this:
+
+```jsx
+import React from 'react';
+import { graphql } from 'gatsby';
+
+import Layout from '../components/layout';
+import Hero from '../components/hero';
+
+const IndexPage = ({ data }) => {
+  return (
+    <Layout>
+      <Hero content={data.hero.edges[0].node} />
+    </Layout>
+  );
+};
+
+export default IndexPage;
+
+export const pageQuery = graphql`
+  {
+    hero: allMarkdownRemark {
+      edges {
+        node {
+          frontmatter {
+            title
+            greetings
+            emoji
+            subtitlePrefix
+            subtitleHighlight
+          }
+          rawMarkdownBody
+        }
+      }
+    }
+  }
+`;
+```
+
+Now that we pass the content as props to the `hero.js` component, we can remove any hardcoded information in there and replace it with the queried data we defined in `hero.md`:
+
+```jsx
+// hero.js
+...
+const Hero = ({ content }) => {
+  const { frontmatter, rawMarkdownBody } = content
+  return (
+    <StyledSection id="hero">
+      <h1 className="title">
+        {frontmatter.greetings}{" "}
+        <span role="img" aria-label="emoji">
+          {frontmatter.emoji}
+        </span>
+        <br />
+        {frontmatter.title}
+      </h1>
+      <h2 className="subtitle">
+        {frontmatter.subtitlePrefix}{" "}
+        <span className="highlighted">{frontmatter.subtitleHighlight}</span>
+      </h2>
+      <div className="description">{rawMarkdownBody}</div>
+    </StyledSection>
+  )
+}
+...
+```
+
+That’s it! Finally, we have everything set up and are ready to deploy!
+
+## 8\. Deploying To Netlify
+
+Netlify is a great option when it comes to hosting your Gatsby site. It is easy to use and provides you a ton of features for free. Basically, you can host your site on Netlify either two ways:
+
+1.  Manage your project with Git and connect Netlify to your Git repository. Netlify, then, will deploy and publish it whenever you push to your Git repository.
+2.  Upload a production-ready build that you created locally before. Netlify, then, works like an FTP server where you can upload and publish your files.
+
+Since I don’t want to require any Git knowledge in this article, I will go with the latter approach.
+
+However, if you work on your project more frequently, I really recommend to you the former one. Connecting Netlify to a Git repository makes further development a lot faster and easier as you can make use of features like continuous deployment.
+
+If we go with the second approach, we have to create a production-ready build first. For this, we can use the Gatsby CLI again. Within your project directory, run `gatsby build`. This starts the build process.
+
+```bash
+gatsby build
+
+```
+
+After the build process has been successfully finished, we should see a folder called `public` next to our `src` folder. This is your production build.
+
+All we have to do now is to copy the entire folder to Netlify. Netlify will then publish the site automatically.
+
+So let’s go to [netlify.com](https://netlify.com) and log in (or sign up if you don’t have an account yet). In your dashboard, drag and drop the `public` folder into the drag and drop area.
+
+When the upload is finished, you can access your brand new Gatsby portfolio at the given URL!
+
+<Image
+  src={NetlifyDeployment}
+  alt="Deploying a Gatsby.js Site to Netlify"
+  caption="After we uploaded the production build, Netlify will automatically publish our site!"
+/>
+
+## Wrap Up
+
+Admittedly, this was a whole lot that we covered in this article. However, I hope that you could follow along anyways!
+
+Even though it seems as if Gatsby might be an overkill for such simple things as a portfolio, it can really enhance and accelerate your development if you figured out once how everything plays together. Hence, I strongly recommend that you dive deeper into the Gatsby ecosystem and try things out for yourself.
+
+Feel free to use this project as a starting point and extend it with your own custom sections. It is a perfect practice to learn Gatsby, Markdown, and data querying through GraphQL.
+
+All source code is available on GitHub:
+[konstantinmuenster/how-to-gatsby-portfolio](https://github.com/konstantinmuenster/how-to-gatsby-portfolio)
+
+### Fully-Featured Portfolio As Gatsby Starter
+
+In case that you want to start with a fully-featured portfolio right away, I also published my entire portfolio as a Gatsby Starter. It is a simple, one-page portfolio with several sections for every type of information you may want to add.
+
+You can find it in the Gatsby Starter Library:
+[Gatsby Starter Portfolio Minimal Theme](https://www.gatsbyjs.com/starters/konstantinmuenster/gatsby-starter-portfolio-minimal-theme/)
+
+As always, thanks for reading! I really like to hear your thoughts about Gatsby and this demo project as well. As I am a Gatsby beginner myself, I appreciate any ideas to improve the site we have built in this article.
