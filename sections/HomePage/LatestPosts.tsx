@@ -7,6 +7,7 @@ import { ContentWrapper } from '@components/Layout';
 import { Link } from '@components/Link';
 import { BlogPostList, FeaturedBlogPost } from '@components/BlogPost';
 import { TextDecoration } from '@components/TextDecoration';
+import { byNewestDate } from '@utils/sort';
 
 const StyledSection = styled('section', {
   '> .content': {
@@ -46,10 +47,7 @@ export const LatestPostsSection: React.FC<LatestPostsSectionProps> = props => {
   }, [props.posts]);
 
   const latestPosts = useMemo(() => {
-    return props.posts
-      .filter(isNotFeaturedPost)
-      .sort((a, b) => Date.parse(b.publishedAt) - Date.parse(a.publishedAt))
-      .slice(0, 3);
+    return props.posts.filter(isNotFeaturedPost).sort(byNewestDate).slice(0, 3);
   }, [props.posts]);
 
   return (
