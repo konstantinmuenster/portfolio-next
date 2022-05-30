@@ -1,10 +1,11 @@
 import { useMemo } from 'react';
-import { NextRouter, useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import qs from 'query-string';
 
 import { darkTheme, styled } from '@config/stitches.config';
 import { BlogPostMatter } from '@pages/blog/[slug]';
 import { Overhead } from '@components/Overhead';
+import { getQueryParam } from '@utils/router/getQueryParam';
 
 const StyledTrendingTopics = styled('div', {
   '.trending-topics-list': {
@@ -39,7 +40,7 @@ type TrendingTopicsProps = {
 
 export const TrendingTopics: React.FC<TrendingTopicsProps> = props => {
   const router = useRouter();
-  const currentTags = getTagsFromQuery(router);
+  const currentTags = getQueryParam(router.query, 'tags') ?? [];
 
   const trendingTopics = useMemo(
     () => getTrendingTopics(props.posts, { count: 5 }),
@@ -106,10 +107,4 @@ const getTrendingTopics = (
   return Object.values(tags)
     .sort(({ count: ac }, { count: bc }) => bc - ac)
     .slice(0, count ?? 5);
-};
-
-const getTagsFromQuery = (router: NextRouter) => {
-  if (!router.query.tags) return [];
-  if (Array.isArray(router.query.tags)) return router.query.tags;
-  return router.query.tags.split(',');
 };
