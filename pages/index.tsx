@@ -10,6 +10,7 @@ import { LatestProjectsSection } from '@sections/HomePage/LatestProjects';
 import type { BlogPostMatter } from './blog/[slug]';
 import type { ProjectMatter, ProjectProps } from './projects/[slug]';
 import { ContactCard } from '@components/Card';
+import { byNewestDate } from '@utils/sort';
 
 type HomePageProps = {
   posts: BlogPostMatter[];
@@ -33,7 +34,7 @@ export default HomePage;
 export const getStaticProps: GetStaticProps = async () => {
   return {
     props: {
-      posts: getAllBlogPosts(),
+      posts: getAllBlogPosts().sort(byNewestDate),
       projects: await buildProjectProps(getAllProjects()),
     },
   };
