@@ -2,10 +2,11 @@ import { useMemo } from 'react';
 import { useRouter } from 'next/router';
 import qs from 'query-string';
 
-import { darkTheme, styled } from '@config/stitches.config';
+import { styled } from '@config/stitches.config';
 import { BlogPostMatter } from '@pages/blog/[slug]';
 import { Overhead } from '@components/Overhead';
 import { getQueryParam } from '@utils/router/getQueryParam';
+import { Option } from '@components/Option';
 
 const StyledTrendingTopics = styled('div', {
   '.trending-topics-list': {
@@ -13,24 +14,6 @@ const StyledTrendingTopics = styled('div', {
     display: 'flex',
     flexDirection: 'row',
     columnGap: '0.5rem',
-
-    button: {
-      py: '0.25rem',
-      px: '0.375rem',
-      fontSize: '$mini',
-      borderRadius: '$less',
-
-      color: '$subtext',
-      background: '$turquoise',
-      transition: '$default',
-
-      [`.${darkTheme} &`]: { backgroundColor: '$secondary100' },
-
-      '&:hover, &[data-selected="true"]': {
-        color: '$primary900',
-        background: '$primary50',
-      },
-    },
   },
 });
 
@@ -61,25 +44,20 @@ export const TrendingTopics: React.FC<TrendingTopicsProps> = props => {
     updateTagsQuery(currentTags.filter(v => v !== tag));
   };
 
-  const handleClickOnTag = (tag: string) => {
-    if (currentTags.includes(tag)) removeSelectedTag(tag);
-    else addSelectedTag(tag);
-  };
-
   return (
     <StyledTrendingTopics>
       <Overhead>Trending Topics</Overhead>
       <div className="trending-topics-list">
         {trendingTopics.map(({ name }, key) => {
           return (
-            <button
+            <Option
               key={key}
-              onClick={() => handleClickOnTag(name)}
-              data-selected={currentTags.includes(name)}
+              label={name}
+              onAdd={addSelectedTag}
+              onRemove={removeSelectedTag}
+              isSelected={currentTags.includes(name)}
               aria-label="Filter Articles By Topic"
-            >
-              {name}
-            </button>
+            />
           );
         })}
       </div>
