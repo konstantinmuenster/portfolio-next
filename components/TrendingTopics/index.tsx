@@ -1,12 +1,12 @@
 import { useMemo } from 'react';
 import { useRouter } from 'next/router';
-import qs from 'query-string';
 
 import { styled } from '@config/stitches.config';
 import { BlogPostMatter } from '@pages/blog/[slug]';
 import { Overhead } from '@components/Overhead';
 import { getQueryParam } from '@utils/router/getQueryParam';
 import { Option } from '@components/Option';
+import { setQueryParam } from '@utils/router/setQueryParam';
 
 const StyledTrendingTopics = styled('div', {
   '.trending-topics-list': {
@@ -30,18 +30,15 @@ export const TrendingTopics: React.FC<TrendingTopicsProps> = props => {
     [props.posts]
   );
 
-  const updateTagsQuery = (tags: string[]) => {
-    const query = qs.stringify({ tags }, { arrayFormat: 'comma' });
-    router.push(`${router.pathname}?${query}`);
-  };
-
   const addSelectedTag = (tag: string) => {
-    updateTagsQuery([...currentTags, tag]);
-    document.querySelector('footer')?.scrollIntoView();
+    setQueryParam(router, { key: 'tags', value: [...currentTags, tag] });
   };
 
   const removeSelectedTag = (tag: string) => {
-    updateTagsQuery(currentTags.filter(v => v !== tag));
+    setQueryParam(router, {
+      key: 'tags',
+      value: currentTags.filter(v => v !== tag),
+    });
   };
 
   return (

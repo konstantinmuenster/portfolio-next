@@ -3,7 +3,7 @@ import type { ReadTimeResults } from 'reading-time';
 import type { GetStaticProps } from 'next';
 import { getMDXComponent, getMDXExport } from 'mdx-bundler/client';
 
-import { redirectTo } from '@utils/redirectTo';
+import { redirectTo } from '@utils/router/redirectTo';
 import { getAllBlogPosts, getBlogPost } from '@lib/mdx/blog';
 import { BlogPostHeroSection } from '@sections/BlogPostPage/Hero';
 import { BlogPostBanner } from '@sections/BlogPostPage/Banner';

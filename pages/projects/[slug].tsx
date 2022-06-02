@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { GetStaticProps } from 'next';
 import { getMDXComponent, getMDXExport } from 'mdx-bundler/client';
 
-import { redirectTo } from '@utils/redirectTo';
+import { redirectTo } from '@utils/router/redirectTo';
 import { getAllProjects, getProject } from '@lib/mdx/projects';
 
 export type ProjectMatter = {

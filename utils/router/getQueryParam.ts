@@ -2,7 +2,7 @@ import type { ParsedUrlQuery } from 'querystring';
 
 export const getQueryParam = (query: ParsedUrlQuery, param: string) => {
   let queryParam = query[param];
-  if (!queryParam) return undefined;
+  if (!queryParam) return [];
 
   if (!Array.isArray(queryParam)) queryParam = [queryParam];
 
