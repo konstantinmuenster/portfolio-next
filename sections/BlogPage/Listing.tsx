@@ -15,10 +15,15 @@ const StyledListingSection = styled('section', {
 
   '.blog-listing-options': {
     display: 'flex',
-    flexDirection: 'row',
-    columnGap: '1rem',
-    alignItems: 'center',
+    flexDirection: 'column',
+    gap: '1rem',
+    alignItems: 'start',
     justifyContent: 'start',
+
+    '@sm': {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
 
     '> span': {
       display: 'block',
@@ -28,7 +33,8 @@ const StyledListingSection = styled('section', {
     '.blog-listing-categories': {
       display: 'flex',
       flexDirection: 'row',
-      columnGap: '0.5rem',
+      flexWrap: 'wrap',
+      gap: '0.5rem',
       alignItems: 'center',
       justifyContent: 'start',
     },

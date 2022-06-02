@@ -13,7 +13,9 @@ const StyledTrendingTopics = styled('div', {
     my: '1rem',
     display: 'flex',
     flexDirection: 'row',
+    flexWrap: 'wrap',
     columnGap: '0.5rem',
+    rowGap: '1rem',
   },
 });
 
