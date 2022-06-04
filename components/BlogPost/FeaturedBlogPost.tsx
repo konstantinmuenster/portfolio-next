@@ -24,8 +24,10 @@ const StyledFeaturedBlogPost = styled('div', {
     },
   },
 
-  h5: {
+  '.title': {
     fontSize: '1.3rem',
+    fontFamily: '$serif',
+    fontWeight: 400,
     lineHeight: '1.4rem',
     marginTop: '0.875rem',
     marginBottom: '0.125rem',

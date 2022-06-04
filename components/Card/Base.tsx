@@ -38,6 +38,8 @@ const StyledBaseCard = styled('div', {
   py: '1.25rem',
 
   'h1, h2, h3, h4, h5': {
+    fontFamily: '$serif',
+    fontWeight: 400,
     marginBottom: '0.25rem',
   },
 
