@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 
 import type { BlogPostMatter } from '@pages/blog/[slug]';
@@ -7,11 +7,14 @@ import { BlogPostGrid } from '@components/BlogPost/BlogPostGrid';
 import { ContentWrapper } from '@components/Layout';
 import { Overhead } from '@components/Overhead';
 import { Option } from '@components/Option';
+import { SearchInput } from '@components/SearchInput';
 import { setQueryParam } from '@utils/router/setQueryParam';
 import { getQueryParam } from '@utils/router/getQueryParam';
+import { useDebounce } from '@hooks/useDebounce';
+import { useSearchIndex } from '@hooks/useSearchIndex';
 
 const StyledListingSection = styled('section', {
-  py: '3rem',
+  '.blog-listing-search': { my: '3rem' },
 
   '.blog-listing-options': {
     display: 'flex',
@@ -49,17 +52,31 @@ type ListingSectionProps = {
 
 export const ListingSection: React.FC<ListingSectionProps> = props => {
   const router = useRouter();
+  const [searchQuery, setSearchQuery] = useState('');
+  const debouncedSearchQuery = useDebounce(searchQuery, 500);
 
   const allCategories = collectCategoriesFromPosts(props.posts);
 
   const selectedTags = getQueryParam(router.query, 'tags');
   const selectedCategory = getQueryParam(router.query, 'category');
 
+  const searchIndex = useSearchIndex(props.posts, [
+    { name: 'title', weight: 0.7 },
+    { name: 'tags', weight: 0.5 },
+    { name: 'summary', weight: 0.2 },
+  ]);
+
+  const queriedPosts = useMemo(() => {
+    return debouncedSearchQuery
+      ? searchIndex.search(debouncedSearchQuery).map(result => result.item)
+      : props.posts;
+  }, [props.posts, debouncedSearchQuery, searchIndex]);
+
   const filteredPosts = useMemo(() => {
-    return props.posts
+    return queriedPosts
       .filter(post => hasSelectedCategory(selectedCategory, post))
       .filter(post => hasSelectedTags(selectedTags, post));
-  }, [props.posts, selectedCategory, selectedTags]);
+  }, [queriedPosts, selectedCategory, selectedTags]);
 
   const selectCategory = (category: string) => {
     setQueryParam(router, { key: 'category', value: [category] });
@@ -72,6 +89,12 @@ export const ListingSection: React.FC<ListingSectionProps> = props => {
   return (
     <StyledListingSection id="blog-listing">
       <ContentWrapper>
+        <div className="blog-listing-search">
+          <SearchInput
+            value={searchQuery}
+            onChange={({ target }) => setSearchQuery(target.value)}
+          />
+        </div>
         <div className="blog-listing-options">
           <Overhead>{`${filteredPosts.length} article${
             filteredPosts.length === 1 ? '' : 's'
