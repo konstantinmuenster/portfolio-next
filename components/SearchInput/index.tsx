@@ -25,6 +25,7 @@ const StyledSearchInput = styled('div', {
     px: '0.5rem',
     py: '0.5rem',
 
+    '&:focus::placeholder': { color: 'transparent' },
     '&::placeholder': { color: '$subtext', opacity: 0.75 },
 
     '&:active, &:focus-visible': {
