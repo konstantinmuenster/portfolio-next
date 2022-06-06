@@ -14,6 +14,8 @@ import { useDebounce } from '@hooks/useDebounce';
 import { useSearchIndex } from '@hooks/useSearchIndex';
 
 const StyledListingSection = styled('section', {
+  minHeight: '80vh',
+
   '.blog-listing-search': { my: '3rem' },
 
   '.blog-listing-options': {
