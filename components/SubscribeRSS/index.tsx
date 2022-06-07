@@ -1,8 +1,9 @@
 import { Rss } from '@styled-icons/foundation';
 
 import { styled } from '@config/stitches.config';
+import { Link } from '@components/Link';
 
-const StyledSubscribeRSS = styled('a', {
+const StyledSubscribeRSS = styled(Link, {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -14,11 +15,7 @@ const StyledSubscribeRSS = styled('a', {
 
 export const SubscribeRSS: React.FC = () => {
   return (
-    <StyledSubscribeRSS
-      href="/rss.xml"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
+    <StyledSubscribeRSS to="/rss.xml" target="_blank" rel="noopener noreferrer">
       <Rss /> <span>Subscribe RSS</span>
     </StyledSubscribeRSS>
   );
