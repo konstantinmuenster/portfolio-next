@@ -40,7 +40,6 @@ const StyledSearchInput = styled('div', {
     top: 6,
     right: 6,
     padding: 4,
-    background: '$surface50',
     borderRadius: '$less',
     display: 'flex',
     alignItems: 'center',
