@@ -5,6 +5,7 @@ import { HEADER_HEIGHT } from '@components/Header';
 import { ContentWrapper } from '@components/Layout';
 import { TrendingTopics } from '@components/TrendingTopics';
 import { SubscribeRSS } from '@components/SubscribeRSS';
+import { MediumFollowers } from '@components/MediumFollowers';
 
 const StyledSection = styled('section', {
   paddingTop: `calc(${HEADER_HEIGHT}px + 2rem)`,
@@ -33,7 +34,7 @@ const StyledSection = styled('section', {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'flex-start',
-      columnGap: '1rem',
+      columnGap: '2rem',
       paddingTop: '4rem',
     },
   },
@@ -58,6 +59,7 @@ export const HeroSection: React.FC<HeroSectionProps> = props => {
         <TrendingTopics posts={props.posts} />
         <div className="hero-links">
           <SubscribeRSS />
+          <MediumFollowers />
         </div>
       </ContentWrapper>
     </StyledSection>
