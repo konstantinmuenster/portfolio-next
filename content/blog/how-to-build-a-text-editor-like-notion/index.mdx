@@ -1,11 +1,20 @@
 ---
-title: How To Build A Text Editor Like Notion
-summary: Learn how moder block-based text editors work and how to build one.
+title: How to Build a Text Editor Like Notion
+summary: 'Build your own Notion clone with React.js and learn how such text editors work.'
+publishedAt: '2020/11/07'
 category: 'Web Development'
 type: 'Guide'
-tags: ['Text Editor Development', 'React.js', 'Notion']
-publishedAt: '2020/11/07'
-mediumUrl: https://medium.com/swlh/how-to-build-a-text-editor-like-notion-c510aedfdfcc
+tags:
+  [
+    'Contenteditable',
+    'Text Editor',
+    'Rich Editor',
+    'Notion',
+    'Block Editor',
+    'React.js',
+    'Clone',
+  ]
+mediumUrl: https://medium.com/@konstantinmuenster/how-to-build-a-text-editor-like-notion-c510aedfdfcc
 ---
 
 export { default as banner } from './notion-clone-cover.png';
@@ -13,70 +22,88 @@ export const bannerCaption =
   'Slash commands are a building block in Notions text editor.';
 
 import NotionCloneGif from './notion-clone-medium-short.gif';
+import NotionCloneDelete from './1__FwMgJ660ehUK1SZgYLYjMA.gif';
+import NotionCloneContextMenu from './1__CsyyrDAk1vei6qrGVZtGSA.png';
+import NotionCloneDragDrop from './1__gg4NH3JJRtioqNutwJf__DQ.gif';
 
-Without a doubt, [Notion.so](https://notion.so) is one of my favorite apps when it comes to organizing notes. I love their minimal designed text editor because it focuses your attention on the content — and not on unnecessary UI elements.
+Without a doubt, [Notion.so](https://www.notion.so/) is one of my favorite apps when it comes to organizing notes. I love their minimal designed text editor because it focuses your attention on the content — and not on unnecessary UI elements.
 
 Yet it provides you a ton of powerful features that lead to a better writing experience.
 
-For instance, the slash command is one of those features that really enhanced my writing flow. It allows you to add and style content without leaving the keyboard. Instead of clicking a UI button to add a new heading, you can just type /h1, hit ‘Enter’, and there you go.
+For instance, the slash command is one of those features that really enhanced my writing flow. It allows you to add and style content without leaving the keyboard. Instead of clicking a UI button to add a new heading, you can just type `/h1`, hit ‘Enter’, and there you go.
 
-Another cool thing about Notion is that it is a fully web-based application. Because of that, I was interested in how it was actually built — especially the text editor. In fact, I realized that it is not that difficult as I expected it to be.
+Another cool thing about Notion is that it is a fully web-based application. Because of that, I was interested in how it was actually built — especially the text editor. In fact, I realized that it is not that difficult as I expected it to be.
 
 In this article, we take a closer look at how a text editor like Notion works and how we can build one ourselves with React.js.
 
 By doing this, we will discover and learn some essential frontend skills:
 
-- Working with the DOM and its Nodes
-- Working with Event Listeners
-- Advanced State Management
+- Working with the **DOM** and its **Nodes**
+- Working with **Event Listeners**
+- Advanced **State Management**
 
 Here is how our application will look like in the end. In my opinion, a perfect project for your portfolio if you are new to React.
 
 <Image
   src={NotionCloneGif}
-  alt="Notion clone"
+  alt="Notion Clone React"
   caption="The final application!"
 />
 
----
-
 ## Contents
 
-1. The **Theory**: How Does A Notion-like Text Editor Work?
-2. The **Practice**: How Can We Rebuild It?
-3. **Ideas** For Further Development
-4. **Resources**
+1.  The **Theory**: How Does A Notion-like Text Editor Work?
+2.  The **Practice**: How Can We Rebuild It?
+3.  **Ideas** For Further Development
+4.  **Resources**
 
----
-
-## The Theory: How Does A Notion-like Text Editor Work?
-
-### Test Heading
+### The Theory: How Does A Notion-like Text Editor Work?
 
 #### Editable Blocks
 
-The core concept of a Notion-like text editor is what I would like to call blocks. Each time you hit ‘Enter’ on your keyboard, you create a new block. So essentially, each page consists of one or many blocks.
+The core concept of a Notion-like text editor is what I would like to call _blocks_. Each time you hit ‘Enter’ on your keyboard, you create a new block. So essentially, each page consists of one or many blocks.
 
 From a user perspective, a block contains content and has a specific styling that is associated with the block type. Types of blocks could be headings, quotes, or paragraphs. Each of those has a unique styling.
 
-From a technical perspective, a block is a so-called contenteditable element. Nearly every HTML element can be turned into an editable one. You just have to add the contenteditable="true" attribute to it. This indicates if the element should be editable by the user. If so, users can edit their content directly in the HTML document as if it would be an input or textarea element.
+From a technical perspective, a block is a so-called `contenteditable` element. Nearly every HTML element can be turned into an editable one. You just have to add the `contenteditable="true"` attribute to it. This indicates if the element should be editable by the user. If so, users can edit their content directly in the HTML document as if it would be an `input` or `textarea` element.
 
-> The concept gets clear in an example:
+The concept gets clear in an example:
 
-Let’s say a user adds a new block with the type of Heading. This produces the following HTML output:
-
-```html
-<h1 contenteditable="true">I am editable by the user</h1>
-```
-
-Since the user selected Heading as the block type, we append an h1 element to the DOM. Thus, it gets an appropriate heading styling. The user could now directly edit the content of that h1 element by placing the cursor inside it.
+Let’s say a user adds a new block with the type of _Heading_. This produces the following HTML output:
 
 ```jsx
-// Imports
+// HTML Output:
+<h1 contenteditable="true"> I am editable by the user </h1>
+```
+
+Since the user selected _Heading_ as the block type, we append an `h1` element to the DOM. Thus, it gets an appropriate heading styling. The user could now directly edit the content of that `h1` element by placing the cursor inside it.
+
+#### Slash Commands
+
+Now that the user can add new blocks to the page by pressing ‘Enter’, how can he/she determine the type of an added block?
+
+In Notion, you can do this via slash commands.
+
+The concept of slash commands is simple yet effective. Every time you type a `/` inside a block, a type-ahead menu pops up right above the cursor. This menu shows you all available block types. As you write along, you filter the block types with your query. If you found the right block type, just hit ‘Enter’, and the block turns into whatever you selected.
+
+In our application, all slash commands will be equivalent to the corresponding HTML elements. Meaning an `/h1` command turns into an H1 heading and a `/p` command turns into a paragraph, for example.
+
+Technically, an existing block like `<h1 contenteditable="true"> </h1>` would consequently turn into `<p contenteditable="true"> </p>` once the user types `/p` and hits ‘ Enter’.
+
+### The Practice: How Can We Rebuild It?
+
+Now that we know how it works in theory, let’s put it into practice. First of all, we create a new React project. You can do that by using create-react-app or any other tooling.
+
+#### 1 —Create An Editable Page
+
+Having the setup done, we create our first component: `editablePage.js`
+
+```jsx
+// editablePage.js
 
 const initialBlock = { id: uid(), html: '', tag: 'p' };
 
-class EditablePage extends __React__.Component {
+class EditablePage extends React.Component {
   constructor(props) {
     super(props);
     this.state = { blocks: [initialBlock] };
@@ -100,17 +127,584 @@ class EditablePage extends __React__.Component {
 export default EditablePage;
 ```
 
-```jsx collapsible
-import React from 'react';
+The page component stores and renders all blocks we will create later on. As a start, we only provide an initial first block that we define at the very top. This block will turn into an empty paragraph element once we created our editable block component. For now, we just render a plain `div` container.
 
-export function Counter({ initialCount = 0 }) {
-  const [count, setCount] = React.useState(initialCount);
-  return (
-    <button type="button" onClick={() => setCount(prevCount => prevCount + 1)}>
-      {count}
-    </button>
-  );
-}
+Note: Since every block needs a unique ID, I created a helper function `uid()` that we can use for initializing new blocks. In case you want to use the same function:
+
+```js
+// uid.js
+const uid = () => {
+  return Date.now().toString(36) + Math.random().toString(36).substr(2);
+};
 ```
 
-Here is how our application will look like in the end. In my opinion, a perfect project for your portfolio if you are new to React.
+#### 2 — Create An Editable Block
+
+As a next step, we create an editable block component that we can render instead of the `div` container. For that, we have to install an external dependency called `react-contenteditable`.
+
+_React-Contenteditable_ is a package that makes working with editable elements in React really easy. It abstracts a lot of complexity for us so that we only need to pass the right props to the `ContentEditable` component. The component exposed by the package then handles the rest.
+
+To install the package, run `npm i react-contenteditable`
+
+Next, we create a new file called `editableBlock.js`:
+
+```jsx
+// editableBlock.js
+class EditableBlock extends React.Component {
+  constructor(props) {
+    super(props);
+    this.onChangeHandler = this.onChangeHandler.bind(this);
+    this.contentEditable = React.createRef();
+    this.state = {
+      html: '',
+      tag: 'p',
+    };
+  }
+
+  componentDidMount() {
+    this.setState({ html: this.props.html, tag: this.props.tag });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const htmlChanged = prevState.html !== this.state.html;
+    const tagChanged = prevState.tag !== this.state.tag;
+    if (htmlChanged || tagChanged) {
+      this.props.updatePage({
+        id: this.props.id,
+        html: this.state.html,
+        tag: this.state.tag,
+      });
+    }
+  }
+
+  onChangeHandler(e) {
+    this.setState({ html: e.target.value });
+  }
+
+  render() {
+    return (
+      <ContentEditable
+        className="Block"
+        innerRef={this.contentEditable}
+        html={this.state.html}
+        tagName={this.state.tag}
+        onChange={this.onChangeHandler}
+      />
+    );
+  }
+}
+
+export default EditableBlock;
+```
+
+The editable block renders the `ContentEditable` component that we imported from the `react-contenteditable` package. By passing `html` and `tagName` as props to the component, we can define what should be displayed and how it should be displayed. Remember, the `tagName` defines the HTML element type and hence the styling.
+
+If we were to change the block type later on (e.g. from `p` to `h1`), we can simply update the `tagName` prop. Pretty easy, right?
+
+We also added advanced state management to the block component. When the component mounts, it receives the initial HTML content and tag via props and stores them in the state. From now on, the block component fully owns the draft state. Any subsequent changes to the `html` or `tagName` prop are being ignored.
+
+When there have been relevant updates to the `html` or `tagName` state property, we update the page component’s state in the `componentDidUpdate` lifecycle hook too. Thus, we avoid an unnecessary re-rendering of the page.
+
+Having our `editableBlock` component set up, we can finally use it in our page component:
+
+```jsx lines=7-9,13-48,55
+// editablePage.js
+const initialBlock = { id: uid(), html: '', tag: 'p' };
+
+class EditablePage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.updatePageHandler = this.updatePageHandler.bind(this);
+    this.addBlockHandler = this.addBlockHandler.bind(this);
+    this.deleteBlockHandler = this.deleteBlockHandler.bind(this);
+    this.state = { blocks: [initialBlock] };
+  }
+
+  updatePageHandler(updatedBlock) {
+    const blocks = this.state.blocks;
+    const index = blocks.map(b => b.id).indexOf(updatedBlock.id);
+    const updatedBlocks = [...blocks];
+    updatedBlocks[index] = {
+      ...updatedBlocks[index],
+      tag: updatedBlock.tag,
+      html: updatedBlock.html,
+    };
+    this.setState({ blocks: updatedBlocks });
+  }
+
+  addBlockHandler(currentBlock) {
+    const newBlock = { id: uid(), html: '', tag: 'p' };
+    const blocks = this.state.blocks;
+    const index = blocks.map(b => b.id).indexOf(currentBlock.id);
+    const updatedBlocks = [...blocks];
+    updatedBlocks.splice(index + 1, 0, newBlock);
+    this.setState({ blocks: updatedBlocks }, () => {
+      currentBlock.ref.nextElementSibling.focus();
+    });
+  }
+
+  deleteBlockHandler(currentBlock) {
+    const previousBlock = currentBlock.ref.previousElementSibling;
+    if (previousBlock) {
+      const blocks = this.state.blocks;
+      const index = blocks.map(b => b.id).indexOf(currentBlock.id);
+      const updatedBlocks = [...blocks];
+      updatedBlocks.splice(index, 1);
+      this.setState({ blocks: updatedBlocks }, () => {
+        setCaretToEnd(previousBlock);
+        previousBlock.focus();
+      });
+    }
+  }
+
+  render() {
+    return (
+      <div className="Page">
+        {this.state.blocks.map((block, key) => {
+          return (
+            <EditableBlock
+              key={key}
+              id={block.id}
+              tag={block.tag}
+              html={block.html}
+              updatePage={this.updatePageHandler}
+              addBlock={this.addBlockHandler}
+              deleteBlock={this.deleteBlockHandler}
+            />
+          );
+        })}
+      </div>
+    );
+  }
+}
+
+export default EditablePage;
+```
+
+Besides using the `EditableBlock` component inside our `render` hook, we additionally added new methods in the page component:
+
+- The `updateBlockHandler` that we already use in our block component takes care of keeping the page and block state in sync.
+- The `addBlockHandler` appends a new block and sets the focus to it.
+- The `deleteBlockHandler` removes a block and sets the focus to the preceding block.
+
+We pass all three methods as props to the editable block.
+
+Note: In the `deleteBlockHandler`, we use another helper function that manually sets the cursor to the end of the block content. If we would just focus the element as we did in `addBlockHandler`, it would focus the element though, but with a cursor set to the very beginning of the block content. In case you want to use the same `setCaretToEnd` helper function:
+
+```js
+// setCaretToEnd.js
+const setCaretToEnd = element => {
+  const range = document.createRange();
+  const selection = window.getSelection();
+  range.selectNodeContents(element);
+  range.collapse(false);
+  selection.removeAllRanges();
+  selection.addRange(range);
+  element.focus();
+};
+```
+
+#### 3 — Implement A KeyDown Listener
+
+So far, we can only add text content to our initially added block. Let’s make things a bit more interactive with our first event listener. This will allow us to add and delete blocks as we like.
+
+Inside `editableBlock.js`, we create an `onKeyDownHandler` method that we pass on to the `ContentEditable` component:
+
+```jsx
+// editableBlock.js
+class EditableBlock extends React.Component {
+  constructor(props) {
+    super(props);
+    // ...
+    this.onKeyDownHandler = this.onKeyDownHandler.bind(this);
+    this.contentEditable = React.createRef();
+    this.state = {
+      htmlBackup: null,
+      html: '',
+      tag: 'p',
+      previousKey: '',
+    };
+  }
+
+  // ...
+
+  onKeyDownHandler(e) {
+    if (e.key === '/') {
+      this.setState({ htmlBackup: this.state.html });
+    }
+    if (e.key === 'Enter') {
+      if (this.state.previousKey !== 'Shift') {
+        e.preventDefault();
+        this.props.addBlock({
+          id: this.props.id,
+          ref: this.contentEditable.current,
+        });
+      }
+    }
+    if (e.key === 'Backspace' && !this.state.html) {
+      e.preventDefault();
+      this.props.deleteBlock({
+        id: this.props.id,
+        ref: this.contentEditable.current,
+      });
+    }
+    this.setState({ previousKey: e.key });
+  }
+
+  render() {
+    return (
+      <ContentEditable
+        className="Block"
+        innerRef={this.contentEditable}
+        html={this.state.html}
+        tagName={this.state.tag}
+        onChange={this.onChangeHandler}
+        onKeyDown={this.onKeyDownHandler}
+      />
+    );
+  }
+}
+
+export default EditableBlock;
+```
+
+As mentioned, this event listener is primarily responsible for adding and deleting blocks. But let’s break the `onKeyDownHandler` down bit by bit:
+
+- Regardless of what key has been pressed, store the key in the state. We need the `previousKey` to be able to detect key combinations.
+- When the user pressed `/`, we store a copy of the current HTML content in the state. We do that because we want to restore a clean HTML version after the user has finished the process of selecting a block type.
+- When the user pressed `Enter`, we prevent the default behavior (i.e. adding a new line). Instead, we create a new block by using the `addBlock` method which we previously created in the page component.
+- Because the user should still be able to add new lines somehow, we use the `previousKey` state property to detect a `Shift+Enter` key combination. If that is the case, we do not add a new block and allow the default ‘Enter’ behavior to happen.
+- Lastly, we delete an empty block when the user presses `Backspace` with the `deleteBlock` method.
+
+<Image
+  src={NotionCloneDelete}
+  alt="Notion Clone React"
+  caption="So far, we can create and delete blocks."
+/>
+
+Now that we can create new blocks, what about slash commands and selecting different block types? We cover that in the next steps.
+
+#### 4 — Add A Select Menu
+
+As mentioned earlier, when the user types a `/`, we want to display a select menu. The menu shall list up all available block types. A specific block type can then be selected either by clicking on it or by typing in the matching slash command.
+
+To implement such a select menu, we first have to add another dependency: _match-sorter_. This is a simple package that helps us with querying the matching block types.
+
+To install it, run: `npm i match-sorter`
+
+Having that done, we create a new file called `selectMenu.js` with the following contents:
+
+```jsx
+// selectMenu.js
+const MENU_HEIGHT = 150;
+const allowedTags = [
+  {
+    id: 'page-title',
+    tag: 'h1',
+    label: 'Page Title',
+  },
+  {
+    id: 'heading',
+    tag: 'h2',
+    label: 'Heading',
+  },
+  {
+    id: 'subheading',
+    tag: 'h3',
+    label: 'Subheading',
+  },
+  {
+    id: 'paragraph',
+    tag: 'p',
+    label: 'Paragraph',
+  },
+];
+
+class SelectMenu extends React.Component {
+  constructor(props) {
+    super(props);
+    this.keyDownHandler = this.keyDownHandler.bind(this);
+    this.state = {
+      command: '',
+      items: allowedTags,
+      selectedItem: 0,
+    };
+  }
+
+  componentDidMount() {
+    document.addEventListener('keydown', this.keyDownHandler);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const command = this.state.command;
+    if (prevState.command !== command) {
+      const items = matchSorter(allowedTags, command, { keys: ['tag'] });
+      this.setState({ items: items });
+    }
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.keyDownHandler);
+  }
+
+  keyDownHandler(e) {
+    const items = this.state.items;
+    const selected = this.state.selectedItem;
+    const command = this.state.command;
+
+    switch (e.key) {
+      case 'Enter':
+        e.preventDefault();
+        this.props.onSelect(items[selected].tag);
+        break;
+      case 'Backspace':
+        if (!command) this.props.close();
+        this.setState({ command: command.substring(0, command.length - 1) });
+        break;
+      case 'ArrowUp':
+        e.preventDefault();
+        const prevSelected = selected === 0 ? items.length - 1 : selected - 1;
+        this.setState({ selectedItem: prevSelected });
+        break;
+      case 'ArrowDown':
+      case 'Tab':
+        e.preventDefault();
+        const nextSelected = selected === items.length - 1 ? 0 : selected + 1;
+        this.setState({ selectedItem: nextSelected });
+        break;
+      default:
+        this.setState({ command: this.state.command + e.key });
+        break;
+    }
+  }
+
+  render() {
+    const x = this.props.position.x;
+    const y = this.props.position.y - MENU_HEIGHT;
+    const positionAttributes = { top: y, left: x };
+
+    return (
+      <div className="SelectMenu" style={positionAttributes}>
+        <div className="Items">
+          {this.state.items.map((item, key) => {
+            const selectedItem = this.state.selectedItem;
+            const isSelected = this.state.items.indexOf(item) === selectedItem;
+            return (
+              <div
+                className={isSelected ? 'Selected' : null}
+                key={key}
+                role="button"
+                tabIndex="0"
+                onClick={() => this.props.onSelect(item.tag)}
+              >
+                {item.label}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+}
+
+export default SelectMenu;
+```
+
+At the very top, we define what block types should be selectable by the user. Each type has a tag and a label: the tag defines which HTML element type shall be used and the label defines the display name inside our menu.
+
+When the component mounts, we calculate the position of the menu on the screen inside our `render` hook. There, we use `this.props.position`. This object contains the current position of the cursor since we want to display the menu right above it.
+
+Additionally, we attach a `keyDown` event listener in the `componentDidMount` hook. It takes care of storing the entered command in state and enables the user to select a block type via keyboard.
+
+Whenever the `command` state property changes, we run our imported `matchedSorter` function to filter for matching block types. Thus, the select menu shows only block types that match with our command.
+
+Finally, when the user hits ‘Enter’ or clicks on an entry, we execute an `onSelect` method that we receive via props.
+
+Admittedly, this was a lot of code at once. But if you go through it step by step, it should be understandable hopefully.
+
+#### 5 — Add Block Type Selection
+
+Next, we can put things together. Since we have our select menu component in place, we can add it to `editableBlock.js`:
+
+```jsx
+// editableBlock.js
+class EditableBlock extends React.Component {
+  constructor(props) {
+    super(props);
+    // ...
+    this.onKeyUpHandler = this.onKeyUpHandler.bind(this);
+    this.openSelectMenuHandler = this.openSelectMenuHandler.bind(this);
+    this.closeSelectMenuHandler = this.closeSelectMenuHandler.bind(this);
+    this.tagSelectionHandler = this.tagSelectionHandler.bind(this);
+    this.contentEditable = React.createRef();
+    this.state = {
+      htmlBackup: null,
+      html: '',
+      tag: 'p',
+      previousKey: '',
+      selectMenuIsOpen: false,
+      selectMenuPosition: {
+        x: null,
+        y: null,
+      },
+    };
+  }
+
+  // ...
+
+  onKeyUpHandler(e) {
+    if (e.key === '/') {
+      this.openSelectMenuHandler();
+    }
+  }
+
+  openSelectMenuHandler() {
+    const { x, y } = getCaretCoordinates();
+    this.setState({
+      selectMenuIsOpen: true,
+      selectMenuPosition: { x, y },
+    });
+    document.addEventListener('click', this.closeSelectMenuHandler);
+  }
+
+  closeSelectMenuHandler() {
+    this.setState({
+      htmlBackup: null,
+      selectMenuIsOpen: false,
+      selectMenuPosition: { x: null, y: null },
+    });
+    document.removeEventListener('click', this.closeSelectMenuHandler);
+  }
+
+  tagSelectionHandler(tag) {
+    this.setState({ tag: tag, html: this.state.htmlBackup }, () => {
+      setCaretToEnd(this.contentEditable.current);
+      this.closeSelectMenuHandler();
+    });
+  }
+
+  render() {
+    return (
+      <>
+        {this.state.selectMenuIsOpen && (
+          <SelectMenu
+            position={this.state.selectMenuPosition}
+            onSelect={this.tagSelectionHandler}
+            close={this.closeSelectMenuHandler}
+          />
+        )}
+        <ContentEditable
+          className="Block"
+          innerRef={this.contentEditable}
+          html={this.state.html}
+          tagName={this.state.tag}
+          onChange={this.onChangeHandler}
+          onKeyDown={this.onKeyDownHandler}
+          onKeyUp={this.onKeyUpHandler}
+        />
+      </>
+    );
+  }
+}
+
+export default EditableBlock;
+```
+
+First, we import our `SelectMenu` component and render it conditionally. We can control its visibility by our state property `selectMenuIsOpen`. If we set this to true, we render the menu additionally to the `ContentEditable` component.
+
+Next, we implemented the logic that defines when and where we want to show it.
+
+We defined two methods that handle the menu’s opening and closing. When we open it, we first get the coordinates of the currently set cursor. We do this because we want to open up the menu right above the cursor. Lastly, we store this position in the state, set `selectMenuIsOpen` to true, and attach a click listener.
+
+The click listener is responsible for closing the select menu once there has been another click on the screen — no matter if it was on the menu itself or outside it. Both actions should close it.
+
+Our `closeSelectMenuHandler` method then is fairly simple. We just reset our previously set state properties and detach the click listener again.
+
+Having the opening and closing handlers implemented, we also need to define when we actually want to open the menu.
+
+From a user perspective, we want to open the menu once the user enters a `/`. Therefore, it seems intuitive to add the `this.openSelectMenuHandler()` call in our previously defined `onKeyDownHandler` method, right? Because there, we already check if the user pressed the `/` key.
+
+In fact, we have to add another event listener for that. The menu should only show up once the user releases the `/` key. Otherwise, the positioning of the menu would not work correctly. Hence, we add a new `keyUp` event listener for that.
+
+Now there is only one final step to take. Remember that we pass an `onSelect` function as a prop to the select menu component? To make the selection process work, we have to define an associated method for that in our editable block component.
+
+Gladly, this method is rather simple. In the `tagSelectionHandler`, we receive the selected block type as the `tag` argument. With it, we can update our `tagName` state property as well as restore the HTML backup, i.e. the HTML content without the entered command.
+
+If that process has finished, we set the cursor to the editable block again and close the menu.
+
+And finally, believe it or not… we are done 🎉
+
+Note: I again used a helper function for obtaining the cursor coordinates. If you want to use the same function, here it is:
+
+```js
+const getCaretCoordinates = () => {
+  let x, y;
+  const selection = window.getSelection();
+  if (selection.rangeCount !== 0) {
+    const range = selection.getRangeAt(0).cloneRange();
+    range.collapse(false);
+    const rect = range.getClientRects()[0];
+    if (rect) {
+      x = rect.left;
+      y = rect.top;
+    }
+  }
+  return { x, y };
+};
+```
+
+### **Ideas** For Further Development
+
+Now that we have the core functionality of Notion’s text editor rebuilt, we have a perfect foundation for further development. There are many features that we can add to our application to improve it further.
+
+I always like to look for inspiration in existing apps and see if I can build their features on my own. Same with Notion. Here are two concrete examples:
+
+#### Context Menu Based On Selection
+
+So far, we only show a select menu when the user types a `/`. But what if the user wants to quickly edit the type of an existing block? Or he/she wants to remove a block?
+
+<Image
+  src={NotionCloneContextMenu}
+  alt="Notion Clone React Context Menu"
+  caption="Context Menu that will pop up once the user selects content"
+/>
+
+Here, a context menu comes in handy. Whenever the user selects the block’s content, we display a menu with two options: either turn the existing block’s type into another or delete the block itself with a single click.
+
+#### Rearrange Blocks By Drag and Drop
+
+Because we have an underlying block structure, we can rearrange our content fairly easily. Maybe a user realizes that this one paragraph should be further at the top of the page. In Notion, you can easily reorder blocks with a smooth drag and drop functionality. And we can do that too!
+
+<Image
+  src={NotionCloneDragDrop}
+  alt="Notion Clone React Drag Drop"
+  caption="Drag And Drop functionality to reorder blocks"
+/>
+
+### Resources
+
+Admittedly, we covered a lot in this article… but I think the idea and process of building a Notion clone are really cool and exciting, especially for React beginners. Therefore, I wanted to provide you all the things you need.
+
+#### Final Application
+
+You find a working example for the [final application on CodeSandbox](https://codesandbox.io/s/notion-text-editor-gugcc). It also includes all of the CSS stylings which we did not cover in this article.
+
+#### Advanced Application
+
+Moreover, if you want to enhance your application with more features (e.g. features like those I mentioned in the last section), have a look at my more advanced application. It might be a good source of inspiration too.
+
+This advanced Notion Clone also includes a backend part that persists the user content on a server. Great if you want to get in touch with basic CRUD operations in Node/Express!
+
+Live Demo: [https://notion-clone.kmuenster.com/](https://notion-clone.kmuenster.com/)
+
+Github Repository: [https://github.com/konstantinmuenster/notion-clone](https://github.com/konstantinmuenster/notion-clone)
+
+#### Working With The Cursor In The Browser
+
+As you noticed, I used some helper functions in our application. These functions primarily help us to work with the cursor in the browser, e.g. obtaining the cursor coordinates.
+
+Since this was something I struggled with a lot during development, I recently published an article about it. In case you want to dive deeper into this topic, here it is:
+
+[How To Find The Caret Inside A Contenteditable Element](https://medium.com/javascript-in-plain-english/how-to-find-the-caret-inside-a-contenteditable-element-955a5ad9bf81)
+
+As always, thanks for reading! If you stumbled with any questions or issues throughout this article, let me know in the comment section. Thus, I can update and improve the article if needed. I appreciate any feedback!

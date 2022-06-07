@@ -1,18 +1,106 @@
 ---
 title: How To Find The Caret Inside A Contenteditable Element
-summary: Get the cursor coordinates and index position to display interactive UI
-  elements!
-category: ['Web Development']
-type: ['Tutorial']
+summary: 'Get the cursor coordinates and index position to display interactive UI elements!'
 publishedAt: '2020/10/31'
-mediumUrl: https://javascript.plainenglish.io/how-to-find-the-caret-inside-a-contenteditable-element-955a5ad9bf81
+category: 'Web Development'
+type: 'Tutorial'
+tags: ['Contenteditable', 'Text Editor', 'Caret', 'Rich Editor']
+mediumUrl: https://medium.com/@konstantinmuenster/how-to-find-the-caret-inside-a-contenteditable-element-955a5ad9bf81
 ---
 
 export { default as banner } from './get-caret-position-contenteditable.png';
 export const bannerCaption =
   'You can find this working example at the end of this article.';
 
-# First blog post
+Yes, I know… there are certainly more exciting topics to write about than dealing with cursors on a web page. But since I struggled a lot with this issue in my latest project, I decided to share my approach — hoping that it might help one or the other.
 
-This is my first blog post. Feel free to reach me at
-[Praveen Yadav](https://twitter.com/osfreak)
+In this article, we are going to create two methods for locating the caret: One to get the X/Y coordinates and another to get the index position within the content.
+
+### The Problem
+
+Recently, I built a text-editor where users could edit HTML content inside a `contenteditable` element. To adjust the styling of the content, I wanted to display a context menu right above the cursor.
+
+To do that, we need to know the exact position of the caret. But how do we get to know that?
+
+If you use an `input` or `textarea` element, it is relatively easy to get that information because you have a `selectionStart` and `selectionEnd` attribute available on the form element itself.
+
+But for `contenteditable` elements you do not have these attributes. Besides, editable elements can have nested HTML elements inside (e.g. a `strong` tag inside a `div`). That makes it even harder.
+
+Fortunately, we can solve both issues easily.
+
+### The Solution(s)
+
+#### Get The Caret Coordinates
+
+In the mentioned example, I wanted to show a context menu right above the caret. Therefore, we need to know the X and Y coordinates of it. If we have those, we can display a `div` that has a `position: absolute;` attribute and a proper top and left positioning.
+
+```js
+function getCaretCoordinates() {
+  let x = 0,
+    y = 0;
+  const isSupported = typeof window.getSelection !== 'undefined';
+  if (isSupported) {
+    const selection = window.getSelection();
+    if (selection.rangeCount !== 0) {
+      const range = selection.getRangeAt(0).cloneRange();
+      range.collapse(true);
+      const rect = range.getClientRects()[0];
+      if (rect) {
+        x = rect.left;
+        y = rect.top;
+      }
+    }
+  }
+  return { x, y };
+}
+```
+
+To get the caret coordinates, we, first of all, get the selection from the `window` object. The selection contains information about the cursor: If it is placed, where it is placed, and how much content is selected on the screen.
+
+We use this information to check if there is a cursor set (line 7). If this is true, we clone the current range. A Range is the basic concept of selections. Each Range represents a pair of boundary points — the start and end of the selection.
+
+In case we have a range across multiple characters in our text editor, we collapse the range to the start (line 9). Finally, we can call `getClientRects` to get all the positioning data we need for our context menu (lines 10–13). This method works similar to `getBoundingClientRect`. It returns the coordinates of an element relative to its viewport.
+
+Then, we can return `x` and `y` that define the top left corner of our caret.
+
+#### Get The Caret Index Position
+
+Besides the context menu example, there might be use cases where you do not need the X and Y coordinates but rather the caret’s index position. As `input.selectionStart` returns the caret position inside an `input` element, you may want to have an equivalent method for a `contenteditable` element.
+
+That is also possible with a few lines of code:
+
+```js
+function getCaretIndex(element) {
+  let position = 0;
+  const isSupported = typeof window.getSelection !== 'undefined';
+  if (isSupported) {
+    const selection = window.getSelection();
+    if (selection.rangeCount !== 0) {
+      const range = window.getSelection().getRangeAt(0);
+      const preCaretRange = range.cloneRange();
+      preCaretRange.selectNodeContents(element);
+      preCaretRange.setEnd(range.endContainer, range.endOffset);
+      position = preCaretRange.toString().length;
+    }
+  }
+  return position;
+}
+```
+
+We start with a similar approach as we did before. Get the selection, check if a cursor is in place, and clone the range. Now in the next step, we select all the textual content of our `contenteditable` node.
+
+Imagine you would press `cmd + a` / `ctrl + a` on your keyboard inside the editable element. That’s exactly what we do here internally. Then, we change the end boundary point of the selection to the index position of our set caret.
+
+Lastly, we can return the caret index position by checking the length of the selected content.
+
+### Resources
+
+As you have seen, locating the cursor inside a `contenteditable` element is only slightly harder than with regular form elements. If you want to learn more about selections and ranges inside the browser, I really recommend reading this article. It helped me a lot! [Selection and Range on javascript.info](https://javascript.info/selection-range)
+
+An additional note on browser support: Both approaches work only if the browser supports `window.getSelection`. You can check browser support on [Caniuse.com](https://caniuse.com/?search=window.getselection). I hope this is all fine for your project.
+
+#### Working Example
+
+You can find a [working example on CodeSandbox](https://codesandbox.io/s/caret-coordinates-index-contenteditable-9tq3o). Feel free to use it for your own projects. It uses the exact same approaches I showed you.
+
+As always, thanks for reading! If you know better approaches to find carets and cursors inside the browser, let me know!

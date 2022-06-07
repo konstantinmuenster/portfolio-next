@@ -6,7 +6,7 @@ import { ContentWrapper } from '@components/Layout';
 
 const StyledBanner = styled(ContentWrapper, {
   marginTop: '-6rem',
-  marginBottom: '6rem',
+  marginBottom: '4rem',
 
   '.image-wrapper': {
     position: 'relative',
