@@ -20,6 +20,7 @@
     "@headlessui/react": "^1.6.1",
     "@octokit/request": "^5.6.3",
     "@stitches/react": "^1.2.8",
+    "axios": "^0.27.2",
     "esbuild": "^0.14.38",
     "fuse.js": "^6.6.2",
     "hast-util-to-html": "^8.0.3",
