@@ -14,6 +14,10 @@ export const respondSuccess = (
   res: NextApiResponse,
   data: { data: unknown }
 ) => {
+  res.setHeader(
+    'Cache-Control',
+    'public, s-maxage=60, stale-while-revalidate=30'
+  );
   res.status(200).json({
     success: true,
     ...data,
