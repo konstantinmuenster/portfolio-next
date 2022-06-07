@@ -4,14 +4,15 @@ import type { BlogPostMatter } from '@pages/blog/[slug]';
 import { HEADER_HEIGHT } from '@components/Header';
 import { ContentWrapper } from '@components/Layout';
 import { TrendingTopics } from '@components/TrendingTopics';
+import { SubscribeRSS } from '@components/SubscribeRSS';
 
 const StyledSection = styled('section', {
   paddingTop: `calc(${HEADER_HEIGHT}px + 2rem)`,
-  paddingBottom: '4rem',
+  paddingBottom: '1rem',
   backgroundColor: '$secondary50',
   borderBottom: '2px solid $border',
 
-  '@md': { py: `calc(${HEADER_HEIGHT}px + 4rem)` },
+  '@md': { paddingTop: `calc(${HEADER_HEIGHT}px + 4rem)` },
 
   [`.${darkTheme} &`]: { backgroundColor: '$secondary50' },
 
@@ -26,6 +27,14 @@ const StyledSection = styled('section', {
         marginBottom: '1.5rem',
       },
       p: { color: '$subtext' },
+    },
+
+    '.hero-links': {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'flex-start',
+      columnGap: '1rem',
+      paddingTop: '4rem',
     },
   },
 });
@@ -47,6 +56,9 @@ export const HeroSection: React.FC<HeroSectionProps> = props => {
           </p>
         </div>
         <TrendingTopics posts={props.posts} />
+        <div className="hero-links">
+          <SubscribeRSS />
+        </div>
       </ContentWrapper>
     </StyledSection>
   );
