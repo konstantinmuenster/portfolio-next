@@ -57,8 +57,6 @@ export const ListingSection: React.FC<ListingSectionProps> = props => {
   const [searchQuery, setSearchQuery] = useState('');
   const debouncedSearchQuery = useDebounce(searchQuery, 500);
 
-  const allCategories = collectCategoriesFromPosts(props.posts);
-
   const selectedTags = getQueryParam(router.query, 'tags');
   const selectedCategory = getQueryParam(router.query, 'category');
 
@@ -73,6 +71,8 @@ export const ListingSection: React.FC<ListingSectionProps> = props => {
       ? searchIndex.search(debouncedSearchQuery).map(result => result.item)
       : props.posts;
   }, [props.posts, debouncedSearchQuery, searchIndex]);
+
+  const allCategories = collectCategoriesFromPosts(queriedPosts);
 
   const filteredPosts = useMemo(() => {
     return queriedPosts
