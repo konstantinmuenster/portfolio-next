@@ -9,7 +9,7 @@ import { MediumFollowers } from '@components/MediumFollowers';
 
 const StyledSection = styled('section', {
   paddingTop: `calc(${HEADER_HEIGHT}px + 2rem)`,
-  paddingBottom: '1rem',
+  paddingBottom: '1.5rem',
   backgroundColor: '$secondary50',
   borderBottom: '2px solid $border',
 

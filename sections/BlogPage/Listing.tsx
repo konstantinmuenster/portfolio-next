@@ -16,7 +16,7 @@ import { useSearchIndex } from '@hooks/useSearchIndex';
 const StyledListingSection = styled('section', {
   minHeight: '80vh',
 
-  '.blog-listing-search': { my: '3rem' },
+  '.blog-listing-search': { marginTop: '4rem', marginBottom: '3rem' },
 
   '.blog-listing-options': {
     display: 'flex',
