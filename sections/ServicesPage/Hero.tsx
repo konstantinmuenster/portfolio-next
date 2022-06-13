@@ -29,13 +29,13 @@ const StyledSection = styled('section', {
     '.hero-services': {
       '.hero-services-list': {
         display: 'flex',
+        flexWrap: 'wrap',
         justifyContent: 'flex-start',
         alignItems: 'center',
         columnGap: '1rem',
 
         '.hero-service-item': {
-          width: '100%',
-          minWidth: '300px',
+          width: '300px',
           background: '$secondary50',
           border: '2px solid $secondary50',
           borderRadius: '$default',
@@ -60,6 +60,8 @@ const StyledSection = styled('section', {
         },
 
         '.hero-service-avatar': {
+          width: 'auto',
+          px: '0.75rem',
           background: 'transparent',
           borderStyle: 'dashed',
           minWidth: 'unset',
