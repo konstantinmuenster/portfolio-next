@@ -80,7 +80,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = props => {
             <span className="role">Product Developer</span>
           </div>
         </div>
-        <Button as="link" to="/contact" colors={{ bgHover: 'secondary100' }}>
+        <Button as="link" to="/services" colors={{ bgHover: 'secondary100' }}>
           Get to know me
         </Button>
       </div>
