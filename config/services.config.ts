@@ -41,8 +41,8 @@ export const serviceDefinitions = [
       },
       description: [
         'You are just starting with your product or website ambitions? Let me be your partner in planning, executing, and launching it.',
-        'I love working with small businesses / startups to bring their ideas to life. This could be anything from a marketing website to an internal application.',
-        'We will work closely together to shape the best possible version of your application before I take over the development process. Throughout development, we stay in touch to continuously evaluate if we are heading in the right direction.',
+        'I like working with small businesses / startups to bring their ideas to life. This could be anything from a marketing website to an internal application.',
+        'Below you find things I love to create. Together, we will refine your ideas and build the project. Throughout development, we continuously evaluate if we are heading in the right direction.',
       ],
       examples: [
         'Web Applications',

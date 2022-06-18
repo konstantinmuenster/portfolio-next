@@ -62,7 +62,7 @@ const StyledServicesSection = styled('section', {
         position: 'relative',
         maxWidth: '42rem',
         px: '1rem',
-        py: '1.5rem',
+        py: '2rem',
         borderRadius: '$default',
         background: '$secondary50',
 
@@ -74,8 +74,8 @@ const StyledServicesSection = styled('section', {
         },
 
         '.services-tab-description-list': {
-          marginTop: '1rem',
-          marginBottom: '1.5rem',
+          marginTop: '1.5rem',
+          marginBottom: '2rem',
           listStyleType: 'disc',
 
           li: {
