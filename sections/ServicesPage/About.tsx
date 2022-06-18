@@ -59,8 +59,8 @@ export const AboutSection: React.FC = () => {
           </p>
           <p>
             My passion has always been at the intersection of engineering and
-            product – so if you are looking for a hands-on developer who shapes
-            and codes products, let’s put our heads together!
+            product – so if you are looking for a hands-on developer who cares
+            about users and code, let’s put our heads together!
           </p>
         </div>
         <div className="about-picture">

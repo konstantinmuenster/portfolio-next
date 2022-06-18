@@ -1,11 +1,17 @@
-import { Tab } from '@headlessui/react';
+import { useState } from 'react';
+import { Tab, Transition } from '@headlessui/react';
 
-import { styled } from '@config/stitches.config';
+import { keyframes, styled } from '@config/stitches.config';
 import { serviceDefinitions, technologies } from '@config/services.config';
 import { ContentWrapper } from '@components/Layout';
 import { Emoji } from '@components/Emoji';
 import { Toast } from '@components/Toast';
 import { Overhead } from '@components/Overhead';
+
+const scrollAnimation = keyframes({
+  '0%': { transform: 'translateX(0)' },
+  '100%': { transform: 'translateX(calc(-130px * 5))' },
+});
 
 const StyledServicesSection = styled('section', {
   '> div': {
@@ -58,6 +64,11 @@ const StyledServicesSection = styled('section', {
     },
 
     '.services-tab-panels': {
+      '.exit-animation': { transition: 'all ease-in 200ms' },
+      '.enter-animation': { transition: 'all ease-out 300ms' },
+      '.opacity-animation-start': { opacity: 0 },
+      '.opacity-animation-end': { opacity: 1 },
+
       '> div[role="tabpanel"]': {
         position: 'relative',
         maxWidth: '42rem',
@@ -70,7 +81,7 @@ const StyledServicesSection = styled('section', {
           fontWeight: 500,
           fontSize: '$big',
 
-          span: { color: '$primary900' },
+          span: { borderBottom: '3px solid $primary50' },
         },
 
         '.services-tab-description-list': {
@@ -87,28 +98,34 @@ const StyledServicesSection = styled('section', {
         },
 
         '.services-tab-examples': {
-          display: 'flex',
-          flexWrap: 'wrap',
-          gap: '0.5rem',
+          overflow: 'hidden',
+          position: 'relative',
 
-          'li > span': {
-            transition: '$default',
+          '.services-tab-example-list': {
+            display: 'flex',
+            gap: '0.5rem',
+            width: 'calc(130px * 10)',
+            animation: `${scrollAnimation} 30000ms linear infinite`,
 
-            '&:hover': { background: '$primary50', cursor: 'default' },
+            'li > span': {
+              transition: '$default',
+
+              '&:hover': { background: '$primary50', cursor: 'default' },
+            },
           },
         },
       },
     },
 
     '.services-technologies': {
-      my: '2rem',
+      marginTop: '3rem',
 
       '> span': { color: '$subtext' },
 
       ul: {
         display: 'flex',
         flexWrap: 'wrap',
-        columnGap: '2rem',
+        columnGap: '1rem',
         rowGap: '0.5rem',
         my: '1rem',
       },
@@ -127,6 +144,8 @@ const StyledServicesSection = styled('section', {
 });
 
 export const ServicesSection: React.FC = () => {
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
   return (
     <StyledServicesSection id="services-section">
       <ContentWrapper>
@@ -138,7 +157,7 @@ export const ServicesSection: React.FC = () => {
             out both and pick what suits you best!
           </p>
         </div>
-        <Tab.Group>
+        <Tab.Group selectedIndex={selectedIndex} onChange={setSelectedIndex}>
           <Tab.List className="services-tab-list">
             {serviceDefinitions.map((service, key) => {
               return (
@@ -157,39 +176,51 @@ export const ServicesSection: React.FC = () => {
             {serviceDefinitions.map((service, key) => {
               return (
                 <Tab.Panel key={key}>
-                  <p className="services-tab-title">
-                    {service.content.title.prefix}
-                    <span>{service.content.title.highlight}</span>
-                    {service.content.title.suffix}
-                  </p>
-                  <ul className="services-tab-description-list">
-                    {service.content.description.map((text, key) => {
-                      return <li key={key}>{text}</li>;
-                    })}
-                  </ul>
-                  <ul className="reset services-tab-examples">
-                    {service.content.examples.map((example, key) => {
-                      return (
-                        <li key={key}>
-                          <Toast color="secondary">{example}</Toast>
-                        </li>
-                      );
-                    })}
-                  </ul>
+                  <Transition
+                    appear
+                    show
+                    enter="enter-animation"
+                    enterFrom="opacity-animation-start"
+                    enterTo="opacity-animation-end"
+                    leave="exit-animation"
+                    leaveFrom="opacity-animation-start"
+                    leaveTo="opacity-animation-end"
+                  >
+                    <p className="services-tab-title">
+                      {service.content.title.prefix}
+                      <span>{service.content.title.highlight}</span>
+                      {service.content.title.suffix}
+                    </p>
+                    <ul className="services-tab-description-list">
+                      {service.content.description.map((text, key) => {
+                        return <li key={key}>{text}</li>;
+                      })}
+                    </ul>
+                    <div className="services-tab-examples">
+                      <ul className="reset services-tab-example-list">
+                        {[
+                          ...service.content.examples,
+                          ...service.content.examples,
+                        ].map((example, key) => {
+                          return (
+                            <li key={key}>
+                              <Toast color="secondary">{example}</Toast>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </div>
+                  </Transition>
                 </Tab.Panel>
               );
             })}
           </Tab.Panels>
         </Tab.Group>
         <div className="services-technologies">
-          <Overhead>Technologies, I am familiar with:</Overhead>
+          <Overhead>Technologies, I am familiar with</Overhead>
           <ul className="reset">
             {technologies.map((technology, key) => {
-              return (
-                <li key={key}>
-                  <technology.icon size={16} /> {technology.name}
-                </li>
-              );
+              return <li key={key}> {technology.name}</li>;
             })}
           </ul>
         </div>

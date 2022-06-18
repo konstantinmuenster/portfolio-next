@@ -53,13 +53,15 @@ const StyledDialog = styled(Dialog, {
     },
 
     '.modal-panel': {
-      width: '100%',
+      width: '95%',
       maxWidth: '30rem',
-      padding: '2rem 3rem 2rem 2rem',
+      padding: '2rem 2rem 2rem 1rem',
       overflow: 'hidden',
       background: '$background',
       borderRadius: '$default',
       accentBorderWithBg: '$colors$background',
+
+      '@sm': { padding: '2rem 3rem 2rem 2rem' },
     },
   },
 }) as unknown as typeof Dialog & StyledComponent;

@@ -54,7 +54,7 @@ export const HeroSection: React.FC<HeroSectionProps> = props => {
           <span className="hero-interest-highlight">
             Interested in collaborating? –
           </span>{' '}
-          Drop my avatar on a task to reach out to me.
+          Drop my avatar on one of the service cards to reach out to me.
         </p>
       </ContentWrapper>
     </StyledSection>

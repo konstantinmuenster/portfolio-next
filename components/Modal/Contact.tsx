@@ -68,7 +68,7 @@ export const ContactModal: React.FC<Omit<ModalProps, 'title'>> = props => {
             </div>
           </div>
         ) : undefined}
-        <p>I usually aim to get back to you within 24 hours.</p>
+        <p>I aim to get back to you within 24 hours.</p>
         <p>So, see you in a bit, Konstantin 👋</p>
       </StyledContactModalContent>
     </Modal>
