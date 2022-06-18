@@ -7,22 +7,24 @@ import { generateColorPaletteVariants } from '@utils/generateColorPaletteVariant
 const BaseButton = (as: 'button' | FC<LinkProps>) =>
   styled(as, {
     position: 'relative',
-    display: 'block',
+    display: 'flex',
+    alignItems: 'center',
     fontWeight: 500,
     fontSize: '$default',
     lineHeight: '$default',
     color: '$text',
-    py: '0.5rem',
     px: '1rem',
     width: 'auto',
-    minWidth: '180px',
+    minWidth: 180,
+    height: 'auto',
+    minHeight: 48,
     backgroundColor: '$secondary50',
     borderRadius: '$default',
     transition: '$default',
     cursor: 'pointer',
 
     '&:not(:disabled):hover': {
-      boxShadow: 'inset 0 -44px 0 0 $colors$primary50',
+      boxShadow: 'inset 0 -48px 0 0 $colors$primary50',
     },
 
     '&:disabled': {
@@ -34,10 +36,13 @@ const BaseButton = (as: 'button' | FC<LinkProps>) =>
       bgColor: {
         ...generateColorPaletteVariants({ backgroundColor: '$––color––' }),
       },
+      text: {
+        ...generateColorPaletteVariants({ color: '$––color––' }),
+      },
       bgHoverColor: {
         ...generateColorPaletteVariants({
           '&:not(:disabled):hover': {
-            boxShadow: 'inset 0 -44px 0 0 $colors$$––color––',
+            boxShadow: 'inset 0 -48px 0 0 $colors$$––color––',
           },
         }),
       },
@@ -50,9 +55,11 @@ type ButtonProps = {
   as?: ButtonType;
   to?: string;
   onClick?: MouseEventHandler;
+  ariaLabel?: string;
   colors?: {
     bg?: keyof typeof theme.colors;
     bgHover?: keyof typeof theme.colors;
+    text?: keyof typeof theme.colors;
   };
 };
 
@@ -77,7 +84,10 @@ export const Button: React.FC<ButtonProps> = props => {
       to={props.to}
       bgColor={props.colors?.bg}
       bgHoverColor={props.colors?.bgHover}
+      text={props.colors?.text}
       disabled={isDisabled}
+      hideExternalHint
+      aria-label={props.ariaLabel}
     >
       {props.children}
     </Button>
@@ -87,6 +97,7 @@ export const Button: React.FC<ButtonProps> = props => {
       disabled={isDisabled}
       bgColor={props.colors?.bg}
       bgHoverColor={props.colors?.bgHover}
+      aria-label={props.ariaLabel}
     >
       {props.children}
     </Button>

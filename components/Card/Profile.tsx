@@ -44,7 +44,7 @@ const StyledProfileCard = styled('div', {
 
     a: {
       display: 'none',
-      '@md': { display: 'block' },
+      '@md': { display: 'flex' },
     },
   },
 
