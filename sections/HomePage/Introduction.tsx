@@ -1,3 +1,5 @@
+import PortraitImage from '../../public/images/portrait.png';
+
 import { styled, wavingAnimation } from '@config/stitches.config';
 
 import { ContentWrapper } from '@components/Layout';
@@ -74,8 +76,9 @@ export const IntroductionSection: React.FC = () => {
           </p>
         </div>
         <Picture
-          src="/images/portrait.png"
+          src={PortraitImage}
           alt="Konstantin Münster Portrait"
+          placeholder="blur"
           height="22rem"
           width="20rem"
           emoji="👋"

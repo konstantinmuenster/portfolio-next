@@ -1,3 +1,5 @@
+import PortraitImage from '../../public/images/portrait-sitting.jpeg';
+
 import { styled } from '@config/stitches.config';
 import { ContentWrapper } from '@components/Layout';
 import { Picture } from '@components/Picture';
@@ -63,7 +65,8 @@ export const AboutSection: React.FC = () => {
         </div>
         <div className="about-picture">
           <Picture
-            src="/images/portrait-sitting.jpeg"
+            src={PortraitImage}
+            placeholder="blur"
             alt="Konstantin Münster Portrait"
             height="22rem"
             width="20rem"

@@ -1,3 +1,5 @@
+import PortraitImage from '../../public/portrait.png';
+
 import { darkTheme, styled } from '@config/stitches.config';
 
 import { HEADER_HEIGHT } from '@components/Header';
@@ -97,7 +99,8 @@ export const HeroSection: React.FC = () => {
       <div className="hero-content">
         <ContentWrapper>
           <Picture
-            src="/images/portrait.png"
+            src={PortraitImage}
+            placeholder="blur"
             alt="Konstantin Münster Portrait"
             className="portrait"
           />

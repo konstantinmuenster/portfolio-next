@@ -1,5 +1,5 @@
 import type { ComponentPropsWithoutRef, CSSProperties } from 'react';
-import Image from 'next/image';
+import Image, { StaticImageData } from 'next/image';
 
 import { styled } from '@config/stitches.config';
 import { Emoji } from '@components/Emoji';
@@ -26,7 +26,7 @@ const StyledSinglePicture = styled('figure', {
 });
 
 export type SinglePictureProps = {
-  src: string;
+  src: string | StaticImageData;
   alt: string;
   width?: string;
   height?: string;
