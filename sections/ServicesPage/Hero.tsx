@@ -8,7 +8,7 @@ import { Avatar } from '@components/Avatar';
 
 const StyledSection = styled('section', {
   paddingTop: `calc(${HEADER_HEIGHT}px + 2rem)`,
-  paddingBottom: '1.5rem',
+  paddingBottom: '5rem',
   backgroundColor: '$primary50',
   borderBottom: '2px solid $border',
 

@@ -24,12 +24,16 @@ const StyledToast = styled('span', {
         color: '#469A8F',
         background: 'rgba(99, 188, 176, 0.15)',
       },
+      secondary: {
+        color: '$secondary500',
+        background: '$secondary50',
+      },
     },
   },
 });
 
 type ToastProps = {
-  color?: 'blue' | 'purple' | 'green';
+  color?: 'blue' | 'purple' | 'green' | 'secondary';
 };
 
 export const Toast: React.FC<ToastProps> = props => {

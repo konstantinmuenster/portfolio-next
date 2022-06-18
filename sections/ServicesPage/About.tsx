@@ -55,7 +55,7 @@ export const AboutSection: React.FC = () => {
           <p>
             For me, programming is about bringing ideas and products to life,
             and not solely about writing and shipping beautiful code (even
-            though I can easily obsess about the latter too).
+            though I can easily obsess over the latter too).
           </p>
           <p>
             My passion has always been at the intersection of engineering and
