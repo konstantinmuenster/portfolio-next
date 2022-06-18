@@ -1,4 +1,4 @@
-import { MouseEventHandler, FC } from 'react';
+import { FC } from 'react';
 
 import { styled, theme } from '@config/stitches.config';
 import { Link, LinkProps } from '@components/Link';
@@ -54,7 +54,7 @@ type ButtonType = 'button' | 'link';
 type ButtonProps = {
   as?: ButtonType;
   to?: string;
-  onClick?: MouseEventHandler;
+  onClick?: (...args: unknown[]) => unknown;
   ariaLabel?: string;
   colors?: {
     bg?: keyof typeof theme.colors;
@@ -86,8 +86,8 @@ export const Button: React.FC<ButtonProps> = props => {
       bgHoverColor={props.colors?.bgHover}
       text={props.colors?.text}
       disabled={isDisabled}
-      hideExternalHint
       aria-label={props.ariaLabel}
+      hideExternalHint
     >
       {props.children}
     </Button>
@@ -97,6 +97,7 @@ export const Button: React.FC<ButtonProps> = props => {
       disabled={isDisabled}
       bgColor={props.colors?.bg}
       bgHoverColor={props.colors?.bgHover}
+      text={props.colors?.text}
       aria-label={props.ariaLabel}
     >
       {props.children}

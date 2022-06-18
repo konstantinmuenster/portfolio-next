@@ -58,7 +58,11 @@ const ContactSectionSection = styled('section', {
   },
 });
 
-export const ContactSection: React.FC = () => {
+type ContactSectionProps = {
+  openContactModal: (v: unknown) => void;
+};
+
+export const ContactSection: React.FC<ContactSectionProps> = props => {
   const contactProfiles = useMemo(() => {
     return socialProfiles.filter(profile =>
       ['LinkedIn', 'Email'].includes(profile.label)
@@ -78,8 +82,7 @@ export const ContactSection: React.FC = () => {
         <div className="contact-details">
           <div className="contact-button">
             <Button
-              as="link"
-              to="mailto:mail@konstantin.digital"
+              onClick={props.openContactModal}
               ariaLabel="Contact me"
               colors={{
                 bg: 'primary250',

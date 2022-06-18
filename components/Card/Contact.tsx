@@ -5,6 +5,7 @@ import { SparkSvg } from '@components/TextDecoration/SparkSvg';
 import { Avatar } from '@components/Avatar';
 import { styled } from '@config/stitches.config';
 import { socialProfiles } from '@config/profiles.config';
+import { getEmailAddress } from '@utils/getEmailAddress';
 
 const StyledContactCard = styled('div', {
   '> div': {
@@ -73,10 +74,7 @@ export const ContactCard: React.FC = () => {
   const [isCopied, setIsCopied] = useState(false);
 
   const email = useMemo(() => {
-    return socialProfiles
-      .find(({ label }) => label.toLowerCase() === 'email')
-      ?.to.split('mailto:')
-      .pop();
+    return getEmailAddress(socialProfiles);
   }, []);
 
   const handleCopyClick = async () => {
