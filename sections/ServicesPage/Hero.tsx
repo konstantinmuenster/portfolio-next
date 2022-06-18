@@ -2,9 +2,7 @@ import { styled } from '@config/stitches.config';
 
 import { HEADER_HEIGHT } from '@components/Header';
 import { ContentWrapper } from '@components/Layout';
-import { Overhead } from '@components/Overhead';
-import { Emoji } from '@components/Emoji';
-import { Avatar } from '@components/Avatar';
+import { DroppableServices } from '@components/DroppableServices';
 
 const StyledSection = styled('section', {
   paddingTop: `calc(${HEADER_HEIGHT}px + 2rem)`,
@@ -26,50 +24,6 @@ const StyledSection = styled('section', {
       },
     },
 
-    '.hero-services': {
-      '.hero-services-list': {
-        display: 'flex',
-        flexWrap: 'wrap',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        columnGap: '1rem',
-
-        '.hero-service-item': {
-          width: '300px',
-          background: '$secondary50',
-          border: '2px solid $secondary50',
-          borderRadius: '$default',
-          px: '0.5rem',
-          py: '0.75rem',
-          marginTop: '1rem',
-
-          display: 'flex',
-          justifyContent: 'flex-start',
-          alignItems: 'flex-start',
-          columnGap: '0.5rem',
-
-          '.service-item-content': {
-            '.service-item-title': {
-              display: 'block',
-              fontWeight: 500,
-              color: '$primary900',
-              marginBottom: '0.25rem',
-            },
-            p: { fontSize: '$small', lineHeight: '$small', color: '$subtext' },
-          },
-        },
-
-        '.hero-service-avatar': {
-          width: 'auto',
-          px: '0.75rem',
-          background: 'transparent',
-          borderStyle: 'dashed',
-          minWidth: 'unset',
-          alignSelf: 'stretch',
-        },
-      },
-    },
-
     '.hero-interest': {
       color: '$subtext',
       fontSize: '$small',
@@ -79,7 +33,11 @@ const StyledSection = styled('section', {
   },
 });
 
-export const HeroSection: React.FC = () => {
+type HeroSectionProps = {
+  openContactModal: () => void;
+};
+
+export const HeroSection: React.FC<HeroSectionProps> = props => {
   return (
     <StyledSection id="hero-section">
       <ContentWrapper>
@@ -91,30 +49,7 @@ export const HeroSection: React.FC = () => {
             in product management.
           </p>
         </div>
-        <div className="hero-services">
-          <Overhead>How I Can Help You</Overhead>
-          <div className="hero-services-list">
-            <div className="hero-service-item">
-              <Emoji type="👨‍💻" background="surface50" size="small" />
-              <div className="service-item-content">
-                <span className="service-item-title">Support Your Team</span>
-                <p>I will join your team as a product & web developer.</p>
-              </div>
-            </div>
-            <div className="hero-service-item">
-              <Emoji type="🔨" background="surface50" size="small" />
-              <div className="service-item-content">
-                <span className="service-item-title">Build Your Ideas</span>
-                <p>
-                  I will shape and build products & websites for your business.
-                </p>
-              </div>
-            </div>
-            <div className="hero-service-item hero-service-avatar">
-              <Avatar />
-            </div>
-          </div>
-        </div>
+        <DroppableServices {...props} />
         <p className="hero-interest">
           <span className="hero-interest-highlight">
             Interested in collaborating? –

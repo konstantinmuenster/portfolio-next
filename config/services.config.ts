@@ -8,8 +8,9 @@ import {
 
 export const serviceDefinitions = [
   {
-    name: 'Support Your Team',
     emoji: '👨‍💻',
+    name: 'Support Your Team',
+    summary: 'I will join your team as a product & web developer.',
     content: {
       title: {
         prefix: 'I will integrate as a ',
@@ -31,8 +32,9 @@ export const serviceDefinitions = [
     },
   },
   {
-    name: 'Build Your Ideas',
     emoji: '🔨',
+    name: 'Build Your Ideas',
+    summary: 'I will shape and build products & websites for your business.',
     content: {
       title: {
         prefix: 'I will refine and ',

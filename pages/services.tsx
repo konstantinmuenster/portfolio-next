@@ -12,7 +12,7 @@ const ServicesPage: NextPage = () => {
 
   return (
     <>
-      <HeroSection />
+      <HeroSection openContactModal={() => setIsModalOpen(true)} />
       <AboutSection />
       <ServicesSection />
       <ContactSection openContactModal={() => setIsModalOpen(true)} />

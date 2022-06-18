@@ -1,4 +1,11 @@
-import { useState } from 'react';
+import {
+  forwardRef,
+  MouseEvent,
+  ReactNode,
+  Ref,
+  useImperativeHandle,
+  useState,
+} from 'react';
 
 import { styled } from '@config/stitches.config';
 
@@ -39,15 +46,30 @@ const StyledTooltip = styled('div', {
   },
 });
 
-type TooltipProps = {
-  content: string;
+export type TooltipRef = {
+  hideTooltip: () => void;
 };
 
-export const Tooltip: React.FC<TooltipProps> = props => {
+type TooltipProps = {
+  content: string;
+  children?: ReactNode;
+};
+
+export const Tooltip = forwardRef<TooltipRef, TooltipProps>((props, ref) => {
   let timeout: NodeJS.Timeout | undefined;
   const [isShown, setIsShown] = useState(false);
 
-  const showTip = () => {
+  useImperativeHandle(ref, () => {
+    return {
+      hideTooltip: () => {
+        setIsShown(false);
+      },
+    };
+  });
+
+  const showTip = (e: MouseEvent) => {
+    const isMouseDown = e.buttons == 1 || e.buttons == 3;
+    if (isMouseDown) return;
     timeout = setTimeout(() => {
       setIsShown(true);
     }, 200);
@@ -59,9 +81,15 @@ export const Tooltip: React.FC<TooltipProps> = props => {
   };
 
   return (
-    <StyledTooltip onMouseEnter={showTip} onMouseLeave={hideTip}>
+    <StyledTooltip
+      onMouseEnter={showTip}
+      onMouseLeave={hideTip}
+      ref={ref as Ref<HTMLDivElement>}
+    >
       {props.children}
       {isShown ? <div className="tooltip-tip">{props.content}</div> : undefined}
     </StyledTooltip>
   );
-};
+});
+
+Tooltip.displayName = 'Tooltip';
