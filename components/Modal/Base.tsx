@@ -28,8 +28,8 @@ const StyledDialog = styled(Dialog, {
     left: 0,
     bottom: 0,
     right: 0,
-    background: '$text',
-    opacity: 0.1,
+    background: 'black',
+    opacity: 0.4,
   },
 
   '.modal-wrapper': {
@@ -60,6 +60,9 @@ const StyledDialog = styled(Dialog, {
       background: '$background',
       borderRadius: '$default',
       accentBorderWithBg: '$colors$background',
+      borderWidth: 5,
+      boxShadow:
+        '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
 
       '@sm': { padding: '2rem 3rem 2rem 2rem' },
     },
@@ -106,7 +109,7 @@ export const Modal: React.FC<ModalProps> = props => {
                 <Close size={32} />
               </button>
               {props.title ? (
-                <Dialog.Title as="h5">{props.title}</Dialog.Title>
+                <Dialog.Title as="h4">{props.title}</Dialog.Title>
               ) : undefined}
               {props.children}
             </Dialog.Panel>

@@ -13,14 +13,16 @@ const StyledContactModalContent = styled('div', {
     my: '1.5rem',
 
     '.email-address': {
+      display: 'inline-block',
       fontFamily: '$serif',
-      fontSize: '1.25rem',
+      fontSize: '1.3rem',
+      borderBottom: '3px solid $secondary50',
       color: '$primary900',
     },
 
     '.email-actions': {
       display: 'flex',
-      columnGap: '0.5rem',
+      columnGap: '0.75rem',
       marginTop: '0.25rem',
 
       'button, a, span': {
@@ -51,15 +53,15 @@ export const ContactModal: React.FC<Omit<ModalProps, 'title'>> = props => {
   };
 
   return (
-    <Modal {...props} title="Let's connect!">
+    <Modal {...props} title="Awesome!">
       <StyledContactModalContent>
-        <p>Awesome! I am excited to hear from you.</p>
+        <p>Let&apos;s connect! I am excited to hear from you.</p>
         {email ? (
           <div className="contact-email">
             <div className="email-address">{email}</div>
             <div className="email-actions">
               <Link to={`mailto:${email}`} hideExternalHint>
-                Open Email
+                Compose
               </Link>
               <span>–</span>
               <button onClick={handleCopyClick}>
@@ -69,7 +71,7 @@ export const ContactModal: React.FC<Omit<ModalProps, 'title'>> = props => {
           </div>
         ) : undefined}
         <p>I aim to get back to you within 24 hours.</p>
-        <p>So, see you in a bit, Konstantin 👋</p>
+        <p>See you in a bit, Konstantin 👋</p>
       </StyledContactModalContent>
     </Modal>
   );

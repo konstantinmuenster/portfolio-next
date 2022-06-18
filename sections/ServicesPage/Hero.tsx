@@ -1,4 +1,4 @@
-import { styled } from '@config/stitches.config';
+import { darkTheme, styled } from '@config/stitches.config';
 
 import { HEADER_HEIGHT } from '@components/Header';
 import { ContentWrapper } from '@components/Layout';
@@ -9,6 +9,8 @@ const StyledSection = styled('section', {
   paddingBottom: '5rem',
   backgroundColor: '$primary50',
   borderBottom: '2px solid $border',
+
+  [`.${darkTheme} &`]: { backgroundColor: '$surface100' },
 
   '@md': { paddingTop: `calc(${HEADER_HEIGHT}px + 4rem)` },
 

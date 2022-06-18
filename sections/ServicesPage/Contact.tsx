@@ -35,8 +35,8 @@ const ContactSectionSection = styled('section', {
 
         '@sm': { flexDirection: 'row' },
 
-        '> a': {
-          width: 200,
+        '> button': {
+          width: 220,
         },
 
         '.contact-person': {

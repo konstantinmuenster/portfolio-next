@@ -85,8 +85,8 @@ const StyledServicesSection = styled('section', {
         },
 
         '.services-tab-description-list': {
-          marginTop: '1.5rem',
-          marginBottom: '2rem',
+          marginTop: '2rem',
+          marginBottom: '2.5rem',
           listStyleType: 'disc',
 
           li: {
