@@ -38,7 +38,7 @@ yarn-error.log*
 *.tsbuildinfo
 
 # generated
-/public/images/blog
-/public/images/projects
+/public/images/blog/*/
+/public/images/projects/*/
 /public/rss.xml
 /public/rss.json
