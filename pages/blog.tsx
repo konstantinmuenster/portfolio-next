@@ -6,6 +6,7 @@ import type { BlogPostMatter } from './blog/[slug]';
 import { HeroSection } from '@sections/BlogPage/Hero';
 import { ListingSection } from '@sections/BlogPage/Listing';
 import { byNewestDate } from '@utils/sort';
+import { generateRssFeed } from '@lib/rss/generateRssFeed';
 
 type BlogPageProps = {
   posts: BlogPostMatter[];
@@ -23,5 +24,6 @@ const BlogPage: NextPage<BlogPageProps> = props => {
 export default BlogPage;
 
 export const getStaticProps: GetStaticProps = async () => {
+  generateRssFeed();
   return { props: { posts: getAllBlogPosts().sort(byNewestDate) } };
 };

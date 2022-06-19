@@ -36,3 +36,9 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+
+# generated
+/public/images/blog
+/public/images/projects
+/public/rss.xml
+/public/rss.json
