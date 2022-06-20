@@ -9,8 +9,8 @@ type CommitData =
 type Collaborator = { user: string; avatar: string };
 
 export type GetCollaboratorsByFilePathResponse = {
-  lastEdited: string | undefined;
-  collaborators: Collaborator[];
+  lastEdited?: string | undefined;
+  collaborators?: Collaborator[] | undefined;
 };
 
 export const getCollaboratorsByFilePath = async (

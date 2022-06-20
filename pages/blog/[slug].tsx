@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import type { ReadTimeResults } from 'reading-time';
 import type { GetStaticProps } from 'next';
 import { getMDXComponent, getMDXExport } from 'mdx-bundler/client';
-import { NextSeo } from 'next-seo';
+import { NextSeo, ArticleJsonLd, ArticleJsonLdProps } from 'next-seo';
 
 import { redirectTo } from '@utils/router/redirectTo';
 import { getAllBlogPosts, getBlogPost } from '@lib/mdx/blog';
@@ -15,8 +15,15 @@ import { styled } from '@config/stitches.config';
 import { Pre } from '@lib/mdx/rehype/rehype-code-highlight';
 import { Preview } from '@lib/mdx/rehype/rehype-code-highlight/components/Preview';
 import { Code } from '@lib/mdx/rehype/rehype-code-highlight/components/Code';
-import { CategoryColorMap, TypeColorMap } from '@config/content.config';
+import {
+  CategoryColorMap,
+  CONTENT_DIR_NAME,
+  TypeColorMap,
+} from '@config/content.config';
 import { generateSeoProps, SiteUrl } from '@config/seo.config';
+import useSWR from 'swr';
+import { GetCollaboratorsByFilePathResponse } from '@lib/api/github/collaborators';
+import { fetcher } from '@utils/fetcher';
 
 const StyledBlogPost = styled('article', {
   '.blog-post-content': {
@@ -86,21 +93,48 @@ const BlogPost: React.FC<BlogPostProps> = ({ code, frontmatter }) => {
   const MDXBody = useMemo(() => getMDXComponent(code), [code]);
   const mdxExports = getMDXExport<BlogPostExports, BlogPostMatter>(code);
 
+  const { data, error } = useSWR<GetCollaboratorsByFilePathResponse>(
+    `/api/github/collaborators?filePath=${CONTENT_DIR_NAME}${frontmatter.path}/index.mdx`,
+    fetcher
+  );
+
+  const collaborators =
+    data && !error
+      ? { ...data }
+      : { collaborators: [], lastModified: undefined };
+
+  const lastModified = data?.lastEdited ?? frontmatter.publishedAt;
+  const lastModifiedDate = new Date(lastModified).toISOString();
+  const publishedAtDate = new Date(frontmatter.publishedAt).toISOString();
+
   const seoProps = generateSeoProps({
     title: frontmatter.title,
     description: frontmatter.summary,
     url: `${SiteUrl}${frontmatter.path}`,
     type: 'article',
     article: {
-      publishedTime: new Date(frontmatter.publishedAt).toISOString(),
+      publishedTime: publishedAtDate,
       tags: frontmatter.tags,
       authors: ['Konstantin Münster'],
     },
   });
 
+  const jsonLdProps: ArticleJsonLdProps = {
+    title: frontmatter.title,
+    description: frontmatter.summary ?? '',
+    url: `${SiteUrl}${frontmatter.path}`,
+    authorName: 'Konstantin Münster',
+    publisherName: 'Konstantin Münster',
+    publisherLogo: `${SiteUrl}/images/logo-k.png`,
+    datePublished: publishedAtDate,
+    dateModified: lastModifiedDate,
+    images: [],
+  };
+
   return (
     <StyledBlogPost>
       <NextSeo {...seoProps} />
+      <ArticleJsonLd keyOverride="article" {...jsonLdProps} />
       <BlogPostHeroSection {...frontmatter} />
       <BlogPostBanner
         title={frontmatter.title}
@@ -117,7 +151,7 @@ const BlogPost: React.FC<BlogPostProps> = ({ code, frontmatter }) => {
           }}
         />
       </ContentWrapper>
-      <BlogPostFooterSection {...frontmatter} />
+      <BlogPostFooterSection {...frontmatter} {...collaborators} />
     </StyledBlogPost>
   );
 };

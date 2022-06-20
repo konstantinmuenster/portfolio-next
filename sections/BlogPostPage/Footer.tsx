@@ -1,15 +1,13 @@
 import { useMemo } from 'react';
 import Image from 'next/image';
-import useSWR from 'swr';
 import { Twitter } from '@styled-icons/evaicons-solid';
 
 import type { GetCollaboratorsByFilePathResponse } from '@lib/api/github/collaborators';
 import type { BlogPostMatter } from '@pages/blog/[slug]';
-import { CONTENT_DIR_NAME, MDXContentType } from '@config/content.config';
+import { MDXContentType } from '@config/content.config';
 import { styled } from '@config/stitches.config';
 import { ContentWrapper } from '@components/Layout';
 import { Link } from '@components/Link';
-import { fetcher } from '@utils/fetcher';
 import { formatDate } from '@utils/formatDate';
 import { getGithubFileUrl } from '@utils/getGithubFileUrl';
 import { ProfileCard } from '@components/Card';
@@ -85,15 +83,15 @@ const StyledSection = styled('section', {
   },
 });
 
-export const BlogPostFooterSection: React.FC<BlogPostMatter> = props => {
-  const { data, error } = useSWR<GetCollaboratorsByFilePathResponse>(
-    `/api/github/collaborators?filePath=${CONTENT_DIR_NAME}${props.path}/index.mdx`,
-    fetcher
-  );
+type BlogPostFooterSectionProps = BlogPostMatter &
+  (GetCollaboratorsByFilePathResponse | undefined);
 
+export const BlogPostFooterSection: React.FC<
+  BlogPostFooterSectionProps
+> = props => {
   const Collaborators = useMemo(() => {
-    if (error || !data) return undefined;
-    return data.collaborators.map((collaborator, key) => {
+    if (!props.collaborators) return undefined;
+    return props.collaborators.map((collaborator, key) => {
       return (
         <Link
           key={key}
@@ -109,38 +107,40 @@ export const BlogPostFooterSection: React.FC<BlogPostMatter> = props => {
         </Link>
       );
     });
-  }, [data, error]);
+  }, [props.collaborators]);
 
   return (
-    <StyledSection>
-      <ContentWrapper>
-        <div className="blog-post-interactions">
-          <div className="share-blog-post">
-            <div className="share-on-twitter">
-              <Link to={generateTweetUrl(props)} hideExternalHint>
-                Share on Twitter <Twitter size={16} />
-              </Link>
+    <>
+      <StyledSection>
+        <ContentWrapper>
+          <div className="blog-post-interactions">
+            <div className="share-blog-post">
+              <div className="share-on-twitter">
+                <Link to={generateTweetUrl(props)} hideExternalHint>
+                  Share on Twitter <Twitter size={16} />
+                </Link>
+              </div>
+            </div>
+            <div className="edit-blog-post">
+              <div className="blog-post-collaborators">{Collaborators}</div>
+              <div className="edit-on-github">
+                <Link
+                  to={getGithubFileUrl(MDXContentType.BlogPost, props.slug)}
+                  hideExternalHint
+                >
+                  Edit on Github
+                </Link>
+                <span className="last-edit">
+                  {props.lastEdited
+                    ? `Last edited: ${formatDate(props.lastEdited)}`
+                    : undefined}
+                </span>
+              </div>
             </div>
           </div>
-          <div className="edit-blog-post">
-            <div className="blog-post-collaborators">{Collaborators}</div>
-            <div className="edit-on-github">
-              <Link
-                to={getGithubFileUrl(MDXContentType.BlogPost, props.slug)}
-                hideExternalHint
-              >
-                Edit on Github
-              </Link>
-              <span className="last-edit">
-                {data?.lastEdited
-                  ? `Last edited: ${formatDate(data.lastEdited)}`
-                  : undefined}
-              </span>
-            </div>
-          </div>
-        </div>
-        <ProfileCard className="blog-post-profile-appendix" accent />
-      </ContentWrapper>
-    </StyledSection>
+          <ProfileCard className="blog-post-profile-appendix" accent />
+        </ContentWrapper>
+      </StyledSection>
+    </>
   );
 };
