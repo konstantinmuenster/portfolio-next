@@ -16,6 +16,7 @@ export type ProjectMatter = {
   emoji?: string;
   summary?: string;
   domain?: string[];
+  published?: boolean;
 };
 
 export type ProjectExports = {
@@ -48,8 +49,11 @@ export const getStaticProps: GetStaticProps = async context => {
   return { props: { code: project.code, frontmatter: project.frontmatter } };
 };
 
+const isPublished = (project: ProjectMatter) => project.published !== false;
+
 export const getStaticPaths = async () => {
-  const paths = getAllProjects().map(({ slug }) => ({ params: { slug } }));
+  const projects = getAllProjects().filter(isPublished);
+  const paths = projects.map(({ slug }) => ({ params: { slug } }));
   return { paths, fallback: false };
 };
 
