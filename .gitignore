@@ -42,3 +42,5 @@ yarn-error.log*
 /public/images/projects/*/
 /public/rss.xml
 /public/rss.json
+/public/robots.txt
+/public/sitemap*
