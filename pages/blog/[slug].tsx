@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import type { ReadTimeResults } from 'reading-time';
 import type { GetStaticProps } from 'next';
 import { getMDXComponent, getMDXExport } from 'mdx-bundler/client';
+import { NextSeo } from 'next-seo';
 
 import { redirectTo } from '@utils/router/redirectTo';
 import { getAllBlogPosts, getBlogPost } from '@lib/mdx/blog';
@@ -15,6 +16,7 @@ import { Pre } from '@lib/mdx/rehype/rehype-code-highlight';
 import { Preview } from '@lib/mdx/rehype/rehype-code-highlight/components/Preview';
 import { Code } from '@lib/mdx/rehype/rehype-code-highlight/components/Code';
 import { CategoryColorMap, TypeColorMap } from '@config/content.config';
+import { generateSeoProps, SiteUrl } from '@config/seo.config';
 
 const StyledBlogPost = styled('article', {
   '.blog-post-content': {
@@ -84,8 +86,21 @@ const BlogPost: React.FC<BlogPostProps> = ({ code, frontmatter }) => {
   const MDXBody = useMemo(() => getMDXComponent(code), [code]);
   const mdxExports = getMDXExport<BlogPostExports, BlogPostMatter>(code);
 
+  const seoProps = generateSeoProps({
+    title: frontmatter.title,
+    description: frontmatter.summary,
+    url: `${SiteUrl}${frontmatter.path}`,
+    type: 'article',
+    article: {
+      publishedTime: new Date(frontmatter.publishedAt).toISOString(),
+      tags: frontmatter.tags,
+      authors: ['Konstantin Münster'],
+    },
+  });
+
   return (
     <StyledBlogPost>
+      <NextSeo {...seoProps} />
       <BlogPostHeroSection {...frontmatter} />
       <BlogPostBanner
         title={frontmatter.title}
