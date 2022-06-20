@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 import { useState } from 'react';
-import { NextSeo } from 'next-seo';
+import { NextSeo, OrganizationJsonLd, OrganizationJsonLdProps } from 'next-seo';
 
 import { AboutSection } from '@sections/ServicesPage/About';
 import { ContactSection } from '@sections/ServicesPage/Contact';
@@ -8,6 +8,8 @@ import { HeroSection } from '@sections/ServicesPage/Hero';
 import { ServicesSection } from '@sections/ServicesPage/Services';
 import { ContactModal } from '@components/Modal';
 import { generateSeoProps, SiteUrl } from '@config/seo.config';
+import { getEmailAddress } from '@utils/getEmailAddress';
+import { socialProfiles } from '@config/profiles.config';
 
 const seoProps = generateSeoProps({
   url: `${SiteUrl}/services`,
@@ -16,12 +18,36 @@ const seoProps = generateSeoProps({
     'I am a freelance web / product developer with over 5 years of experience and a background in product management.',
 });
 
+const jsonLdProps: OrganizationJsonLdProps = {
+  type: 'Corporation',
+  name: 'Konstantin Münster',
+  url: `${SiteUrl}/services`,
+  logo: `${SiteUrl}/images/logo-k.png`,
+  contactPoints: [
+    {
+      contactType: 'Inquiries & Support',
+      email: getEmailAddress(socialProfiles),
+      availableLanguage: ['English', 'German'],
+    },
+  ],
+  makesOffer: [
+    {
+      itemOffered: {
+        name: 'Product & Web Development Services',
+        description:
+          'I am a freelance web / product developer with over 5 years of experience and a background in product management.',
+      },
+    },
+  ],
+};
+
 const ServicesPage: NextPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <>
       <NextSeo {...seoProps} />
+      <OrganizationJsonLd {...jsonLdProps} />
       <HeroSection openContactModal={() => setIsModalOpen(true)} />
       <AboutSection />
       <ServicesSection />
