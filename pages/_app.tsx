@@ -10,8 +10,20 @@ import { defaultSeoProps } from '@config/seo.config';
 import { ThemeProvider } from '@components/ThemeProvider';
 import { Layout } from '@components/Layout';
 
-function MyApp({ Component, pageProps }: AppProps) {
+type PageProps = {
+  renderWithoutLayout?: boolean;
+};
+
+function MyApp({ Component, pageProps }: AppProps<PageProps>) {
   applyGlobalStyles();
+
+  if (Component.defaultProps?.renderWithoutLayout)
+    return (
+      <ThemeProvider>
+        <Component {...pageProps} />
+      </ThemeProvider>
+    );
+
   return (
     <ThemeProvider>
       <Layout>

@@ -51,6 +51,6 @@ const BlogPage: NextPage<BlogPageProps> = props => {
 export default BlogPage;
 
 export const getStaticProps: GetStaticProps = async () => {
-  generateRssFeed();
+  if (process.env.NODE_ENV !== 'development') generateRssFeed();
   return { props: { posts: getAllBlogPosts().sort(byNewestDate) } };
 };

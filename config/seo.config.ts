@@ -5,6 +5,7 @@ type SeoPropsBuilderInput = {
   url?: string;
   title?: string;
   description?: string;
+  image?: string;
   type?: 'website' | 'article';
   article?: OpenGraphArticle;
 };
@@ -25,6 +26,16 @@ export const generateSeoProps = (
     type: input.type ?? 'website',
     site_name: 'konstantin',
     article: input.article,
+    images: input.image
+      ? [
+          {
+            url: input.image,
+            alt: input.title,
+            width: 1200,
+            height: 630,
+          },
+        ]
+      : undefined,
     profile: {
       firstName: 'Konstantin',
       lastName: 'Münster',

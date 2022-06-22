@@ -18,7 +18,6 @@ export const Avatar: React.FC<AvatarProps> = props => {
       <Image
         src={AvatarImage}
         alt="Konstantin Münster Avatar"
-        placeholder="blur"
         height={props.size ?? 40}
         width={props.size ?? 40}
       />

@@ -3,27 +3,29 @@ import type { ReadTimeResults } from 'reading-time';
 import type { GetStaticProps } from 'next';
 import { getMDXComponent, getMDXExport } from 'mdx-bundler/client';
 import { NextSeo, ArticleJsonLd, ArticleJsonLdProps } from 'next-seo';
+import useSWR from 'swr';
 
-import { redirectTo } from '@utils/router/redirectTo';
-import { getAllBlogPosts, getBlogPost } from '@lib/mdx/blog';
-import { BlogPostHeroSection } from '@sections/BlogPostPage/Hero';
-import { BlogPostBanner } from '@sections/BlogPostPage/Banner';
-import { BlogPostFooterSection } from '@sections/BlogPostPage/Footer';
-import { ContentWrapper } from '@components/Layout';
-import { BlogPicture } from '@components/Picture';
-import { styled } from '@config/stitches.config';
-import { Pre } from '@lib/mdx/rehype/rehype-code-highlight';
-import { Preview } from '@lib/mdx/rehype/rehype-code-highlight/components/Preview';
-import { Code } from '@lib/mdx/rehype/rehype-code-highlight/components/Code';
 import {
   CategoryColorMap,
   CONTENT_DIR_NAME,
   TypeColorMap,
 } from '@config/content.config';
+import { styled } from '@config/stitches.config';
 import { generateSeoProps, SiteUrl } from '@config/seo.config';
-import useSWR from 'swr';
-import { GetCollaboratorsByFilePathResponse } from '@lib/api/github/collaborators';
+import { redirectTo } from '@utils/router/redirectTo';
 import { fetcher } from '@utils/fetcher';
+import { getAllBlogPosts, getBlogPost } from '@lib/mdx/blog';
+import { Pre } from '@lib/mdx/rehype/rehype-code-highlight';
+import { Preview } from '@lib/mdx/rehype/rehype-code-highlight/components/Preview';
+import { Code } from '@lib/mdx/rehype/rehype-code-highlight/components/Code';
+import { GetCollaboratorsByFilePathResponse } from '@lib/api/github/collaborators';
+import { getOGImagePath } from '@lib/api/og-image/get';
+import { BlogPostHeroSection } from '@sections/BlogPostPage/Hero';
+import { ContentWrapper } from '@components/Layout';
+import { OGImageType } from '@components/OGImage';
+import { BlogPicture } from '@components/Picture';
+import { BlogPostBanner } from '@sections/BlogPostPage/Banner';
+import { BlogPostFooterSection } from '@sections/BlogPostPage/Footer';
 
 const StyledBlogPost = styled('article', {
   '.blog-post-content': {
@@ -87,9 +89,10 @@ export type BlogPostExports = {
 type BlogPostProps = {
   code: string;
   frontmatter: BlogPostMatter;
+  ogImage: string | null;
 };
 
-const BlogPost: React.FC<BlogPostProps> = ({ code, frontmatter }) => {
+const BlogPost: React.FC<BlogPostProps> = ({ code, frontmatter, ogImage }) => {
   const MDXBody = useMemo(() => getMDXComponent(code), [code]);
   const mdxExports = getMDXExport<BlogPostExports, BlogPostMatter>(code);
 
@@ -108,6 +111,7 @@ const BlogPost: React.FC<BlogPostProps> = ({ code, frontmatter }) => {
   const publishedAtDate = new Date(frontmatter.publishedAt).toISOString();
 
   const seoProps = generateSeoProps({
+    image: ogImage ? `${SiteUrl}${ogImage}` : undefined,
     title: frontmatter.title,
     description: frontmatter.summary,
     url: `${SiteUrl}${frontmatter.path}`,
@@ -120,6 +124,7 @@ const BlogPost: React.FC<BlogPostProps> = ({ code, frontmatter }) => {
   });
 
   const jsonLdProps: ArticleJsonLdProps = {
+    images: ogImage ? [`${SiteUrl}${ogImage}`] : [],
     title: frontmatter.title,
     description: frontmatter.summary ?? '',
     url: `${SiteUrl}${frontmatter.path}`,
@@ -128,7 +133,6 @@ const BlogPost: React.FC<BlogPostProps> = ({ code, frontmatter }) => {
     publisherLogo: `${SiteUrl}/images/logo-k.png`,
     datePublished: publishedAtDate,
     dateModified: lastModifiedDate,
-    images: [],
   };
 
   return (
@@ -163,7 +167,10 @@ export const getStaticProps: GetStaticProps = async context => {
   const post = await getBlogPost(slug);
   if (!post) return redirectTo('/404');
 
-  return { props: { code: post.code, frontmatter: post.frontmatter } };
+  const ogImage =
+    (await getOGImagePath(OGImageType.Blog, post.frontmatter)) ?? null;
+
+  return { props: { code: post.code, frontmatter: post.frontmatter, ogImage } };
 };
 
 export const getStaticPaths = async () => {
