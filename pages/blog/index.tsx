@@ -3,14 +3,17 @@ import type { GetStaticProps, NextPage } from 'next';
 
 import { getAllBlogPosts } from '@lib/mdx/blog';
 
-import { generateSeoProps, SiteUrl } from '@config/seo.config';
+import { generateSeoProps } from '@config/seo.config';
 import { ContentRoutes } from '@config/content.config';
 import { HeroSection } from '@sections/BlogPage/Hero';
 import { ListingSection } from '@sections/BlogPage/Listing';
 import { byNewestDate } from '@utils/sort';
 import { generateRssFeed } from '@lib/rss/generateRssFeed';
+import { getBaseUrl } from '@utils/getBaseUrl';
 
 import type { BlogPostMatter } from './[slug]';
+
+const baseUrl = getBaseUrl();
 
 const BlogTitle =
   'Tutorials & Guides for developers. React, Typescript, and more.';
@@ -18,14 +21,14 @@ const BlogDescription =
   'I write beginner-friendly and advanced posts on web development and careers.';
 
 const seoProps = generateSeoProps({
-  url: `${SiteUrl}${ContentRoutes.blog}`,
+  url: `${baseUrl}${ContentRoutes.blog}`,
   title: BlogTitle,
   description: BlogDescription,
 });
 
 const jsonLdProps: ArticleJsonLdProps = {
   type: 'Blog',
-  url: `${SiteUrl}${ContentRoutes.blog}`,
+  url: `${baseUrl}${ContentRoutes.blog}`,
   title: BlogTitle,
   description: BlogDescription,
   authorName: 'Konstantin Münster',

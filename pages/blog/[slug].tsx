@@ -11,8 +11,9 @@ import {
   TypeColorMap,
 } from '@config/content.config';
 import { styled } from '@config/stitches.config';
-import { generateSeoProps, SiteUrl } from '@config/seo.config';
+import { generateSeoProps } from '@config/seo.config';
 import { redirectTo } from '@utils/router/redirectTo';
+import { getBaseUrl } from '@utils/getBaseUrl';
 import { fetcher } from '@utils/fetcher';
 import { getAllBlogPosts, getBlogPost } from '@lib/mdx/blog';
 import { Pre } from '@lib/mdx/rehype/rehype-code-highlight';
@@ -26,6 +27,8 @@ import { OGImageType } from '@components/OGImage';
 import { BlogPicture } from '@components/Picture';
 import { BlogPostBanner } from '@sections/BlogPostPage/Banner';
 import { BlogPostFooterSection } from '@sections/BlogPostPage/Footer';
+
+const baseUrl = getBaseUrl();
 
 const StyledBlogPost = styled('article', {
   '.blog-post-content': {
@@ -111,10 +114,10 @@ const BlogPost: React.FC<BlogPostProps> = ({ code, frontmatter, ogImage }) => {
   const publishedAtDate = new Date(frontmatter.publishedAt).toISOString();
 
   const seoProps = generateSeoProps({
-    image: ogImage ? `${SiteUrl}${ogImage}` : undefined,
+    image: ogImage ? `${baseUrl}${ogImage}` : undefined,
     title: frontmatter.title,
     description: frontmatter.summary,
-    url: `${SiteUrl}${frontmatter.path}`,
+    url: `${baseUrl}${frontmatter.path}`,
     type: 'article',
     article: {
       publishedTime: publishedAtDate,
@@ -124,13 +127,13 @@ const BlogPost: React.FC<BlogPostProps> = ({ code, frontmatter, ogImage }) => {
   });
 
   const jsonLdProps: ArticleJsonLdProps = {
-    images: ogImage ? [`${SiteUrl}${ogImage}`] : [],
+    images: ogImage ? [`${baseUrl}${ogImage}`] : [],
     title: frontmatter.title,
     description: frontmatter.summary ?? '',
-    url: `${SiteUrl}${frontmatter.path}`,
+    url: `${baseUrl}${frontmatter.path}`,
     authorName: 'Konstantin Münster',
     publisherName: 'Konstantin Münster',
-    publisherLogo: `${SiteUrl}/images/logo-k.png`,
+    publisherLogo: `${baseUrl}/images/logo-k.png`,
     datePublished: publishedAtDate,
     dateModified: lastModifiedDate,
   };

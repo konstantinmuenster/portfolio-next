@@ -7,12 +7,15 @@ import { ContactSection } from '@sections/ServicesPage/Contact';
 import { HeroSection } from '@sections/ServicesPage/Hero';
 import { ServicesSection } from '@sections/ServicesPage/Services';
 import { ContactModal } from '@components/Modal';
-import { generateSeoProps, SiteUrl } from '@config/seo.config';
+import { generateSeoProps } from '@config/seo.config';
 import { getEmailAddress } from '@utils/getEmailAddress';
+import { getBaseUrl } from '@utils/getBaseUrl';
 import { socialProfiles } from '@config/profiles.config';
 
+const baseUrl = getBaseUrl();
+
 const seoProps = generateSeoProps({
-  url: `${SiteUrl}/services`,
+  url: `${baseUrl}/services`,
   title: 'Product & Web Development Services by Konstantin Münster',
   description:
     'I am a freelance web / product developer with over 5 years of experience and a background in product management.',
@@ -21,8 +24,8 @@ const seoProps = generateSeoProps({
 const jsonLdProps: OrganizationJsonLdProps = {
   type: 'Corporation',
   name: 'Konstantin Münster',
-  url: `${SiteUrl}/services`,
-  logo: `${SiteUrl}/images/logo-k.png`,
+  url: `${baseUrl}/services`,
+  logo: `${baseUrl}/images/logo-k.png`,
   contactPoints: [
     {
       contactType: 'Inquiries & Support',

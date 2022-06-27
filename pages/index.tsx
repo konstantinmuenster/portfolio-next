@@ -9,18 +9,20 @@ import { LatestPostsSection } from '@sections/HomePage/LatestPosts';
 import { LatestProjectsSection } from '@sections/HomePage/LatestProjects';
 import { ContactCard } from '@components/Card';
 import { byNewestDate } from '@utils/sort';
-import { SiteUrl } from '@config/seo.config';
+import { getBaseUrl } from '@utils/getBaseUrl';
 import { socialProfiles } from '@config/profiles.config';
 
 import type { BlogPostMatter } from './blog/[slug]';
 import type { ProjectMatter, ProjectProps } from './projects/[slug]';
 
+const baseUrl = getBaseUrl();
+
 const jsonLdProps: SocialProfileJsonLdProps = {
   name: 'Konstantin Münster',
   type: 'Person',
-  url: SiteUrl,
+  url: baseUrl,
   sameAs: socialProfiles
-    .filter(({ to }) => !to.includes(SiteUrl) && !to.includes('mailto:'))
+    .filter(({ to }) => !to.includes(baseUrl) && !to.includes('mailto:'))
     .map(({ to }) => to),
 };
 

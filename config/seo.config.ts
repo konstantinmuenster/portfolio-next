@@ -1,5 +1,8 @@
+import { getBaseUrl } from '@utils/getBaseUrl';
 import type { NextSeoProps } from 'next-seo';
 import type { OpenGraphArticle } from 'next-seo/lib/types';
+
+const baseUrl = getBaseUrl();
 
 type SeoPropsBuilderInput = {
   url?: string;
@@ -44,11 +47,10 @@ export const generateSeoProps = (
   },
 });
 
-export const SiteUrl = process.env.SITE_URL || 'https://konstantin.digital';
-
 export const defaultSeoProps = generateSeoProps({
   title: 'Konstantin Münster – Web & Product Developer',
   description:
     'I am a freelance developer who helps individuals and companies build better web applications.',
-  url: SiteUrl,
+  url: baseUrl,
+  image: `${baseUrl}/default-og-image.png`,
 });

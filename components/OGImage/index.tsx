@@ -3,7 +3,7 @@ import { useTheme } from 'next-themes';
 import type { GenerateOGImageQuery } from '@lib/api/og-image/generate';
 import { styled } from '@config/stitches.config';
 import { Avatar } from '@components/Avatar';
-import { SiteUrl } from '@config/seo.config';
+import { getBaseUrl } from '@utils/getBaseUrl';
 
 const StyledOGImage = styled('main', {
   width: '100vw',
@@ -95,7 +95,7 @@ export const OGImage: React.FC<OGImageProps> = props => {
             Konstantin Münster
           </div>
         </div>
-        <div className="site-url">{SiteUrl.substring(8)}/blog</div>
+        <div className="site-url">{getBaseUrl().substring(8)}/blog</div>
       </div>
     </StyledOGImage>
   );
