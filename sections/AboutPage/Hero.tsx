@@ -6,7 +6,6 @@ import { HEADER_HEIGHT } from '@components/Header';
 import { ContentWrapper } from '@components/Layout';
 import { Picture } from '@components/Picture';
 import { SocialProfiles } from '@components/SocialProfiles';
-import { socialProfiles } from '@config/profiles.config';
 import { Emoji } from '@components/Emoji';
 
 const StyledSection = styled('section', {
@@ -114,7 +113,7 @@ export const HeroSection: React.FC = () => {
               As a web developer and former product manager, I love engineering
               as much as shipping great products.
             </p>
-            <SocialProfiles profiles={socialProfiles} />
+            <SocialProfiles />
           </div>
         </ContentWrapper>
       </div>

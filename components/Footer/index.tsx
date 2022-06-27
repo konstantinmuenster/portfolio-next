@@ -1,6 +1,5 @@
 import { SocialProfiles } from '@components/SocialProfiles';
 import { footerNavigation } from '@config/navigation.config';
-import { socialProfiles } from '@config/profiles.config';
 import { styled } from '@config/stitches.config';
 
 import { ContentWrapper } from '../Layout';
@@ -54,7 +53,7 @@ export const Footer: React.FC = () => {
     <StyledFooter>
       <ContentWrapper>
         <div>
-          <SocialProfiles profiles={socialProfiles} alignment="right" />
+          <SocialProfiles alignment="right" />
           <span className="copyright">
             © {new Date().getFullYear()} Konstantin Münster. All rights
             reserved.

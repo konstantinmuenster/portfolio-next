@@ -4,7 +4,6 @@ import { styled } from '@config/stitches.config';
 import { ContentWrapper } from '@components/Layout';
 import { Picture } from '@components/Picture';
 import { SocialProfiles } from '@components/SocialProfiles';
-import { socialProfiles } from '@config/profiles.config';
 
 const StyledAboutSection = styled('section', {
   background: '$secondary50',
@@ -72,7 +71,7 @@ export const AboutSection: React.FC = () => {
             width="20rem"
             className="portrait"
           />
-          <SocialProfiles profiles={socialProfiles} />
+          <SocialProfiles />
         </div>
       </ContentWrapper>
     </StyledAboutSection>

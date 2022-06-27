@@ -1,4 +1,4 @@
-import { Profile } from '@config/profiles.config';
+import { Profile, socialProfiles } from '@config/profiles.config';
 import { styled } from '@config/stitches.config';
 
 import { Link } from '@components/Link';
@@ -43,17 +43,18 @@ const StyledSocialProfiles = styled('div', {
 });
 
 type SocialProfilesProps = {
-  profiles: Profile[];
+  profiles?: Profile[];
   className?: string;
   alignment?: 'left' | 'right';
 };
 
 export const SocialProfiles: React.FC<SocialProfilesProps> = props => {
   const align = props.alignment ?? 'left';
+  const profiles = props.profiles ?? socialProfiles;
 
   return (
     <StyledSocialProfiles className={props.className} alignment={align}>
-      {props.profiles.map(({ icon: Icon, label, to }, key) => {
+      {profiles.map(({ icon: Icon, label, to }, key) => {
         return (
           <Link key={key} to={to} hideExternalHint>
             {Icon ? <Icon title={label} size={24} /> : `Open ${label}`}

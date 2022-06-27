@@ -1,5 +1,4 @@
 import { styled } from '@config/stitches.config';
-import { socialProfiles } from '@config/profiles.config';
 
 import { Button } from '@components/Button';
 import { SocialProfiles } from '@components/SocialProfiles';
@@ -84,7 +83,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = props => {
           Get to know me
         </Button>
       </div>
-      <SocialProfiles profiles={socialProfiles} className="profile-socials" />
+      <SocialProfiles className="profile-socials" />
     </StyledProfileCard>
   );
 };
