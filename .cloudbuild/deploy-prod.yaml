@@ -41,6 +41,32 @@ steps:
         '${_REGION}',
       ]
 
+  # Cleanup tags against closed pull requests
+  - id: 'clean up old tag'
+    name: 'gcr.io/${PROJECT_ID}/deployment-previews'
+    secretEnv: ['GITHUB_TOKEN']
+    args:
+      [
+        'cleanup',
+        '--project-id',
+        '${PROJECT_ID}',
+        '--region',
+        '${_REGION}',
+        '--service',
+        '${_SERVICE_NAME}',
+        '--repo-name',
+        '${_GITHUB_OWNER}/${REPO_NAME}',
+      ]
+
 substitutions:
   _SERVICE_NAME: portfolio-next
   _REGION: europe-west1
+  _GITHUB_OWNER: $(push.repository.owner.name)
+
+options:
+  dynamicSubstitutions: true
+
+availableSecrets:
+  secretManager:
+    - versionName: projects/$PROJECT_ID/secrets/github_token/versions/latest
+      env: 'GITHUB_TOKEN'
