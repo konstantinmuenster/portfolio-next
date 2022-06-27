@@ -376,7 +376,7 @@ export const applyGlobalStyles = globalCss({
   },
 
   hr: {
-    borderTop: '1px solid $surface100',
+    border: '1px solid $surface100',
     my: '2rem',
   },
 

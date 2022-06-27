@@ -8,7 +8,7 @@ import { DefaultSeo } from 'next-seo';
 import { applyGlobalStyles } from '@config/stitches.config';
 import { defaultSeoProps } from '@config/seo.config';
 import { ThemeProvider } from '@components/ThemeProvider';
-import { Layout } from '@components/Layout';
+import { PageLayout } from '@components/Layout';
 
 type PageProps = {
   renderWithoutLayout?: boolean;
@@ -26,10 +26,10 @@ function MyApp({ Component, pageProps }: AppProps<PageProps>) {
 
   return (
     <ThemeProvider>
-      <Layout>
+      <PageLayout>
         <DefaultSeo {...defaultSeoProps} />
         <Component {...pageProps} />
-      </Layout>
+      </PageLayout>
     </ThemeProvider>
   );
 }
