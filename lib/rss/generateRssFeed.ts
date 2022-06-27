@@ -4,27 +4,30 @@ import { writeFileSync } from 'fs';
 import { getAllBlogPosts } from '@lib/mdx/blog';
 import { socialProfiles } from '@config/profiles.config';
 import { getEmailAddress } from '@utils/getEmailAddress';
+import { getBaseUrl } from '@utils/getBaseUrl';
 
 export const generateRssFeed = () => {
+  const baseUrl = getBaseUrl();
+
   const date = new Date();
   const author = {
     name: 'Konstantin Münster',
     email: getEmailAddress(socialProfiles),
-    link: process.env.SITE_URL,
+    link: baseUrl,
   };
 
   const feed = new Feed({
     title: "Konstantin Münster's Blog",
     description: 'Tutorials, guides, and advice for web developers.',
-    id: process.env.SITE_URL ?? 'km-id',
-    link: process.env.SITE_URL,
-    image: `${process.env.SITE_URL}/favicon.ico`,
-    favicon: `${process.env.SITE_URL}/favicon.ico`,
+    id: baseUrl ?? 'km-id',
+    link: baseUrl,
+    image: `${baseUrl}/favicon.ico`,
+    favicon: `${baseUrl}/favicon.ico`,
     copyright: `All rights reserved ${date.getFullYear()}, Konstantin Münster`,
     updated: date,
     feedLinks: {
-      rss2: `${process.env.SITE_URL}/rss.xml`,
-      json: `${process.env.SITE_URL}/rss.json`,
+      rss2: `${baseUrl}/rss.xml`,
+      json: `${baseUrl}/rss.json`,
     },
     author,
   });
@@ -32,8 +35,8 @@ export const generateRssFeed = () => {
   getAllBlogPosts().forEach(post => {
     feed.addItem({
       title: post.title,
-      id: `${process.env.SITE_URL}/${post.path}`,
-      link: `${process.env.SITE_URL}/${post.path}`,
+      id: `${baseUrl}/${post.path}`,
+      link: `${baseUrl}/${post.path}`,
       description: post.summary,
       content: post.summary,
       author: [author],
