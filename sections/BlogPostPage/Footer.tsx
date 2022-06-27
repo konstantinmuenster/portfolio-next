@@ -1,6 +1,5 @@
 import { useMemo } from 'react';
 import Image from 'next/image';
-import { Twitter } from '@styled-icons/evaicons-solid';
 
 import type { GetCollaboratorsByFilePathResponse } from '@lib/api/github/collaborators';
 import type { BlogPostMatter } from '@pages/blog/[slug]';
@@ -12,6 +11,7 @@ import { formatDate } from '@utils/formatDate';
 import { getGithubFileUrl } from '@utils/getGithubFileUrl';
 import { ProfileCard } from '@components/Card';
 import { generateTweetUrl } from '@utils/generateTweetUrl';
+import { Icon } from '@components/Icon';
 
 const StyledSection = styled('section', {
   '> div': {
@@ -117,7 +117,7 @@ export const BlogPostFooterSection: React.FC<
             <div className="share-blog-post">
               <div className="share-on-twitter">
                 <Link to={generateTweetUrl(props)} hideExternalHint>
-                  Share on Twitter <Twitter size={16} />
+                  Share on Twitter <Icon type="Twitter" size={16} />
                 </Link>
               </div>
             </div>

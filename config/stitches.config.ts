@@ -106,7 +106,7 @@ export const {
       paddingTop: value,
       paddingBottom: value,
     }),
-    size: (value: string) => ({
+    size: (value: string | number) => ({
       width: value,
       height: value,
     }),

@@ -1,8 +1,8 @@
 import { theme } from '@config/stitches.config';
 
-import { SvgProps } from '.';
+import { TextDecorationSvgProps } from '.';
 
-export const SparkSvg: React.FC<SvgProps> = props => (
+export const SparkSvg: React.FC<TextDecorationSvgProps> = props => (
   <svg
     width="35"
     height="36"

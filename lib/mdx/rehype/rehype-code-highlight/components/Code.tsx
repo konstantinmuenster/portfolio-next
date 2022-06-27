@@ -1,9 +1,9 @@
 import { ReactElement, ReactNode } from 'react';
 
 import { Disclosure, Transition } from '@headlessui/react';
-import { ChevronRight } from '@styled-icons/evaicons-solid';
 
 import { styled } from '@config/stitches.config';
+import { Icon } from '@components/Icon';
 
 const StyledDisclosure = styled('div', {
   display: 'flex',
@@ -54,7 +54,8 @@ export const Code = (props: CodeProps): ReactElement => {
           <>
             <Disclosure.Button>
               <span>{open ? 'Hide' : 'Show'} code</span>
-              <ChevronRight
+              <Icon
+                type="ChevronRight"
                 size={20}
                 style={open ? { transform: 'rotate(90deg)' } : undefined}
               />

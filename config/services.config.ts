@@ -1,11 +1,3 @@
-import {
-  Html5,
-  Javascript,
-  Typescript,
-  ReactLogo,
-  Nodedotjs,
-} from 'styled-icons/simple-icons';
-
 export const serviceDefinitions = [
   {
     emoji: '👨‍💻',
@@ -59,23 +51,18 @@ export const serviceDefinitions = [
 
 export const technologies = [
   {
-    icon: Html5,
     name: 'HTML/CSS',
   },
   {
-    icon: Javascript,
     name: 'JavaScript',
   },
   {
-    icon: Typescript,
     name: 'TypeScript',
   },
   {
-    icon: ReactLogo,
     name: 'React.js',
   },
   {
-    icon: Nodedotjs,
     name: 'Node.js',
   },
 ];

@@ -2,11 +2,10 @@ import { useState } from 'react';
 import { Tab, Transition } from '@headlessui/react';
 
 import { keyframes, styled } from '@config/stitches.config';
-import { serviceDefinitions, technologies } from '@config/services.config';
+import { serviceDefinitions } from '@config/services.config';
 import { ContentWrapper } from '@components/Layout';
 import { Emoji } from '@components/Emoji';
 import { Toast } from '@components/Toast';
-import { Overhead } from '@components/Overhead';
 
 const scrollAnimation = keyframes({
   '0%': { transform: 'translateX(0)' },
@@ -15,9 +14,10 @@ const scrollAnimation = keyframes({
 
 const StyledServicesSection = styled('section', {
   '> div': {
-    py: '3rem',
+    paddingTop: '3rem',
+    paddingBottom: '6rem',
 
-    '@md': { py: '4rem' },
+    '@md': { paddingTop: '4rem' },
 
     '.services-description': {
       maxWidth: '37.5rem',
@@ -216,14 +216,14 @@ export const ServicesSection: React.FC = () => {
             })}
           </Tab.Panels>
         </Tab.Group>
-        <div className="services-technologies">
+        {/* <div className="services-technologies">
           <Overhead>Technologies, I am familiar with</Overhead>
           <ul className="reset">
             {technologies.map((technology, key) => {
               return <li key={key}> {technology.name}</li>;
             })}
           </ul>
-        </div>
+        </div> */}
       </ContentWrapper>
     </StyledServicesSection>
   );

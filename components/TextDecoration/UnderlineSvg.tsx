@@ -1,8 +1,8 @@
 import { theme } from '@config/stitches.config';
 
-import { SvgProps } from '.';
+import { TextDecorationSvgProps } from '.';
 
-export const UnderlineSvg: React.FC<SvgProps> = props => (
+export const UnderlineSvg: React.FC<TextDecorationSvgProps> = props => (
   <svg
     width="180"
     height="17"

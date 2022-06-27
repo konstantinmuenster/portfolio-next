@@ -1,5 +1,3 @@
-import { ChevronLeft } from '@styled-icons/evaicons-solid';
-
 import type { BlogPostMatter } from '@pages/blog/[slug]';
 import {
   CategoryColorMap,
@@ -15,6 +13,7 @@ import { Toast } from '@components/Toast';
 import { Tooltip } from '@components/Tooltip';
 import { Avatar } from '@components/Avatar';
 import { formatDate } from '@utils/formatDate';
+import { Icon } from '@components/Icon';
 
 const StyledSection = styled('section', {
   paddingTop: `calc(${HEADER_HEIGHT}px + 4rem)`,
@@ -51,7 +50,7 @@ const StyledSection = styled('section', {
 
       '@lg': { top: 0, left: -40 },
 
-      svg: { size: 20, color: '$subtext' },
+      svg: { color: '$subtext' },
     },
 
     '.blog-post-categorization > *': {
@@ -109,7 +108,7 @@ export const BlogPostHeroSection: React.FC<
                 to={ContentRoutes[MDXContentType.BlogPost]}
                 aria-label="Go back to blog"
               >
-                <ChevronLeft />
+                <Icon type="ChevronLeft" size={20} />
               </Link>
             </Tooltip>
           </div>

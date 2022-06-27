@@ -1,11 +1,12 @@
-import type { StyledIcon } from '@styled-icons/styled-icon';
-import { SocialLinkedin, SocialGithub } from '@styled-icons/foundation';
-import { Medium } from '@styled-icons/boxicons-logos';
+import type { SvgProps } from '@components/Icon';
+import { MediumSvg } from '@components/Icon/Medium';
+import { LinkedInSvg } from '@components/Icon/LinkedIn';
+import { GithubSvg } from '@components/Icon/Github';
 
 export type Profile = {
   to: string;
   label: string;
-  icon?: StyledIcon;
+  icon?: React.FC<SvgProps>;
 };
 
 export const TwitterHandle = '@konstantinmnstr';
@@ -14,17 +15,17 @@ export const socialProfiles: Profile[] = [
   {
     to: 'https://www.linkedin.com/in/konstantin-muenster/',
     label: 'LinkedIn',
-    icon: SocialLinkedin,
+    icon: LinkedInSvg,
   },
   {
     to: 'https://github.com/konstantinmuenster/',
     label: 'Github',
-    icon: SocialGithub,
+    icon: GithubSvg,
   },
   {
     to: 'https://medium.com/@konstantinmuenster',
     label: 'Medium',
-    icon: Medium,
+    icon: MediumSvg,
   },
   {
     to: 'mailto:mail@konstantin.digital',

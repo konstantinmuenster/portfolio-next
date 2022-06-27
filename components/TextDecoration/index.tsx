@@ -1,10 +1,10 @@
-import { DiagonalArrowRightUp as ArrowRightUpSvg } from '@styled-icons/evaicons-solid';
-
 import { styled } from '@config/stitches.config';
+import { ArrowRightUpSvg } from '@components/Icon/ArrowRightUp';
+
 import { SparkSvg } from './SparkSvg';
 import { UnderlineSvg } from './UnderlineSvg';
 
-export type SvgProps = { color?: string };
+export type TextDecorationSvgProps = { color?: string };
 
 const StyledTextDecoration = styled('span', {
   position: 'relative',

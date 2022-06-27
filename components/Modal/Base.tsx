@@ -1,9 +1,9 @@
 import { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { Close } from '@styled-icons/ionicons-outline';
 
 import type { StyledComponent } from '@stitches/react/types/styled-component';
 import { styled } from '@config/stitches.config';
+import { Icon } from '@components/Icon';
 
 const StyledDialog = styled(Dialog, {
   position: 'fixed',
@@ -106,7 +106,7 @@ export const Modal: React.FC<ModalProps> = props => {
                 aria-label="Close Modal"
                 onClick={() => props.setIsOpen(false)}
               >
-                <Close size={32} />
+                <Icon type="Close" title="Close Modal" size={32} />
               </button>
               {props.title ? (
                 <Dialog.Title as="h4">{props.title}</Dialog.Title>

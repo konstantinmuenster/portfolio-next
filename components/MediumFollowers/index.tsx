@@ -1,5 +1,4 @@
 import useSWR from 'swr';
-import { Medium } from '@styled-icons/simple-icons';
 
 import type { GetMediumFollowersResponse } from '@lib/api/medium/followers';
 import { Profile, socialProfiles } from '@config/profiles.config';
@@ -7,6 +6,7 @@ import { styled } from '@config/stitches.config';
 import { Link } from '@components/Link';
 import { Skeleton } from '@components/Skeleton';
 import { fetcher } from '@utils/fetcher';
+import { Icon } from '@components/Icon';
 
 const isMediumProfile = (profile: Profile) => profile.to.includes('medium.com');
 
@@ -17,7 +17,6 @@ const StyledMediumFollowers = styled(Link, {
   columnGap: '0.5rem',
   fontSize: '$mini',
   lineHeight: '$mini',
-  svg: { size: 18 },
 });
 
 export const MediumFollowers: React.FC = () => {
@@ -33,7 +32,7 @@ export const MediumFollowers: React.FC = () => {
 
   return (
     <StyledMediumFollowers to={profile.to} hideExternalHint>
-      <Medium /> {data.followers} followers
+      <Icon type="Medium" size={18} /> {data.followers} followers
     </StyledMediumFollowers>
   );
 };
