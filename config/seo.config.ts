@@ -1,6 +1,7 @@
 import { getBaseUrl } from '@utils/getBaseUrl';
 import type { NextSeoProps } from 'next-seo';
 import type { OpenGraphArticle } from 'next-seo/lib/types';
+import { TwitterHandle } from './profiles.config';
 
 const baseUrl = getBaseUrl();
 
@@ -20,7 +21,8 @@ export const generateSeoProps = (
   title: input.title,
   description: input.description,
   twitter: {
-    cardType: 'summary',
+    cardType: 'summary_large_image',
+    handle: TwitterHandle,
   },
   openGraph: {
     url: input.url,

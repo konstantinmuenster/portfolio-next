@@ -8,6 +8,8 @@ export type Profile = {
   icon?: StyledIcon;
 };
 
+export const TwitterHandle = '@konstantinmnstr';
+
 export const socialProfiles: Profile[] = [
   {
     to: 'https://www.linkedin.com/in/konstantin-muenster/',
