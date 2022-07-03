@@ -4,35 +4,72 @@ import { Menu } from '@headlessui/react';
 import { styled } from '@config/stitches.config';
 import { VisuallyHidden } from '@components/VisuallyHidden';
 
-const SVG_SIZE = 32;
-const PADDING = 8;
+const SIZE = 28;
+const PADDING = 10;
 
-export const BUTTON_SIZE = 8 + 32 + 8;
+export const BUTTON_SIZE = PADDING + SIZE + PADDING;
 
-const StyledSvgWrapper = styled('div', {
-  position: 'relative',
+const StyledHamburgerButton = styled('div', {
+  size: `${BUTTON_SIZE}px`,
   padding: `${PADDING}px`,
   borderRadius: '$less',
 
   display: 'flex',
-  justifyContent: 'center',
   alignItems: 'center',
 
-  svg: {
-    size: `${SVG_SIZE}px`,
-    transform: 'rotate(0deg)',
-    transformOrigin: 'center',
-    transition: 'all 0.2s ease-in-out',
-    line: { stroke: '$subtext' },
+  background: 'transparent',
+  '&:hover': { background: '$surface50' },
+
+  div: {
+    position: 'relative',
+    width: `${SIZE}px`,
+    height: '3px',
+    background: 'transparent',
+    borderRadius: '$less',
+    transitionProperty: 'all',
+    transitionDuration: '220ms',
+    transitionTimingFunction: 'cubic-bezier(.55,.055,.675,.19)',
+
+    '&:before, &:after': {
+      content: '',
+      background: '$subtext',
+      borderRadius: '$less',
+      position: 'absolute',
+      width: `${SIZE}px`,
+      height: '3px',
+    },
+
+    '&:before': {
+      top: '-6px',
+      transition: 'top .1s ease-in .25s,opacity .1s ease-in',
+    },
+
+    '&:after': {
+      bottom: '-6px',
+      transition:
+        'bottom .1s ease-in .25s,transform .22s cubic-bezier(.55,.055,.675,.19)',
+    },
   },
 
-  '&:hover': {
-    backgroundColor: '$surface50',
-    svg: { line: { stroke: '$primary900' } },
-  },
+  '&[data-open="true"] div': {
+    background: '$subtext',
 
-  '&[data-open="true"]': {
-    svg: { transform: 'rotate(-45deg)' },
+    transitionTimingFunction: 'cubic-bezier(.215,.61,.355,1)',
+    transform: 'rotate(225deg)',
+    transitionDelay: '120ms',
+
+    '&:before': {
+      top: 0,
+      opacity: 0,
+      transition: 'top 100ms ease-out,opacity 100ms ease-out 120ms',
+    },
+
+    '&:after': {
+      bottom: 0,
+      transform: 'rotate(-90deg)',
+      transition:
+        'bottom 100ms ease-out,transform 220ms cubic-bezier(.215,.61,.355,1) 120ms',
+    },
   },
 });
 
@@ -46,26 +83,9 @@ export const HamburgerButton: React.FC<{ open: boolean }> = props => {
 
   return (
     <Menu.Button aria-label={open ? 'Close Navigation' : 'Open Navigation'}>
-      <StyledSvgWrapper data-open={props.open}>
-        <svg xmlns="http://www.w3.org/2000/svg">
-          <line
-            x1="4.8"
-            y1="9.6"
-            x2="27.2"
-            y2="9.6"
-            strokeWidth="3"
-            strokeLinecap="round"
-          ></line>
-          <line
-            x1="27.2"
-            y1="22.4"
-            x2="4.8"
-            y2="22.4"
-            strokeWidth="3"
-            strokeLinecap="round"
-          ></line>
-        </svg>
-      </StyledSvgWrapper>
+      <StyledHamburgerButton data-open={props.open}>
+        <div />
+      </StyledHamburgerButton>
       <VisuallyHidden>Toggle Mobile Menu</VisuallyHidden>
     </Menu.Button>
   );

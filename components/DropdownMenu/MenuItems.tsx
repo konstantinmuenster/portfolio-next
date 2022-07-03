@@ -83,11 +83,11 @@ export const MenuItems: React.FC<{ items: NavigationItem[] }> = props => (
     <hr />
     <Menu.Item>
       {({ active }) => (
-        <Link to="/contact" data-focused={active} data-profile-link>
+        <Link to="/services" data-focused={active} data-profile-link>
           <Avatar size={32} />
           <div>
             Konstantin Münster
-            <span>Get To Know Me</span>
+            <span>Get In Touch</span>
           </div>
         </Link>
       )}
