@@ -2,7 +2,7 @@ import type { GetStaticProps, NextPage } from 'next';
 import { SocialProfileJsonLd, SocialProfileJsonLdProps } from 'next-seo';
 
 import { getAllBlogPosts } from '@lib/mdx/blog';
-import { getAllProjects, getProject } from '@lib/mdx/projects';
+import { getAllProjects } from '@lib/mdx/projects';
 import { HeroSection } from '@sections/HomePage/Hero';
 import { IntroductionSection } from '@sections/HomePage/Introduction';
 import { LatestPostsSection } from '@sections/HomePage/LatestPosts';
@@ -12,8 +12,8 @@ import { byNewestDate } from '@utils/sort';
 import { getBaseUrl } from '@utils/getBaseUrl';
 import { socialProfiles } from '@config/profiles.config';
 
-import type { BlogPostMatter } from './blog/[slug]';
-import type { ProjectMatter, ProjectProps } from './projects/[slug]';
+import type { EnrichedBlogPostMatter } from './blog/[slug]';
+import type { EnrichedProjectMatter } from './projects/[slug]';
 
 const baseUrl = getBaseUrl();
 
@@ -27,8 +27,8 @@ const jsonLdProps: SocialProfileJsonLdProps = {
 };
 
 type HomePageProps = {
-  posts: BlogPostMatter[];
-  projects: ProjectProps[];
+  posts: EnrichedBlogPostMatter[];
+  projects: EnrichedProjectMatter[];
 };
 
 const HomePage: NextPage<HomePageProps> = props => {
@@ -49,19 +49,8 @@ export default HomePage;
 export const getStaticProps: GetStaticProps = async () => {
   return {
     props: {
-      posts: getAllBlogPosts().sort(byNewestDate),
-      projects: await buildProjectProps(getAllProjects()),
+      posts: (await getAllBlogPosts()).sort(byNewestDate),
+      projects: await getAllProjects(),
     },
   };
-};
-
-const buildProjectProps = async (
-  projects: ProjectMatter[]
-): Promise<ProjectProps[]> => {
-  return await Promise.all(
-    projects.map(async frontmatter => {
-      const mdxCode = (await getProject(frontmatter.slug))?.code;
-      return { frontmatter, code: mdxCode ?? '' };
-    })
-  );
 };

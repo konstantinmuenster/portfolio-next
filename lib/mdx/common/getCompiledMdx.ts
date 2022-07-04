@@ -10,7 +10,7 @@ import {
 import { setEsbuildExecutable } from './setEsbuildExecutable';
 import { getMdxFilePath } from './getMdxFilePath';
 
-export const getCompiledMdx = async ({
+export const getCompiledMdx = async <T>({
   slug,
   contentType,
   remarkPlugins,
@@ -23,7 +23,11 @@ export const getCompiledMdx = async ({
 }) => {
   try {
     setEsbuildExecutable();
-    return await bundleMDX({
+
+    const generatedImgDir = path.join(MDXGeneratedImgDir[contentType], slug);
+    const generatedImgPath = `/images/${contentType}/${slug}`;
+
+    const mdx = await bundleMDX<T>({
       file: getMdxFilePath(contentType, slug),
       cwd: path.join(MDXContentDir[contentType], slug),
       mdxOptions(options) {
@@ -38,8 +42,8 @@ export const getCompiledMdx = async ({
         return options;
       },
       esbuildOptions: options => {
-        options.outdir = path.join(MDXGeneratedImgDir[contentType], slug);
-        options.publicPath = `/images/${contentType}/${slug}`;
+        options.outdir = generatedImgDir;
+        options.publicPath = generatedImgPath;
         options.write = true;
         options.loader = {
           ...options.loader,
@@ -51,6 +55,16 @@ export const getCompiledMdx = async ({
         return options;
       },
     });
+
+    return {
+      mdx,
+      generated: {
+        images: {
+          sourceDir: generatedImgDir,
+          publicDir: generatedImgPath,
+        },
+      },
+    };
   } catch {
     return undefined;
   }

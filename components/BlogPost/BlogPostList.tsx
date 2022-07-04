@@ -1,5 +1,5 @@
 import { styled } from '@config/stitches.config';
-import type { BlogPostMatter } from '@pages/blog/[slug]';
+import type { EnrichedBlogPostMatter } from '@pages/blog/[slug]';
 import { BlogPostListItem } from './BlogPostListItem';
 
 const StyledBlogPostList = styled('ul', {
@@ -7,7 +7,7 @@ const StyledBlogPostList = styled('ul', {
 });
 
 type BlogPostListProps = {
-  posts: BlogPostMatter[];
+  posts: EnrichedBlogPostMatter[];
 };
 
 export const BlogPostList: React.FC<BlogPostListProps> = props => {

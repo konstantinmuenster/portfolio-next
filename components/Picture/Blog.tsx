@@ -16,7 +16,7 @@ const StyledBlogPicture = styled('div', {
     '@lg': {
       height: '23rem',
       width: '46rem',
-      marginLeft: 'calc((46rem - 42rem) * -1 / 2)',
+      marginLeft: 'calc((46rem - 42rem) * - 1/2)',
     },
 
     'img:hover': { borderColor: '$primary50 !important' },

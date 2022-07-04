@@ -11,7 +11,7 @@ import { byNewestDate } from '@utils/sort';
 import { generateRssFeed } from '@lib/rss/generateRssFeed';
 import { getBaseUrl } from '@utils/getBaseUrl';
 
-import type { BlogPostMatter } from './[slug]';
+import type { EnrichedBlogPostMatter } from './[slug]';
 
 const baseUrl = getBaseUrl();
 
@@ -37,7 +37,7 @@ const jsonLdProps: ArticleJsonLdProps = {
 };
 
 type BlogPageProps = {
-  posts: BlogPostMatter[];
+  posts: EnrichedBlogPostMatter[];
 };
 
 const BlogPage: NextPage<BlogPageProps> = props => {
@@ -54,6 +54,6 @@ const BlogPage: NextPage<BlogPageProps> = props => {
 export default BlogPage;
 
 export const getStaticProps: GetStaticProps = async () => {
-  if (process.env.NODE_ENV !== 'development') generateRssFeed();
-  return { props: { posts: getAllBlogPosts().sort(byNewestDate) } };
+  if (process.env.NODE_ENV !== 'development') await generateRssFeed();
+  return { props: { posts: (await getAllBlogPosts()).sort(byNewestDate) } };
 };

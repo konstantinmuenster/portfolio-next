@@ -1,4 +1,4 @@
-import type { BlogPostMatter } from '@pages/blog/[slug]';
+import type { EnrichedBlogPostMatter } from '@pages/blog/[slug]';
 import {
   CategoryColorMap,
   ContentRoutes,
@@ -93,7 +93,7 @@ const StyledSection = styled('section', {
   },
 });
 
-type BlogPostHeroSectionProps = BlogPostMatter;
+type BlogPostHeroSectionProps = EnrichedBlogPostMatter;
 
 export const BlogPostHeroSection: React.FC<
   BlogPostHeroSectionProps

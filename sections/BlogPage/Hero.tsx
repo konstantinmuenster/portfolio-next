@@ -1,6 +1,6 @@
 import { darkTheme, styled } from '@config/stitches.config';
 
-import type { BlogPostMatter } from '@pages/blog/[slug]';
+import type { EnrichedBlogPostMatter } from '@pages/blog/[slug]';
 import { HEADER_HEIGHT } from '@components/Header';
 import { ContentWrapper } from '@components/Layout';
 import { TrendingTopics } from '@components/TrendingTopics';
@@ -41,7 +41,7 @@ const StyledSection = styled('section', {
 });
 
 type HeroSectionProps = {
-  posts: BlogPostMatter[];
+  posts: EnrichedBlogPostMatter[];
 };
 
 export const HeroSection: React.FC<HeroSectionProps> = props => {

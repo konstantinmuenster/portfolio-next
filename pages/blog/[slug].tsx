@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import type { ReadTimeResults } from 'reading-time';
 import type { GetStaticProps } from 'next';
-import { getMDXComponent, getMDXExport } from 'mdx-bundler/client';
+import { getMDXComponent } from 'mdx-bundler/client';
 import { NextSeo, ArticleJsonLd, ArticleJsonLdProps } from 'next-seo';
 import useSWR from 'swr';
 
@@ -20,10 +20,8 @@ import { Pre } from '@lib/mdx/rehype/rehype-code-highlight';
 import { Preview } from '@lib/mdx/rehype/rehype-code-highlight/components/Preview';
 import { Code } from '@lib/mdx/rehype/rehype-code-highlight/components/Code';
 import { GetCollaboratorsByFilePathResponse } from '@lib/api/github/collaborators';
-import { getOGImagePath } from '@lib/api/og-image/get';
 import { BlogPostHeroSection } from '@sections/BlogPostPage/Hero';
 import { ContentWrapper } from '@components/Layout';
-import { OGImageType } from '@components/OGImage';
 import { BlogPicture } from '@components/Picture';
 import { BlogPostBanner } from '@sections/BlogPostPage/Banner';
 import { BlogPostFooterSection } from '@sections/BlogPostPage/Footer';
@@ -71,33 +69,41 @@ const StyledBlogPost = styled('article', {
   },
 });
 
-export type BlogPostMatter = {
-  title: string;
+export type EnrichedBlogPostMatter = Omit<BlogPostMatter, 'banner'> & {
   slug: string;
   path: string;
+  readingTime?: ReadTimeResults;
+  ogImage?: string;
+  banner?: {
+    src?: string;
+    placeholder?: string;
+    height?: number;
+    width?: number;
+    caption?: string;
+  };
+};
+
+export type BlogPostMatter = {
+  title: string;
   publishedAt: string;
   summary?: string;
   category?: keyof typeof CategoryColorMap;
   type?: keyof typeof TypeColorMap;
   tags?: string[];
   mediumUrl?: string;
-  readingTime?: ReadTimeResults;
-};
-
-export type BlogPostExports = {
-  banner?: string;
-  bannerCaption?: string;
+  banner?: {
+    name?: string;
+    caption?: string;
+  };
 };
 
 type BlogPostProps = {
   code: string;
-  frontmatter: BlogPostMatter;
-  ogImage: string | null;
+  frontmatter: EnrichedBlogPostMatter;
 };
 
-const BlogPost: React.FC<BlogPostProps> = ({ code, frontmatter, ogImage }) => {
+const BlogPost: React.FC<BlogPostProps> = ({ code, frontmatter }) => {
   const MDXBody = useMemo(() => getMDXComponent(code), [code]);
-  const mdxExports = getMDXExport<BlogPostExports, BlogPostMatter>(code);
 
   const { data, error } = useSWR<GetCollaboratorsByFilePathResponse>(
     `/api/github/collaborators?filePath=${CONTENT_DIR_NAME}${frontmatter.path}/index.mdx`,
@@ -114,7 +120,7 @@ const BlogPost: React.FC<BlogPostProps> = ({ code, frontmatter, ogImage }) => {
   const publishedAtDate = new Date(frontmatter.publishedAt).toISOString();
 
   const seoProps = generateSeoProps({
-    image: ogImage ? `${baseUrl}${ogImage}` : undefined,
+    image: frontmatter.ogImage ? `${baseUrl}${frontmatter.ogImage}` : undefined,
     title: frontmatter.title,
     description: frontmatter.summary,
     url: `${baseUrl}${frontmatter.path}`,
@@ -127,7 +133,7 @@ const BlogPost: React.FC<BlogPostProps> = ({ code, frontmatter, ogImage }) => {
   });
 
   const jsonLdProps: ArticleJsonLdProps = {
-    images: ogImage ? [`${baseUrl}${ogImage}`] : [],
+    images: frontmatter.ogImage ? [`${baseUrl}${frontmatter.ogImage}`] : [],
     title: frontmatter.title,
     description: frontmatter.summary ?? '',
     url: `${baseUrl}${frontmatter.path}`,
@@ -143,11 +149,7 @@ const BlogPost: React.FC<BlogPostProps> = ({ code, frontmatter, ogImage }) => {
       <NextSeo {...seoProps} />
       <ArticleJsonLd keyOverride="article" {...jsonLdProps} />
       <BlogPostHeroSection {...frontmatter} />
-      <BlogPostBanner
-        title={frontmatter.title}
-        banner={mdxExports.banner}
-        bannerCaption={mdxExports.bannerCaption}
-      />
+      <BlogPostBanner title={frontmatter.title} banner={frontmatter.banner} />
       <ContentWrapper className="blog-post-content">
         <MDXBody
           components={{
@@ -170,14 +172,13 @@ export const getStaticProps: GetStaticProps = async context => {
   const post = await getBlogPost(slug);
   if (!post) return redirectTo('/404');
 
-  const ogImage =
-    (await getOGImagePath(OGImageType.Blog, post.frontmatter)) ?? null;
-
-  return { props: { code: post.code, frontmatter: post.frontmatter, ogImage } };
+  return { props: { code: post.code, frontmatter: post.frontmatter } };
 };
 
 export const getStaticPaths = async () => {
-  const paths = getAllBlogPosts().map(({ slug }) => ({ params: { slug } }));
+  const paths = (await getAllBlogPosts()).map(({ slug }) => ({
+    params: { slug },
+  }));
   return { paths, fallback: false };
 };
 

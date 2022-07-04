@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import type { ProjectProps } from '@pages/projects/[slug]';
+import type { EnrichedProjectMatter } from '@pages/projects/[slug]';
 import { LatestProjects } from '@config/content.config';
 import { styled } from '@config/stitches.config';
 import { ContentWrapper } from '@components/Layout';
@@ -41,7 +41,7 @@ const StyledSection = styled('section', {
 });
 
 type LatestProjectsSectionProps = {
-  projects: ProjectProps[];
+  projects: EnrichedProjectMatter[];
 };
 
 export const LatestProjectsSection: React.FC<
@@ -49,7 +49,7 @@ export const LatestProjectsSection: React.FC<
 > = props => {
   const latestProjects = useMemo(() => {
     return props.projects.filter(project => {
-      return LatestProjects.includes(project.frontmatter.slug);
+      return LatestProjects.includes(project.slug);
     });
   }, [props.projects]);
 

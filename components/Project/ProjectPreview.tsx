@@ -1,7 +1,6 @@
-import { useEffect, useMemo, useState } from 'react';
-import { getMDXExport } from 'mdx-bundler/client';
+import { useMemo } from 'react';
 
-import type { ProjectExports, ProjectProps } from '@pages/projects/[slug]';
+import type { EnrichedProjectMatter } from '@pages/projects/[slug]';
 import { styled } from '@config/stitches.config';
 // import { Link } from '@components/Link';
 // import { TextDecoration } from '@components/TextDecoration';
@@ -39,64 +38,52 @@ const StyledProjectPreview = styled('div', {
 });
 
 type ProjectPreviewProps = {
-  project: ProjectProps;
+  project: EnrichedProjectMatter;
 };
 
 export const ProjectPreview: React.FC<ProjectPreviewProps> = props => {
-  const [images, setImages] = useState<string[]>([]);
-
-  useEffect(() => {
-    if (!props.project.code) return;
-    const mdx = getMDXExport<ProjectExports, ProjectProps>(props.project.code);
-    setImages(mdx.bannerImages ?? []);
-  }, [props.project.code]);
-
   const emoji = useMemo(() => {
-    return props.project.frontmatter.emoji
+    return props.project.emoji
       ? {
-          type: props.project.frontmatter.emoji,
+          type: props.project.emoji,
           position: { top: 20 },
         }
       : undefined;
-  }, [props.project.frontmatter.emoji]);
-
-  const imageList = useMemo(() => {
-    return images.length
-      ? images.map((image, key) => {
-          return (
-            <Picture
-              key={key}
-              src={image}
-              alt={props.project.frontmatter.name}
-              emoji={key === 0 ? emoji : undefined}
-            />
-          );
-        })
-      : undefined;
-  }, [images, props.project.frontmatter.name, emoji]);
+  }, [props.project.emoji]);
 
   return (
     <StyledProjectPreview>
-      <Carousel>{imageList}</Carousel>
+      <Carousel>
+        {props.project.images.map((image, key) => {
+          return (
+            <Picture
+              key={key}
+              src={image.src}
+              placeholder={image.placeholder}
+              alt={props.project.name}
+              emoji={key === 0 ? emoji : undefined}
+            />
+          );
+        })}
+      </Carousel>
       <ContentWrapper className="project-content">
         <div className="project-description">
-          <span className="project-role">{props.project.frontmatter.role}</span>
+          <span className="project-role">{props.project.role}</span>
           {/* <Link to={props.project.frontmatter.path}> */}
           <h5>
-            {props.project.frontmatter.name}{' '}
-            {/* <TextDecoration variant="arrow" /> */}
+            {props.project.name} {/* <TextDecoration variant="arrow" /> */}
           </h5>
           {/* </Link> */}
-          <p>{props.project.frontmatter.summary}</p>
+          <p>{props.project.summary}</p>
         </div>
         <div className="project-tags">
           <span className="project-category">
-            {props.project.frontmatter.domain?.map((name, key) => (
+            {props.project.domain?.map((name, key) => (
               <Toast key={key} color="green">
                 {name}
               </Toast>
             ))}
-            <Toast>{props.project.frontmatter.category}</Toast>
+            <Toast>{props.project.category}</Toast>
           </span>
         </div>
       </ContentWrapper>

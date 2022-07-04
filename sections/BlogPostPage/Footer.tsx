@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import Image from 'next/image';
 
 import type { GetCollaboratorsByFilePathResponse } from '@lib/api/github/collaborators';
-import type { BlogPostMatter } from '@pages/blog/[slug]';
+import type { EnrichedBlogPostMatter } from '@pages/blog/[slug]';
 import { MDXContentType } from '@config/content.config';
 import { styled } from '@config/stitches.config';
 import { ContentWrapper } from '@components/Layout';
@@ -83,7 +83,7 @@ const StyledSection = styled('section', {
   },
 });
 
-type BlogPostFooterSectionProps = BlogPostMatter &
+type BlogPostFooterSectionProps = EnrichedBlogPostMatter &
   (GetCollaboratorsByFilePathResponse | undefined);
 
 export const BlogPostFooterSection: React.FC<

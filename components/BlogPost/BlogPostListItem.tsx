@@ -1,4 +1,4 @@
-import type { BlogPostMatter } from '@pages/blog/[slug]';
+import type { EnrichedBlogPostMatter } from '@pages/blog/[slug]';
 import { Link } from '@components/Link';
 import { styled } from '@config/stitches.config';
 import { formatDate } from '@utils/formatDate';
@@ -41,7 +41,7 @@ const StyledBlogPostListItem = styled('li', {
 });
 
 type BlogPostListItemProps = {
-  post: BlogPostMatter;
+  post: EnrichedBlogPostMatter;
 };
 
 export const BlogPostListItem: React.FC<BlogPostListItemProps> = props => {

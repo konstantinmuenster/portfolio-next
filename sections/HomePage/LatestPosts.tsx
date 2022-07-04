@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import type { BlogPostMatter } from '@pages/blog/[slug]';
+import type { EnrichedBlogPostMatter } from '@pages/blog/[slug]';
 import { styled } from '@config/stitches.config';
 import { ContentRoutes, FeaturedPost } from '@config/content.config';
 import { ContentWrapper } from '@components/Layout';
@@ -37,7 +37,7 @@ const StyledSection = styled('section', {
 });
 
 type LatestPostsSectionProps = {
-  posts: BlogPostMatter[];
+  posts: EnrichedBlogPostMatter[];
 };
 
 export const LatestPostsSection: React.FC<LatestPostsSectionProps> = props => {
@@ -76,7 +76,7 @@ export const LatestPostsSection: React.FC<LatestPostsSectionProps> = props => {
   );
 };
 
-const isFeaturedPost = (post: BlogPostMatter) =>
+const isFeaturedPost = (post: EnrichedBlogPostMatter) =>
   post.slug === FeaturedPost.slug;
-const isNotFeaturedPost = (post: BlogPostMatter) =>
+const isNotFeaturedPost = (post: EnrichedBlogPostMatter) =>
   post.slug !== FeaturedPost.slug;

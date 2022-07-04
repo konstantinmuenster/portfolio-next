@@ -1,4 +1,4 @@
-import type { BlogPostMatter } from '@pages/blog/[slug]';
+import type { EnrichedBlogPostMatter } from '@pages/blog/[slug]';
 import { darkTheme, styled, theme } from '@config/stitches.config';
 import { Link } from '@components/Link';
 import { formatDate } from '@utils/formatDate';
@@ -78,7 +78,7 @@ const StyledBlogPostGridItem = styled(Link, {
 type BlogPostGridItemProps = {
   index: number;
   width: number;
-  data: BlogPostMatter;
+  data: EnrichedBlogPostMatter;
 };
 
 export const BlogPostGridItem: React.FC<BlogPostGridItemProps> = props => {

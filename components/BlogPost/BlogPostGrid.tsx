@@ -1,6 +1,6 @@
 import { Masonry } from 'masonic';
 
-import type { BlogPostMatter } from '@pages/blog/[slug]';
+import type { EnrichedBlogPostMatter } from '@pages/blog/[slug]';
 import { useHasMounted } from '@hooks/useHasMounted';
 import { BlogPostGridItem } from './BlogPostGridItem';
 import { styled } from '@config/stitches.config';
@@ -14,7 +14,7 @@ const Styled404Placeholder = styled('div', {
 });
 
 type BlogPostGridProps = {
-  posts: BlogPostMatter[];
+  posts: EnrichedBlogPostMatter[];
 };
 
 export const BlogPostGrid: React.FC<BlogPostGridProps> = props => {

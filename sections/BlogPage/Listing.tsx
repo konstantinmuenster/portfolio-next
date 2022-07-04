@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 
-import type { BlogPostMatter } from '@pages/blog/[slug]';
+import type { EnrichedBlogPostMatter } from '@pages/blog/[slug]';
 import { styled } from '@config/stitches.config';
 import { BlogPostGrid } from '@components/BlogPost/BlogPostGrid';
 import { ContentWrapper } from '@components/Layout';
@@ -49,7 +49,7 @@ const StyledListingSection = styled('section', {
 });
 
 type ListingSectionProps = {
-  posts: BlogPostMatter[];
+  posts: EnrichedBlogPostMatter[];
 };
 
 export const ListingSection: React.FC<ListingSectionProps> = props => {
@@ -123,7 +123,7 @@ export const ListingSection: React.FC<ListingSectionProps> = props => {
   );
 };
 
-const collectCategoriesFromPosts = (posts: BlogPostMatter[]) => {
+const collectCategoriesFromPosts = (posts: EnrichedBlogPostMatter[]) => {
   return posts.reduce((prev, post) => {
     const category = Array.isArray(post.category)
       ? post.category.join(',')
@@ -134,12 +134,15 @@ const collectCategoriesFromPosts = (posts: BlogPostMatter[]) => {
 
 const hasSelectedCategory = (
   selectedCategory: string[],
-  post: BlogPostMatter
+  post: EnrichedBlogPostMatter
 ) => {
   return selectedCategory.length ? post.category === selectedCategory[0] : true;
 };
 
-const hasSelectedTags = (selectedTags: string[], post: BlogPostMatter) => {
+const hasSelectedTags = (
+  selectedTags: string[],
+  post: EnrichedBlogPostMatter
+) => {
   return selectedTags.length
     ? selectedTags.some(tag => post.tags?.includes(tag))
     : true;

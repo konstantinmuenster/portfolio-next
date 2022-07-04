@@ -17,10 +17,14 @@ const StyledSinglePicture = styled('figure', {
       '@md': { display: 'block' },
     },
 
-    img: {
-      transition: 'all 1s ease',
+    '> span': {
       borderRadius: '$default',
-      border: '2px solid $surface100 !important',
+
+      img: {
+        transition: 'all 100ms ease',
+        borderRadius: '$default',
+        border: '2px solid $surface100 !important',
+      },
     },
   },
 });
@@ -31,6 +35,7 @@ export type SinglePictureProps = {
   width?: string;
   height?: string;
   caption?: string;
+  placeholder?: 'blur' | string;
   objectFit?: CSSProperties['objectFit'];
   emoji?:
     | string
@@ -48,6 +53,7 @@ export const SinglePicture: React.FC<SinglePictureProps> = ({
   emoji,
   caption,
   objectFit,
+  placeholder,
   ...props
 }) => {
   const isEmojiObject = typeof emoji !== 'string';
@@ -67,6 +73,10 @@ export const SinglePicture: React.FC<SinglePictureProps> = ({
           alt={alt}
           layout="fill"
           objectFit={objectFit ?? 'cover'}
+          placeholder={placeholder ? 'blur' : undefined}
+          blurDataURL={
+            typeof placeholder === 'string' ? placeholder : undefined
+          }
         />
       </div>
       {caption ? (

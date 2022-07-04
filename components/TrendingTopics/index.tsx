@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { useRouter } from 'next/router';
 
 import { styled } from '@config/stitches.config';
-import { BlogPostMatter } from '@pages/blog/[slug]';
+import { EnrichedBlogPostMatter } from '@pages/blog/[slug]';
 import { Overhead } from '@components/Overhead';
 import { getQueryParam } from '@utils/router/getQueryParam';
 import { Option } from '@components/Option';
@@ -20,7 +20,7 @@ const StyledTrendingTopics = styled('div', {
 });
 
 type TrendingTopicsProps = {
-  posts: BlogPostMatter[];
+  posts: EnrichedBlogPostMatter[];
 };
 
 export const TrendingTopics: React.FC<TrendingTopicsProps> = props => {
@@ -65,7 +65,7 @@ export const TrendingTopics: React.FC<TrendingTopicsProps> = props => {
 };
 
 const getTrendingTopics = (
-  posts: BlogPostMatter[],
+  posts: EnrichedBlogPostMatter[],
   { count }: { count?: number } = {}
 ) => {
   const tags = posts.reduce((tags, post) => {

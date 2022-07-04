@@ -1,4 +1,4 @@
-import type { BlogPostMatter } from '@pages/blog/[slug]';
+import type { EnrichedBlogPostMatter } from '@pages/blog/[slug]';
 import { styled } from '@config/stitches.config';
 import { Link } from '@components/Link';
 import { Toast } from '@components/Toast';
@@ -102,7 +102,7 @@ const StyledFeaturedBlogPost = styled('div', {
 });
 
 type FeaturedBlogPost = {
-  post: BlogPostMatter;
+  post: EnrichedBlogPostMatter;
 };
 
 export const FeaturedBlogPost: React.FC<FeaturedBlogPost> = props => {
