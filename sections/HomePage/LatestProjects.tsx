@@ -52,7 +52,7 @@ export const LatestProjectsSection: React.FC<
       return LatestProjects.includes(project.frontmatter.slug);
     });
   }, [props.projects]);
-
+  console.log(latestProjects, 'latestProjects');
   return (
     <StyledSection id="latest-projects-section">
       <ContentWrapper className="latest-projects-content">

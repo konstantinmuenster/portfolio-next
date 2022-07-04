@@ -32,6 +32,7 @@ type HomePageProps = {
 };
 
 const HomePage: NextPage<HomePageProps> = props => {
+  console.log(props.projects, 'Homepage');
   return (
     <>
       <SocialProfileJsonLd {...jsonLdProps} />
