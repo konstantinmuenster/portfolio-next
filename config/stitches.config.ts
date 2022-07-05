@@ -44,7 +44,7 @@ export const {
       primary500: '#522EE5',
       primary900: '#1C0C5E',
       accentGradient: 'linear-gradient(#E54974 50%, #613FE6 50%)',
-      turquoise: '#E8EBEF',
+      turquoise: '#E5E5E5',
       pinky: '#E54974',
       violet: '#613FE6',
     },
