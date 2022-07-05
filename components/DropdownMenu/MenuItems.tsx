@@ -6,6 +6,8 @@ import { Link } from '@components/Link';
 import { Avatar } from '@components/Avatar';
 
 import { BUTTON_SIZE } from './HamburgerButton';
+import { socialProfiles } from '@config/profiles.config';
+import { getEmailAddress } from '@utils/getEmailAddress';
 
 const StyledMenuItems = styled(Menu.Items, {
   position: 'absolute',
@@ -35,7 +37,8 @@ const StyledMenuItems = styled(Menu.Items, {
       justifyContent: 'flex-start',
       alignItems: 'center',
       columnGap: '0.5rem',
-      py: '1rem',
+      paddingTop: '1rem',
+      paddingBottom: '0.5rem',
 
       'span > img': {
         borderRadius: '$round',
@@ -67,30 +70,46 @@ const StyledMenuItems = styled(Menu.Items, {
   },
 });
 
-export const MenuItems: React.FC<{ items: NavigationItem[] }> = props => (
-  <StyledMenuItems>
-    {props.items.map((item, i) => {
-      return (
-        <Menu.Item key={i}>
-          {({ active }) => (
-            <Link to={item.to} data-focused={active}>
-              {item.label}
-            </Link>
-          )}
-        </Menu.Item>
-      );
-    })}
-    <hr />
-    <Menu.Item>
-      {({ active }) => (
-        <Link to="/services" data-focused={active} data-profile-link>
-          <Avatar size={32} />
-          <div>
-            Konstantin Münster
-            <span>Get In Touch</span>
-          </div>
-        </Link>
+export const MenuItems: React.FC<{ items: NavigationItem[] }> = props => {
+  const email = socialProfiles.find(e => e.to.includes('mailto'));
+  return (
+    <StyledMenuItems>
+      {props.items.map((item, i) => {
+        return (
+          <Menu.Item key={i}>
+            {({ active }) => (
+              <Link to={item.to} data-focused={active}>
+                {item.label}
+              </Link>
+            )}
+          </Menu.Item>
+        );
+      })}
+      {email ? (
+        <>
+          <hr />
+          <Menu.Item>
+            {({ active }) => (
+              <Link
+                to={email.to}
+                data-focused={active}
+                data-profile-link
+                hideExternalHint
+              >
+                <Avatar size={32} />
+                <div>
+                  Konstantin Münster
+                  <span>
+                    {getEmailAddress(socialProfiles) ?? 'Write me an email'}
+                  </span>
+                </div>
+              </Link>
+            )}
+          </Menu.Item>
+        </>
+      ) : (
+        <></>
       )}
-    </Menu.Item>
-  </StyledMenuItems>
-);
+    </StyledMenuItems>
+  );
+};
