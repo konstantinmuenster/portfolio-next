@@ -49,13 +49,9 @@ export const HeroSection: React.FC = () => {
       <ContentWrapper className="hero-content">
         <h1>
           <TextDecoration variant="spark" color={colors.secondary500.value}>
-            Building
+            Writing
           </TextDecoration>{' '}
-          for a{' '}
-          <TextDecoration variant="underline" color={colors.pinky.value}>
-            better
-          </TextDecoration>{' '}
-          web
+          code. Thinking product .
         </h1>
         <p>I help individuals and companies build better web applications.</p>
         <p>Available for freelance work in Hamburg or remote.</p>
