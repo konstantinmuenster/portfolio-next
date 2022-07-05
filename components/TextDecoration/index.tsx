@@ -31,8 +31,8 @@ const StyledTextDecoration = styled('span', {
         svg: {
           position: 'absolute',
           bottom: -20,
-          right: 60,
-          '@sm': { right: '-50%' },
+          right: '-10%',
+          '@sm': { right: '-10%' },
         },
       },
     },
