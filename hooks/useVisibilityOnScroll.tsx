@@ -14,7 +14,7 @@ export const useVisibilityOnScroll = () => {
 
     const handleScroll = () => {
       if (isScrollAboveGranularity(window.scrollY)) {
-        const isScrollDown = window.scrollY > lastScrollY;
+        const isScrollDown = 0 < window.scrollY && window.scrollY > lastScrollY;
         if (isScrollDown) setShow(false);
         else setShow(true);
         setLastScrollY(window.scrollY);
