@@ -10,7 +10,7 @@ const StyledProfileCard = styled('div', {
 
   '.profile-card': {
     px: '1.5rem',
-    py: '1.5rem',
+    py: '1.25rem',
     borderRadius: '$default',
     backgroundColor: '$surface100',
     border: '2px solid $surface250',
@@ -76,7 +76,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = props => {
           <Avatar size={60} />
           <div>
             <span className="name">Konstantin Münster</span>
-            <span className="role">Product Developer</span>
+            <span className="role">Web & Product Developer</span>
           </div>
         </div>
         <Button as="link" to="/services" colors={{ bgHover: 'secondary100' }}>
