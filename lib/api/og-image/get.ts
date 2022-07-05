@@ -47,7 +47,7 @@ export const getOGImagePath = async (
     const url = `${getBaseUrl()}/api/og-image/generate?${qs.stringify(query)}`;
     const res = await fetch(url, { headers: { Accept: 'application/json' } });
     const { data, success } = await res.json();
-    if (!success || !data.image) return undefined;
+    if (!success || !data.image) return null;
 
     const fileName = `${OG_IMAGE_FILE_PREFIX}${generateRandom().toString()}.png`;
     const imagePath = path.join(dir, fileName);
@@ -61,7 +61,7 @@ export const getOGImagePath = async (
       name: fileName,
     });
   } catch (e) {
-    return undefined;
+    return null;
   }
 };
 
