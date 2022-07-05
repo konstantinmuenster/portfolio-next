@@ -17,8 +17,7 @@ export const StyledLinkedBaseCardWrapper = styled('div', {
 
     '&:hover': {
       filter: 'brightness(98%)',
-      transform: 'scale(0.99)',
-      p: { filter: 'blur(0.5px)' },
+      transform: 'scale(0.995)',
       '[data-emoji]': { transform: 'rotateZ(720deg)' },
     },
   },
