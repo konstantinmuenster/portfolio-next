@@ -7,6 +7,7 @@ import { Emoji } from '@components/Emoji';
 const StyledSinglePicture = styled('figure', {
   '.image-wrapper': {
     position: 'relative',
+
     '> [data-emoji]': {
       display: 'none',
       position: 'absolute',
