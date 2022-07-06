@@ -30,7 +30,7 @@ const StyledFeaturedBlogPost = styled('div', {
     fontWeight: 400,
     lineHeight: '1.4rem',
     marginTop: '0.875rem',
-    marginBottom: '0.125rem',
+    marginBottom: '0.5rem',
   },
 
   '.summary': {

@@ -18,6 +18,7 @@ const StyledMenuItems = styled(Menu.Items, {
   marginTop: '1rem',
   backgroundColor: '$surface50',
   padding: '0.5rem',
+  paddingBottom: 0,
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'flex-start',
@@ -37,8 +38,7 @@ const StyledMenuItems = styled(Menu.Items, {
       justifyContent: 'flex-start',
       alignItems: 'center',
       columnGap: '0.5rem',
-      paddingTop: '1rem',
-      paddingBottom: '0.5rem',
+      py: '1rem',
 
       'span > img': {
         borderRadius: '$round',
