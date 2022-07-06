@@ -53,10 +53,10 @@ export const LatestPostsSection: React.FC<LatestPostsSectionProps> = props => {
     <StyledSection id="latest-posts-section">
       <ContentWrapper className="content">
         <div className="description">
-          <h3 className="title">Latest Articles</h3>
+          <h3 className="title">Start reading my blog.</h3>
           <p className="subtitle">
-            I write monthly about React, TypeScript and everything else
-            interesting in the web development and freelance space.
+            I write monthly about web and product development with React as well
+            as how to become a better developer.
           </p>
         </div>
         <div className="featured-post">
