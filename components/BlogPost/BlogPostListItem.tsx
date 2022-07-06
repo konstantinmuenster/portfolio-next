@@ -24,7 +24,11 @@ const StyledBlogPostListItem = styled('li', {
     paddingBottom: '0.5rem',
     borderBottom: '1px dashed $surface100',
 
-    '.published-at': {
+    '.details': {
+      display: 'flex',
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+      columnGap: '0.5rem',
       fontSize: '$mini',
       lineHeight: '$mini',
       fontWeight: 500,
@@ -49,9 +53,13 @@ export const BlogPostListItem: React.FC<BlogPostListItemProps> = props => {
     <StyledBlogPostListItem>
       <Link to={props.post.path}>
         <div className="blog-post-list-item">
-          <span className="published-at">
-            {formatDate(props.post.publishedAt)}
-          </span>
+          <div className="details">
+            <span className="published-at">
+              {formatDate(props.post.publishedAt)}
+            </span>
+            <span>·</span>
+            <span className="category">{props.post.category}</span>
+          </div>
           <p className="title">
             {props.post.title} <TextDecoration variant="arrow" />
           </p>
