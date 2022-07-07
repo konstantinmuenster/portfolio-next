@@ -17,6 +17,7 @@ const StyledMenuItems = styled(Menu.Items, {
   width: '14rem',
   marginTop: '1rem',
   backgroundColor: '$surface50',
+  border: '2px solid $surface250',
   padding: '0.5rem',
   paddingBottom: 0,
   display: 'flex',

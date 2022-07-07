@@ -29,6 +29,7 @@
     "chrome-aws-lambda": "^10.1.0",
     "esbuild": "^0.14.38",
     "feed": "^4.2.2",
+    "focus-visible": "^5.2.0",
     "fuse.js": "^6.6.2",
     "hast-util-to-html": "^8.0.3",
     "hast-util-to-string": "^2.0.0",

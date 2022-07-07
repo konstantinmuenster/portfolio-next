@@ -220,11 +220,6 @@ export const applyGlobalStyles = globalCss({
     '&:hover, &[aria-current="page"]': {
       color: '$text',
     },
-    '&:focus-visible': {
-      outlineColor: '$text',
-      color: '$text',
-      borderRadius: '$less',
-    },
     '&:not([data-hide-external-hint])[rel="nofollow noopener noreferrer"]': {
       position: 'relative',
       paddingRight: '18px',
@@ -253,11 +248,20 @@ export const applyGlobalStyles = globalCss({
     width: 'auto',
     overflow: 'visible',
     textAlign: 'left',
-    '&:focus-visible': {
-      outlineColor: '$text',
-      color: '$text',
-      borderRadius: '$default',
-    },
+  },
+
+  ':focus': {
+    outline: '2px solid $text',
+    outlineOffset: '.2rem',
+    borderRadius: '$less',
+  },
+
+  ':focus:not(:focus-visible)': {
+    outline: 'none',
+  },
+
+  '.js-focus-visible :focus:not(.focus-visible)': {
+    outline: 0,
   },
 
   strong: {
