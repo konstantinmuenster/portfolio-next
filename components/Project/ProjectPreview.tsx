@@ -59,7 +59,7 @@ export const ProjectPreview: React.FC<ProjectPreviewProps> = props => {
             <Picture
               key={key}
               src={image.src}
-              // placeholder={image.placeholder}
+              placeholder={image.placeholder}
               alt={props.project.name}
               emoji={key === 0 ? emoji : undefined}
             />
