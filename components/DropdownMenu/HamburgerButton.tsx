@@ -18,7 +18,13 @@ const StyledHamburgerButton = styled('div', {
   alignItems: 'center',
 
   background: 'transparent',
-  '&:hover': { background: '$surface50' },
+
+  '&:hover': {
+    background: '$surface50',
+    '> div:after, > div:before': { background: '$primary900' },
+  },
+
+  '&[data-open="true"] > div:after': { background: '$primary900' },
 
   div: {
     position: 'relative',
@@ -52,7 +58,7 @@ const StyledHamburgerButton = styled('div', {
   },
 
   '&[data-open="true"] div': {
-    background: '$subtext',
+    background: '$primary900',
 
     transitionTimingFunction: 'cubic-bezier(.215,.61,.355,1)',
     transform: 'rotate(225deg)',

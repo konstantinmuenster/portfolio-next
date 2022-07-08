@@ -16,6 +16,8 @@ const StyledDropdownMenu = styled('nav', {
   '.opacity-animation-end': { opacity: 1 },
   '.scale-animation-start': { transform: 'scale(0.95)' },
   '.scale-animation-end': { transform: 'scale(1)' },
+
+  '*:focus': { outline: 0 },
 });
 
 type DropdownMenuProps = {
