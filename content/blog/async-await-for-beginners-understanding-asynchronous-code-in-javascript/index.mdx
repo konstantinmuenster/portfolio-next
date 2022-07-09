@@ -49,7 +49,7 @@ So, the main reason why the Async / Await method made its way is that it makes a
 
 But let’s see Async / Await in action now! In the example below, we want to fetch some posts from an API. Since this can be a long performing operation, it is handled asynchronously by default. Hence, we somehow need to make sure that the _fetch_ call in line 3 has been successfully resolved before we continue working with that fetched data in line 4. Otherwise, the `json` method will fail since we don’t have a response from the `fetch` call yet.
 
-```js
+```js showLineNumbers
 const fetchData = async url => {
   try {
     const response = await fetch(url);
@@ -87,7 +87,7 @@ Important to know is that every Async / Await function returns such a Promise. S
 
 In our example, the `fetchData` function in line 11 returns a Promise instead of the actual data we want to have. To retrieve the data, we have to wait until the Promise has been resolved (meaning the response of our asynchronous `fetchData` function has been returned). We can do that by using the _then_ method. This function takes another function as an argument where we pass in the response. In the function body, we can then work with the actual received data of our `fetchData` call.
 
-```js
+```js showLineNumbers
 const fetchData = async url => {
   try {
     const response = await fetch(url);

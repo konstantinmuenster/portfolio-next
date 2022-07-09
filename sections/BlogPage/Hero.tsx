@@ -25,7 +25,6 @@ const StyledSection = styled('section', {
 
       h1: {
         color: '$primary900',
-        fontWeight: 500,
         marginBottom: '1.5rem',
       },
       p: { color: '$subtext' },

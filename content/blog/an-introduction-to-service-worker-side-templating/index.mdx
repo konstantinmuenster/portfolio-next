@@ -44,8 +44,7 @@ To give you an example of how service worker rendering can look like, we will bu
 
 Now, instead of caching the already rendered HTML page for each post, we only want to cache their shared page template. Thus, we can store the individual post data separately and reduce the needed cache storage volume significantly. As you can see below, we use Handlebars.js as the template engine inside our service worker. It’s pretty handy because you just need a template (like our imported `post.precompiled.js` template), pass in some data or context, and get a rendered HTML markup back. If you haven’t worked with Handlebars yet, you will see later on that it’s pretty easy to understand.
 
-```js
-// sw.install.js
+```js:sw.install.js showLineNumbers
 importScripts('./js/handlebars.min.js');
 importScripts('./templates/post.precompiled.js');
 
@@ -80,8 +79,7 @@ So far, nothing special. We import Handlebars.js as well as our post page templa
 
 More interesting is our fetch event because here the rendering process takes place. If we intercept a request, we parse the URL and test if it matches our URL pattern for a single post. If it does, we retrieve the `/post/` HTML file and all the post data from the cache. To be precise, the `/post/` file is not our Handlebars post page template that we imported before. The `/post/` HTML file is a raw page layout, containing the `<head>` section and all static stuff. The Handlebars template we imported, however, is only responsible for populating the `<main>` section of our page. Later on, we will merge the static page layout with our dynamically created HTML from Handlebars.
 
-```js
-// sw.fetch.js
+```js:sw.fetch.js showLineNumbers
 self.addEventListener('fetch', function (event) {
   var requestURL = new URL(event.request.url);
 

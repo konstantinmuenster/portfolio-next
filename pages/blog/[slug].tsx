@@ -16,15 +16,13 @@ import { redirectTo } from '@utils/router/redirectTo';
 import { getBaseUrl } from '@utils/getBaseUrl';
 import { fetcher } from '@utils/fetcher';
 import { getAllBlogPosts, getBlogPost } from '@lib/mdx/blog';
-import { Pre } from '@lib/mdx/rehype/rehype-code-highlight';
-import { Preview } from '@lib/mdx/rehype/rehype-code-highlight/components/Preview';
-import { Code } from '@lib/mdx/rehype/rehype-code-highlight/components/Code';
 import { GetCollaboratorsByFilePathResponse } from '@lib/api/github/collaborators';
 import { BlogPostHeroSection } from '@sections/BlogPostPage/Hero';
 import { ContentWrapper } from '@components/Layout';
 import { BlogPicture } from '@components/Picture';
 import { BlogPostBanner } from '@sections/BlogPostPage/Banner';
 import { BlogPostFooterSection } from '@sections/BlogPostPage/Footer';
+import { Pre } from '@components/Code';
 
 const baseUrl = getBaseUrl();
 
@@ -153,10 +151,8 @@ const BlogPost: React.FC<BlogPostProps> = ({ code, frontmatter }) => {
       <ContentWrapper className="blog-post-content">
         <MDXBody
           components={{
-            Preview: Preview,
             Image: BlogPicture,
             pre: Pre,
-            code: Code,
           }}
         />
       </ContentWrapper>

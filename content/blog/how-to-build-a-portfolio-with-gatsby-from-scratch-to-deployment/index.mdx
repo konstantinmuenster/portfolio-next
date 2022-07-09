@@ -79,7 +79,6 @@ If you haven’t worked with Gatsby before, you need to install the Gatsby CLI f
 
 ```bash
 npm install -g gatsby-cli
-
 ```
 
 Having the CLI installed, we can now use it to create a new Gatsby project with the `gatsby new` command. This command takes to arguments: A name and an URL which points to a Gatsby Starter project.
@@ -90,7 +89,6 @@ Since we want to start from scratch, we run:
 
 ```bash
 gatsby new gatsby-portfolio
-
 ```
 
 When the setup is done, we can navigate to the directory and run `gatsby develop` to start a development server.
@@ -141,8 +139,7 @@ To have a clean start, I like to remove all unnecessary files inside the `src` d
 
 Since our app crashes now, we have to remove any dependencies in our `index.js` file:
 
-```jsx
-// index.js
+```jsx:index.js showLineNumbers
 import React from 'react';
 
 const IndexPage = () => {
@@ -178,7 +175,6 @@ To use the plugin in our project, we have to install all required NPM packages f
 
 ```bash
 npm install --save gatsby-plugin-styled-components styled-components babel-plugin-styled-components
-
 ```
 
 After the installation has finished, we can configure the plugin in the `gatsby-config.js` file. As you see, there are already some preinstalled plugins listed. In this case, all we have to do is to add the plugin name `gatsby-plugin-styled-components` to the list of plugins.
@@ -187,8 +183,7 @@ Other plugins may require more configuration. This can be done by adding the plu
 
 Since the Styled Components plugin doesn’t require any configuration settings, our plugin list should look like this now:
 
-```js
-// gatsby-config.js
+```js:gatsby-config.js showLineNumbers
 module.exports = {
   ...
   },
@@ -228,8 +223,7 @@ Now that our initial setup is done, we can finally start creating a basic page l
 
 This component wraps the page-specific content and provides basic styling as well as static elements like header and footer. So basically everything that should appear on every page in our application. Such a component could look like this:
 
-```jsx
-// layout.js
+```jsx:layout.js showLineNumbers
 import React from 'react';
 import styled from 'styled-components';
 
@@ -270,7 +264,7 @@ export default Layout;
 
 We can now import the `layout` component in our `index.js` file to give our page some appropriate styling.
 
-```js
+```js:index.js showLineNumbers
 import React from 'react';
 
 import Layout from '../components/layout';
@@ -298,7 +292,7 @@ As an example, we start with building a hero section that briefly states who we 
 
 In our project, each section is represented by a component. Hence, we create a new file called `hero.js` inside the `components` folder.
 
-```jsx
+```jsx:hero.js showLineNumbers
 import React from 'react';
 import styled from 'styled-components';
 
@@ -343,7 +337,7 @@ For now, we just hardcode any content inside our hero component. In the next ste
 
 Having our `hero.js` component defined, we can import it in `index.js`, wrap it with our layout, and voila, we should have our first section in place!
 
-```jsx
+```jsx:index.js showLineNumbers
 import React from 'react';
 
 import Layout from '../components/layout';
@@ -370,7 +364,7 @@ To see how it works, let’s create our first Markdown file. Within the `src` di
 
 Now it’s time to move our hardcoded content from `hero.js` to `hero.md`:
 
-```md
+```md:hero.md showLineNumbers
 ---
 greetings: 'Hello'
 emoji: '👋'
@@ -399,8 +393,7 @@ Gladly, both steps are really easy. To tell Gatsby to read from our files, we ca
 
 Since we don’t use images in our app, we can reconfigure the filesystem, so it sources files from our `content` folder instead. We just have to give the filesystem a name and a location to source from. That’s it for the first step.
 
-```jsx lines=10-11
-// gatsby-config.js
+```jsx:gatsby-config.js {9-10} showLineNumbers
 module.exports = {
   ...
   },
@@ -441,8 +434,7 @@ npm install --save gatsby-transformer-remark
 
 After that, we can configure it by adding the plugin name to the plugin list. Make sure you add the entry after the `gatsby-source-filesystem`, like this:
 
-```jsx lines=14
-// gatsby-config.js
+```jsx:gatsby-config.js {13} showLineNumbers
 module.exports = {
   ...
   },
@@ -485,8 +477,7 @@ Gatsby, for instance, allows you to write so-called _Page Queries_. These are qu
 
 To do this, we need to import the `graphql` tag function from `gatsby` inside `index.js`. Using the tag function, we can write a GraphQL query that retrieves the content that we had previously added in our Markdown file:
 
-```jsx
-// index.js
+```jsx:index.js showLineNumbers
 export const pageQuery = graphql`
   {
     hero: allMarkdownRemark {
@@ -513,7 +504,7 @@ With this GraphQL query in place, Gatsby, fortunately, does all the remaining wo
 
 The last thing to do is to take the content and pass it to the Hero component since this is the place where we want to use it. So finally, our `index.js` component should look like this:
 
-```jsx
+```jsx:index.js showLineNumbers
 import React from 'react';
 import { graphql } from 'gatsby';
 
@@ -552,8 +543,7 @@ export const pageQuery = graphql`
 
 Now that we pass the content as props to the `hero.js` component, we can remove any hardcoded information in there and replace it with the queried data we defined in `hero.md`:
 
-```jsx
-// hero.js
+```jsx:hero.js showLineNumbers
 ...
 const Hero = ({ content }) => {
   const { frontmatter, rawMarkdownBody } = content
@@ -595,7 +585,6 @@ If we go with the second approach, we have to create a production-ready build fi
 
 ```bash
 gatsby build
-
 ```
 
 After the build process has been successfully finished, we should see a folder called `public` next to our `src` folder. This is your production build.

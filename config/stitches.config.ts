@@ -22,7 +22,7 @@ export const {
     fonts: {
       sans: '"IBM Plex Sans", sans-serif',
       serif: '"Bree Serif", serif',
-      mono: '"JetBrains Mono", monospace',
+      mono: 'ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace',
     },
     colors: {
       background: '#FFFFFF',
@@ -286,17 +286,16 @@ export const applyGlobalStyles = globalCss({
     textAlign: 'center',
   },
 
-  'code[data-inline-code]': {
-    background: '$secondary100',
-    px: '0.25rem',
-    py: '0.2rem',
-    borderRadius: '$default',
-
+  'code:not(.code-highlight)': {
+    display: 'inline-block',
     whiteSpace: 'nowrap',
+    borderRadius: '$less',
+    backgroundColor: '$primary50',
+    color: '$text',
+    padding: '0.25rem',
     fontFamily: '$mono',
     fontSize: '$small',
-    lineHeight: '$small',
-    letterSpacing: '-0.5px',
+    lineHeight: '$mini',
   },
 
   p: {

@@ -3,6 +3,8 @@ import calculateReadingTime from 'reading-time';
 import rehypeSlug from 'rehype-slug';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeExternalLinks from 'rehype-external-links';
+import rehypePrism from 'rehype-prism-plus';
+import rehypeCodeTitles from 'rehype-code-titles';
 import { remarkMdxImages } from 'remark-mdx-images';
 import { getPlaiceholder } from 'plaiceholder';
 import { readdirSync } from 'fs';
@@ -14,16 +16,15 @@ import type {
 import { ContentRoutes, MDXContentType } from '@config/content.config';
 import { getAllMdxFiles } from './common/getAllMdxFiles';
 import { getCompiledMdx } from './common/getCompiledMdx';
-import { rehypeCodeHighlight, rehypeMetaAttribute } from './rehype';
 import { OGImageType } from '@components/OGImage';
 import { getOGImagePath } from '@lib/api/og-image/get';
 
 const remarkPlugins: PluggableList = [remarkMdxImages];
 
 const rehypePlugins: PluggableList = [
+  rehypeCodeTitles,
+  rehypePrism,
   rehypeExternalLinks,
-  rehypeMetaAttribute,
-  rehypeCodeHighlight,
   rehypeSlug,
   rehypeAutolinkHeadings,
 ];

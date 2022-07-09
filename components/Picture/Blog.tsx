@@ -15,8 +15,8 @@ const StyledBlogPicture = styled('div', {
     '@sm': { height: '20rem' },
     '@lg': {
       height: '23rem',
-      width: '46rem',
-      marginLeft: 'calc((46rem - 42rem) * - 1/2)',
+      width: '110%',
+      marginLeft: '-5%',
     },
 
     'img:hover': { borderColor: '$primary50 !important' },

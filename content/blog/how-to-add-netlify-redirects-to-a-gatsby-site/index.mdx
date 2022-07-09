@@ -64,8 +64,7 @@ To start creating redirects, we need to do the following:
 
 What may sound complicated is actually pretty straightforward. Let’s stick to the example we already used in option 1. There, we created a redirect to forward all visitors from our default Netlify subdomain to our custom primary domain. We want to do the same with the `createRedirect` action now.
 
-```js
-// gatsby-node.js
+```js:gatsby-node.js showLineNumbers
 exports.createPages = ({ actions }) => {
   const { createRedirect } = actions;
   createRedirect({

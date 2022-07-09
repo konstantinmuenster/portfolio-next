@@ -73,7 +73,6 @@ The concept gets clear in an example:
 Let’s say a user adds a new block with the type of _Heading_. This produces the following HTML output:
 
 ```jsx
-// HTML Output:
 <h1 contenteditable="true"> I am editable by the user </h1>
 ```
 
@@ -99,8 +98,7 @@ Now that we know how it works in theory, let’s put it into practice. First of 
 
 Having the setup done, we create our first component: `editablePage.js`
 
-```jsx
-// editablePage.js
+```jsx:editablePage.js showLineNumbers
 
 const initialBlock = { id: uid(), html: '', tag: 'p' };
 
@@ -132,8 +130,7 @@ The page component stores and renders all blocks we will create later on. As a s
 
 Note: Since every block needs a unique ID, I created a helper function `uid()` that we can use for initializing new blocks. In case you want to use the same function:
 
-```js
-// uid.js
+```js:uid.js
 const uid = () => {
   return Date.now().toString(36) + Math.random().toString(36).substr(2);
 };
@@ -149,8 +146,7 @@ To install the package, run `npm i react-contenteditable`
 
 Next, we create a new file called `editableBlock.js`:
 
-```jsx
-// editableBlock.js
+```jsx:editableBlock.js showLineNumbers
 class EditableBlock extends React.Component {
   constructor(props) {
     super(props);
@@ -208,8 +204,7 @@ When there have been relevant updates to the `html` or `tagName` state property,
 
 Having our `editableBlock` component set up, we can finally use it in our page component:
 
-```jsx lines=7-9,13-48,55
-// editablePage.js
+```jsx:editablePage.js {6-8,12-47,54} showLineNumbers
 const initialBlock = { id: uid(), html: '', tag: 'p' };
 
 class EditablePage extends React.Component {
@@ -292,8 +287,7 @@ We pass all three methods as props to the editable block.
 
 Note: In the `deleteBlockHandler`, we use another helper function that manually sets the cursor to the end of the block content. If we would just focus the element as we did in `addBlockHandler`, it would focus the element though, but with a cursor set to the very beginning of the block content. In case you want to use the same `setCaretToEnd` helper function:
 
-```js
-// setCaretToEnd.js
+```js:setCaretToEnd.js showLineNumbers
 const setCaretToEnd = element => {
   const range = document.createRange();
   const selection = window.getSelection();
@@ -311,8 +305,7 @@ So far, we can only add text content to our initially added block. Let’s make 
 
 Inside `editableBlock.js`, we create an `onKeyDownHandler` method that we pass on to the `ContentEditable` component:
 
-```jsx
-// editableBlock.js
+```jsx:editableBlock.js showLineNumbers
 class EditableBlock extends React.Component {
   constructor(props) {
     super(props);
@@ -395,8 +388,7 @@ To install it, run: `npm i match-sorter`
 
 Having that done, we create a new file called `selectMenu.js` with the following contents:
 
-```jsx
-// selectMenu.js
+```jsx:selectMenu.js showLineNumbers
 const MENU_HEIGHT = 150;
 const allowedTags = [
   {
@@ -527,8 +519,7 @@ Admittedly, this was a lot of code at once. But if you go through it step by ste
 
 Next, we can put things together. Since we have our select menu component in place, we can add it to `editableBlock.js`:
 
-```jsx
-// editableBlock.js
+```jsx:editableBlock.js showLineNumbers
 class EditableBlock extends React.Component {
   constructor(props) {
     super(props);
