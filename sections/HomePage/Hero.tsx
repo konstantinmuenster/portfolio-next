@@ -51,7 +51,11 @@ export const HeroSection: React.FC = () => {
           <TextDecoration variant="spark" color={colors.secondary500.value}>
             Writing
           </TextDecoration>{' '}
-          code. Thinking product .
+          code. Thinking{' '}
+          <TextDecoration variant="underline" color={colors.pinky.value}>
+            product
+          </TextDecoration>
+          .
         </h1>
         <p>I help individuals and companies build better web applications.</p>
         <p>Available for freelance work in Hamburg or remote.</p>

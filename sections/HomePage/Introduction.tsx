@@ -70,10 +70,10 @@ export const IntroductionSection: React.FC = () => {
           </p>
           <p>
             My passion has always been at the intersection of product and
-            engineering. Nowadays, I mostly work with startups and small
-            companies on creating beautiful digital products. Besides, I write
-            regularly on my blog about web and product development as well as
-            careers.
+            engineering. I mostly work with startups and small companies to
+            create beautiful digital products and web applications. Besides, I
+            write regularly on my blog about web and product development as well
+            as careers.
           </p>
         </div>
         <Picture

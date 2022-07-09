@@ -10,24 +10,22 @@ import { TextDecoration } from '@components/TextDecoration';
 
 const StyledSection = styled('section', {
   '> .content': {
-    paddingTop: '4rem',
-    paddingBottom: '2rem',
+    paddingTop: '6rem',
+    paddingBottom: '4rem',
 
     '.description': {
       width: '100%',
       maxWidth: '30rem',
 
       '.title': { marginBottom: '1.5rem' },
-      '.subtitle': { marginBottom: '1.5rem', color: '$subtext' },
+      '.subtitle': { marginBottom: '2rem', color: '$subtext' },
     },
 
     '.latest-posts-list': {
-      my: '2rem',
+      my: '3rem',
     },
 
     '.discover-blog': {
-      py: '2rem',
-
       'a:hover [data-text-decoration] > svg': {
         fill: '$primary250',
         transform: 'rotate(45deg)',

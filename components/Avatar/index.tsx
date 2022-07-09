@@ -17,7 +17,7 @@ export const Avatar: React.FC<AvatarProps> = props => {
   const size = props.size ?? 40;
 
   return (
-    <StyledAvatar>
+    <StyledAvatar data-avatar>
       <Image
         src={AvatarImage}
         alt="Konstantin Münster Avatar"

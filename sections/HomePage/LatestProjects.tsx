@@ -18,7 +18,7 @@ const StyledSection = styled('section', {
   },
 
   '> .latest-projects-content': {
-    paddingTop: '2rem',
+    paddingTop: '4rem',
     paddingBottom: '3rem',
 
     '.description': {
