@@ -1,7 +1,7 @@
 import type { EnrichedBlogPostMatter } from '@pages/blog/[slug]';
 import { Link } from '@components/Link';
 import { styled } from '@config/stitches.config';
-import { formatDate } from '@utils/formatDate';
+import { formatDate } from '@utils/date/formatDate';
 import { TextDecoration } from '@components/TextDecoration';
 
 const StyledBlogPostListItem = styled('li', {
@@ -41,6 +41,13 @@ const StyledBlogPostListItem = styled('li', {
       lineHeight: '$small',
       color: '$text',
     },
+
+    '.summary': {
+      color: '$subtext',
+      fontSize: '$small',
+      lineHeight: '$small',
+      py: '0.25rem',
+    },
   },
 });
 
@@ -63,6 +70,7 @@ export const BlogPostListItem: React.FC<BlogPostListItemProps> = props => {
           <p className="title">
             {props.post.title} <TextDecoration variant="arrow" />
           </p>
+          <p className="summary">{props.post.summary}</p>
         </div>
       </Link>
     </StyledBlogPostListItem>
