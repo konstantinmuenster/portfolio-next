@@ -1,4 +1,4 @@
-import { darkTheme, styled } from '@config/stitches.config';
+import { styled } from '@config/stitches.config';
 import { socialProfiles } from '@config/profiles.config';
 import { ContentWrapper } from '@components/Layout';
 import { Button } from '@components/Button';
@@ -7,16 +7,14 @@ import { Avatar } from '@components/Avatar';
 import { useMemo } from 'react';
 
 const ContactSectionSection = styled('section', {
-  background: '$turquoise',
-
-  [`.${darkTheme} &`]: { backgroundColor: '$secondary100' },
-
   '> div': {
-    py: '4rem',
-
-    '@md': { py: '6rem' },
+    marginBottom: '6rem',
 
     '.contact-content': {
+      maxWidth: '42rem',
+      paddingTop: '3rem',
+      borderTop: '2px dashed $surface100',
+
       '.subtitle': {
         color: '$subtext',
         marginTop: '1rem',

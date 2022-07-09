@@ -14,10 +14,10 @@ const scrollAnimation = keyframes({
 
 const StyledServicesSection = styled('section', {
   '> div': {
-    paddingTop: '3rem',
+    paddingTop: '5rem',
     paddingBottom: '6rem',
 
-    '@md': { paddingTop: '4rem' },
+    '@md': { paddingTop: '6rem' },
 
     '.services-description': {
       maxWidth: '37.5rem',

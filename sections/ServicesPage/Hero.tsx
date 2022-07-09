@@ -1,4 +1,4 @@
-import { darkTheme, styled } from '@config/stitches.config';
+import { styled } from '@config/stitches.config';
 
 import { HEADER_HEIGHT } from '@components/Header';
 import { ContentWrapper } from '@components/Layout';
@@ -7,10 +7,8 @@ import { DroppableServices } from '@components/DroppableServices';
 const StyledSection = styled('section', {
   paddingTop: `calc(${HEADER_HEIGHT}px + 2rem)`,
   paddingBottom: '5rem',
-  backgroundColor: '$primary50',
+  backgroundColor: '$secondary50',
   borderBottom: '2px solid $border',
-
-  [`.${darkTheme} &`]: { backgroundColor: '$surface100' },
 
   '@md': { paddingTop: `calc(${HEADER_HEIGHT}px + 4rem)` },
 

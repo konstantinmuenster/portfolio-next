@@ -5,7 +5,7 @@ import { styled } from '@config/stitches.config';
 
 const StyledDraggable = styled('button', {
   position: 'relative',
-  zIndex: 998,
+  zIndex: 1,
 
   touchAction: 'none',
 

@@ -22,8 +22,8 @@ const StyledDroppableServices = styled('div', {
     '.service-item': {
       position: 'relative',
       width: '300px',
-      background: '$secondary50',
-      border: '2px solid $secondary50',
+      background: '$secondary100',
+      border: '2px solid $secondary100',
       borderRadius: '$default',
       px: '0.5rem',
       py: '0.75rem',

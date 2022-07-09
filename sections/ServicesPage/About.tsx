@@ -4,9 +4,10 @@ import { styled } from '@config/stitches.config';
 import { ContentWrapper } from '@components/Layout';
 import { Picture } from '@components/Picture';
 import { SocialProfiles } from '@components/SocialProfiles';
+import { Link } from '@components/Link';
 
 const StyledAboutSection = styled('section', {
-  background: '$secondary50',
+  background: '$surface50',
 
   '> div': {
     display: 'flex',
@@ -14,10 +15,10 @@ const StyledAboutSection = styled('section', {
     justifyContent: 'space-between',
     alignItems: 'flex-start',
     rowGap: '2rem',
-    py: '3rem',
+    py: '5rem',
 
     '@md': {
-      py: '4rem',
+      py: '6rem',
       flexDirection: 'row',
       alignItems: 'center',
       columnGap: '4rem',
@@ -25,7 +26,8 @@ const StyledAboutSection = styled('section', {
     },
 
     '.about-description': {
-      '.title': { marginTop: '1rem', marginBottom: '1.5rem' },
+      marginBottom: '1rem',
+      '.title': { marginBottom: '1.5rem' },
       p: { marginBottom: '1rem' },
     },
 
@@ -44,22 +46,21 @@ export const AboutSection: React.FC = () => {
     <StyledAboutSection id="about-section">
       <ContentWrapper>
         <div className="about-description">
-          <h3 className="title">Oh, another developer.</h3>
+          <h3 className="title">A developer who cares about the product.</h3>
           <p>
-            Yes, this might come to mind while browsing this page. But with
-            being a former product manager and still in love with creating great
-            products, I try to break out of the typical engineer role – at least
-            a bit.
+            For me, programming is about bringing ideas and products to life.
+            This is the reason why I started learning web development while
+            working as a product manager.
           </p>
           <p>
-            For me, programming is about bringing ideas and products to life,
-            and not solely about writing and shipping beautiful code (even
-            though I can easily obsess over the latter too).
+            Nowadays, I support startups and small companies as a product
+            developer. In that, I develop modern frontend applications and
+            engage in product-related matters.
           </p>
           <p>
-            My passion has always been at the intersection of engineering and
-            product – so if you are looking for a hands-on developer who cares
-            about users and code, let’s put our heads together!
+            So if you are looking for a hands-on developer who cares about users
+            and code,{' '}
+            <Link to="#contact-section">let’s put our heads together</Link>!
           </p>
         </div>
         <div className="about-picture">
