@@ -2,8 +2,7 @@ import { useMemo } from 'react';
 
 import type { EnrichedProjectMatter } from '@pages/projects/[slug]';
 import { styled } from '@config/stitches.config';
-// import { Link } from '@components/Link';
-// import { TextDecoration } from '@components/TextDecoration';
+import { Link } from '@components/Link';
 import { Toast } from '@components/Toast';
 import { Carousel, Picture } from '@components/Picture';
 import { ContentWrapper } from '@components/Layout';
@@ -21,6 +20,7 @@ const StyledProjectPreview = styled('div', {
         fontFamily: '$sans',
         fontWeight: 500,
         color: '$text',
+        a: { color: '$text', paddingRight: '1.5rem' },
 
         svg: { size: 24 },
 
@@ -69,11 +69,13 @@ export const ProjectPreview: React.FC<ProjectPreviewProps> = props => {
       <ContentWrapper className="project-content">
         <div className="project-description">
           <span className="project-role">{props.project.role}</span>
-          {/* <Link to={props.project.frontmatter.path}> */}
           <h5>
-            {props.project.name} {/* <TextDecoration variant="arrow" /> */}
+            {props.project.website ? (
+              <Link to={props.project.website}>{props.project.name}</Link>
+            ) : (
+              props.project.name
+            )}
           </h5>
-          {/* </Link> */}
           <p>{props.project.summary}</p>
         </div>
         <div className="project-tags">
