@@ -1,6 +1,7 @@
 import '@fontsource/jetbrains-mono';
 import '@fontsource/ibm-plex-sans';
 import '@fontsource/ibm-plex-sans/500.css';
+import 'focus-visible';
 
 import type { AppProps } from 'next/app';
 import { DefaultSeo } from 'next-seo';
