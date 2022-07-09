@@ -8,7 +8,7 @@ const StyledOption = styled('button', {
   borderRadius: '$less',
 
   color: '$subtext',
-  background: '$turquoise',
+  background: '$surface50',
   transition: '$default',
 
   [`.${darkTheme} &`]: { backgroundColor: '$secondary100' },

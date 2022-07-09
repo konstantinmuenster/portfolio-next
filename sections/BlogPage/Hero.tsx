@@ -1,4 +1,4 @@
-import { darkTheme, styled } from '@config/stitches.config';
+import { darkTheme, styled, theme } from '@config/stitches.config';
 
 import type { EnrichedBlogPostMatter } from '@pages/blog/[slug]';
 import { HEADER_HEIGHT } from '@components/Header';
@@ -10,12 +10,14 @@ import { MediumFollowers } from '@components/MediumFollowers';
 const StyledSection = styled('section', {
   paddingTop: `calc(${HEADER_HEIGHT}px + 2rem)`,
   paddingBottom: '1.5rem',
-  backgroundColor: '$secondary50',
+  backgroundColor: `${theme.colors.primary50.value}7f`,
   borderBottom: '2px solid $border',
 
-  '@md': { paddingTop: `calc(${HEADER_HEIGHT}px + 4rem)` },
+  [`.${darkTheme} &`]: {
+    backgroundColor: `${darkTheme.colors.primary50.value}50`,
+  },
 
-  [`.${darkTheme} &`]: { backgroundColor: '$secondary50' },
+  '@md': { paddingTop: `calc(${HEADER_HEIGHT}px + 4rem)` },
 
   '> div': {
     '.hero-content': {
@@ -51,9 +53,9 @@ export const HeroSection: React.FC<HeroSectionProps> = props => {
         <div className="hero-content">
           <h1>Blog</h1>
           <p>
-            I write monthly about React, TypeScript and everything else
-            interesting in the web development and freelance space. Discover
-            whatever you are interested in!
+            I write about product and web development with React as well as
+            becoming a better developer. Discover whatever you are interested
+            in!
           </p>
         </div>
         <TrendingTopics posts={props.posts} />
