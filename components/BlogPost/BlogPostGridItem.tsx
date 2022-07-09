@@ -1,7 +1,7 @@
 import type { EnrichedBlogPostMatter } from '@pages/blog/[slug]';
 import { darkTheme, styled, theme } from '@config/stitches.config';
 import { Link } from '@components/Link';
-import { formatDate } from '@utils/formatDate';
+import { formatDate } from '@utils/date/formatDate';
 import { Toast } from '@components/Toast';
 import { TextDecoration } from '@components/TextDecoration';
 

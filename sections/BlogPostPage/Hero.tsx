@@ -12,7 +12,7 @@ import { Link } from '@components/Link';
 import { Toast } from '@components/Toast';
 import { Tooltip } from '@components/Tooltip';
 import { Avatar } from '@components/Avatar';
-import { formatDate } from '@utils/formatDate';
+import { formatDate } from '@utils/date/formatDate';
 import { Icon } from '@components/Icon';
 
 const StyledSection = styled('section', {

@@ -7,7 +7,7 @@ import { MDXContentType } from '@config/content.config';
 import { styled } from '@config/stitches.config';
 import { ContentWrapper } from '@components/Layout';
 import { Link } from '@components/Link';
-import { formatDate } from '@utils/formatDate';
+import { formatDate } from '@utils/date/formatDate';
 import { getGithubFileUrl } from '@utils/getGithubFileUrl';
 import { ProfileCard } from '@components/Card';
 import { generateTweetUrl } from '@utils/generateTweetUrl';
