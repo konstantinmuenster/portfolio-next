@@ -65,7 +65,7 @@ export const IntroductionSection: React.FC = () => {
         <div className="description">
           <h3 className="title">Nice to have you here.</h3>
           <p className="subtitle">
-            Hey, I&apos;m Konstantin. I am freelance web developer with a
+            Hey, I&apos;m Konstantin. I am a freelance web developer with a
             background in product management.
           </p>
           <p>
