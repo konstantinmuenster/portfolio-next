@@ -38,7 +38,7 @@ export const FeaturedPost = {
   slug: 'how-to-build-a-text-editor-like-notion',
 } as const;
 
-export const LatestProjects = ['lazy', 'notion-clone'];
+export const LatestProjects = ['notion-clone'];
 
 export const CategoryColorMap = {
   'Web Development': 'purple',
