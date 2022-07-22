@@ -12,6 +12,7 @@ const StyledBlogPostGridItem = styled(Link, {
   px: '1rem',
   py: '1rem',
   borderRadius: '$default',
+  border: '1px solid $surface100',
   transition: '$default',
 
   [`.${darkTheme} &`]: {

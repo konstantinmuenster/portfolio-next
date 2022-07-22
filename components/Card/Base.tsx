@@ -32,6 +32,7 @@ const StyledBaseCard = styled('div', {
   columnGap: '0.5rem',
 
   borderRadius: '$default',
+  border: '1px solid $surface100',
   background: '$surface50',
   px: '1.5rem',
   py: '1.25rem',

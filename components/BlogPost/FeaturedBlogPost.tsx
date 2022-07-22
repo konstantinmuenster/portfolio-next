@@ -10,6 +10,7 @@ const StyledFeaturedBlogPost = styled('div', {
   position: 'relative',
 
   borderRadius: '$default',
+  border: '1px solid $surface100',
   background: '$secondary50',
   px: '1rem',
   paddingTop: '1rem',

@@ -22,6 +22,7 @@ const StyledContactCard = styled('div', {
     py: '2rem',
     px: '1rem',
     background: '$secondary50',
+    border: '1px solid $surface100',
     borderRadius: '$default',
 
     '@md': {
