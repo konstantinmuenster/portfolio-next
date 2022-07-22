@@ -29,6 +29,7 @@ export const generateOGImage = async (query: GenerateOGImageQuery) => {
     });
 
     const base64 = await page.screenshot({ type: 'png', encoding: 'base64' });
+    console.log(base64);
     await browser.close();
 
     return base64;
