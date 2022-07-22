@@ -1,4 +1,4 @@
-import PortraitImage from '../../public/portrait.png';
+import PortraitImage from '../../public/portrait.jpg';
 
 import { darkTheme, styled } from '@config/stitches.config';
 

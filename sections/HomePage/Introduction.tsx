@@ -1,4 +1,4 @@
-import PortraitImage from '../../public/images/portrait.png';
+import PortraitImage from '../../public/images/portrait.jpg';
 
 import { styled, wavingAnimation } from '@config/stitches.config';
 
