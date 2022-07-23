@@ -25,7 +25,6 @@
     "@plaiceholder/next": "^2.4.0",
     "@stitches/react": "^1.2.8",
     "axios": "^0.27.2",
-    "chrome-aws-lambda": "^10.1.0",
     "esbuild": "^0.14.38",
     "feed": "^4.2.2",
     "focus-visible": "^5.2.0",

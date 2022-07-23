@@ -1,6 +1,5 @@
 import { useTheme } from 'next-themes';
 
-import type { GenerateOGImageQuery } from '@lib/api/og-image/generate';
 import { styled } from '@config/stitches.config';
 import { Avatar } from '@components/Avatar';
 import { getBaseUrl } from '@utils/getBaseUrl';
@@ -75,7 +74,7 @@ export enum OGImageType {
   Blog = 'blog',
 }
 
-type OGImageProps = GenerateOGImageQuery;
+type OGImageProps = any;
 
 export const OGImage: React.FC<OGImageProps> = props => {
   // always use dark theme to ensure color consistency
