@@ -14,6 +14,11 @@ export default class Document extends NextDocument {
             id="stitches"
             dangerouslySetInnerHTML={{ __html: getCssText() }}
           />
+          <script
+            defer
+            data-domain="konstantin.digital"
+            src="https://plausible.io/js/plausible.js"
+          ></script>
         </Head>
         <body>
           <Main />
