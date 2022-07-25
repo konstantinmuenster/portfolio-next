@@ -75,9 +75,7 @@ export const SinglePicture: React.FC<SinglePictureProps> = ({
           layout="fill"
           objectFit={objectFit ?? 'cover'}
           placeholder={placeholder ? 'blur' : undefined}
-          blurDataURL={
-            typeof placeholder === 'string' ? placeholder : undefined
-          }
+          blurDataURL={placeholder !== 'blur' ? placeholder : undefined}
         />
       </div>
       {caption ? (

@@ -4,6 +4,7 @@ import 'focus-visible';
 
 import type { AppProps } from 'next/app';
 import { DefaultSeo } from 'next-seo';
+import { NextBannerMeta } from 'next-banner';
 
 import { applyGlobalStyles } from '@config/stitches.config';
 import { defaultSeoProps } from '@config/seo.config';
@@ -27,8 +28,10 @@ function MyApp({ Component, pageProps }: AppProps<PageProps>) {
   return (
     <ThemeProvider>
       <PageLayout>
-        <DefaultSeo {...defaultSeoProps} />
-        <Component {...pageProps} />
+        <NextBannerMeta>
+          <DefaultSeo {...defaultSeoProps} />
+          <Component {...pageProps} />
+        </NextBannerMeta>
       </PageLayout>
     </ThemeProvider>
   );

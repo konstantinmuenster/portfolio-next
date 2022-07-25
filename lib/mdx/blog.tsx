@@ -16,8 +16,6 @@ import type {
 import { ContentRoutes, MDXContentType } from '@config/content.config';
 import { getAllMdxFiles } from './common/getAllMdxFiles';
 import { getCompiledMdx } from './common/getCompiledMdx';
-import { OGImageType } from '@components/OGImage';
-import { getOGImagePath } from '@lib/api/og-image/get';
 
 const remarkPlugins: PluggableList = [remarkMdxImages];
 
@@ -54,12 +52,6 @@ export const getBlogPost = async (slug: string) => {
   const readingTime = calculateReadingTime(compiled.mdx.code);
   const path = `${ContentRoutes[MDXContentType.BlogPost]}/${slug}`;
   const banner = await resolveBannerObject(compiled);
-  const ogImage = await getOGImagePath(OGImageType.Blog, {
-    slug,
-    title: compiled.mdx.frontmatter.title,
-    category: compiled.mdx.frontmatter.category,
-    type: compiled.mdx.frontmatter.type,
-  });
 
   const frontmatter = {
     ...compiled.mdx.frontmatter,
@@ -67,7 +59,6 @@ export const getBlogPost = async (slug: string) => {
     path,
     readingTime,
     banner,
-    ogImage,
   } as EnrichedBlogPostMatter;
 
   return { code: compiled.mdx.code, frontmatter };

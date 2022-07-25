@@ -3,6 +3,7 @@ import type { ReadTimeResults } from 'reading-time';
 import type { GetStaticProps } from 'next';
 import { getMDXComponent } from 'mdx-bundler/client';
 import { NextSeo, ArticleJsonLd, ArticleJsonLdProps } from 'next-seo';
+import { setBannerData } from 'next-banner';
 import useSWR from 'swr';
 
 import {
@@ -71,7 +72,6 @@ export type EnrichedBlogPostMatter = Omit<BlogPostMatter, 'banner'> & {
   slug: string;
   path: string;
   readingTime?: ReadTimeResults;
-  ogImage?: string;
   banner?: {
     src?: string;
     placeholder?: string;
@@ -117,8 +117,9 @@ const BlogPost: React.FC<BlogPostProps> = ({ code, frontmatter }) => {
   const lastModifiedDate = new Date(lastModified).toISOString();
   const publishedAtDate = new Date(frontmatter.publishedAt).toISOString();
 
+  setBannerData({ layout: 'post', custom: { category: frontmatter.category } });
+
   const seoProps = generateSeoProps({
-    image: frontmatter.ogImage ? `${baseUrl}${frontmatter.ogImage}` : undefined,
     title: frontmatter.title,
     description: frontmatter.summary,
     url: `${baseUrl}${frontmatter.path}`,
@@ -131,7 +132,7 @@ const BlogPost: React.FC<BlogPostProps> = ({ code, frontmatter }) => {
   });
 
   const jsonLdProps: ArticleJsonLdProps = {
-    images: frontmatter.ogImage ? [`${baseUrl}${frontmatter.ogImage}`] : [],
+    images: [],
     title: frontmatter.title,
     description: frontmatter.summary ?? '',
     url: `${baseUrl}${frontmatter.path}`,

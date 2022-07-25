@@ -1,14 +1,14 @@
+import type { NextPage } from 'next';
+import { ScreenshotCanvas, useBannerData } from 'next-banner';
 import { useTheme } from 'next-themes';
 
-import type { GenerateOGImageQuery } from '@lib/api/og-image/generate';
 import { styled } from '@config/stitches.config';
 import { Avatar } from '@components/Avatar';
-import { getBaseUrl } from '@utils/getBaseUrl';
 
-const StyledOGImage = styled('main', {
+const StyledScreenshotCanvas = styled(ScreenshotCanvas, {
   width: '100vw',
   height: '100vh',
-  linearGradient: `$violet 60%, $pinky 60%`,
+  background: 'linear-gradient($violet 60%, $pinky 60%) !important',
   padding: '2rem',
 
   '.content': {
@@ -70,24 +70,22 @@ const StyledOGImage = styled('main', {
   },
 });
 
-export enum OGImageType {
-  Project = 'project',
-  Blog = 'blog',
-}
-
-type OGImageProps = GenerateOGImageQuery;
-
-export const OGImage: React.FC<OGImageProps> = props => {
+const OGImagePostTemplatePage: NextPage = () => {
   // always use dark theme to ensure color consistency
   useTheme().setTheme('dark');
 
+  const {
+    meta: { title = 'Placeholder title' },
+    custom: { category = 'Web Development' },
+  } = useBannerData();
+
   return (
-    <StyledOGImage>
+    <StyledScreenshotCanvas>
       <div className="content">
         <div className="category-type">
-          {props.category ? <span>{props.category}</span> : undefined}
+          {category ? <span>{category}</span> : undefined}
         </div>
-        {props.title ? <h1>{props.title}</h1> : undefined}
+        {title ? <h1>{title}</h1> : undefined}
         <div className="author">
           <Avatar size={62} />
           <div className="name">
@@ -95,8 +93,12 @@ export const OGImage: React.FC<OGImageProps> = props => {
             Konstantin Münster
           </div>
         </div>
-        <div className="site-url">{getBaseUrl().substring(8)}/blog</div>
+        <div className="site-url">konstantin.digital/blog</div>
       </div>
-    </StyledOGImage>
+    </StyledScreenshotCanvas>
   );
 };
+
+OGImagePostTemplatePage.defaultProps = { renderWithoutLayout: true };
+
+export default OGImagePostTemplatePage;
