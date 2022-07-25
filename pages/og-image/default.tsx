@@ -4,7 +4,6 @@ import { useTheme } from 'next-themes';
 
 import { styled } from '@config/stitches.config';
 import { Avatar } from '@components/Avatar';
-import { getBaseUrl } from '@utils/getBaseUrl';
 
 const StyledScreenshotCanvas = styled(ScreenshotCanvas, {
   width: '100vw',
@@ -70,7 +69,7 @@ const OGImageDefaultTemplatePage: NextPage = () => {
             <span>Web & Product Developer</span>
           </div>
         </div>
-        <div className="site-url">{getBaseUrl().substring(8)}</div>
+        <div className="site-url">konstantin.digital/blog</div>
       </div>
     </StyledScreenshotCanvas>
   );
