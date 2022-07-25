@@ -1,5 +1,6 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+/* eslint-disable @typescript-eslint/no-var-requires */
 const { withPlaiceholder } = require('@plaiceholder/next');
+const { withNextBanner } = require('next-banner');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -10,4 +11,13 @@ const nextConfig = {
   },
 };
 
-module.exports = withPlaiceholder(nextConfig);
+module.exports = withPlaiceholder(
+  withNextBanner({
+    nextBanner: {
+      domain: 'https://konstantin.digital',
+      layoutDir: 'og-image',
+      outputDir: 'images/og-image',
+    },
+    ...nextConfig,
+  })
+);
