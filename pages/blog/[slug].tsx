@@ -72,7 +72,6 @@ export type EnrichedBlogPostMatter = Omit<BlogPostMatter, 'banner'> & {
   slug: string;
   path: string;
   readingTime?: ReadTimeResults;
-  ogImage?: string;
   banner?: {
     src?: string;
     placeholder?: string;
@@ -133,7 +132,7 @@ const BlogPost: React.FC<BlogPostProps> = ({ code, frontmatter }) => {
   });
 
   const jsonLdProps: ArticleJsonLdProps = {
-    images: frontmatter.ogImage ? [`${baseUrl}${frontmatter.ogImage}`] : [],
+    images: [],
     title: frontmatter.title,
     description: frontmatter.summary ?? '',
     url: `${baseUrl}${frontmatter.path}`,

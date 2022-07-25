@@ -8,6 +8,7 @@ const nextConfig = {
   output: 'standalone',
   images: {
     domains: ['avatars.githubusercontent.com'],
+    minimumCacheTTL: 3600,
   },
 };
 

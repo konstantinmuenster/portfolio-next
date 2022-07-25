@@ -1,17 +1,22 @@
 # Install dependencies only when needed
 FROM node:16-alpine AS deps
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
-RUN apk add --no-cache libc6-compat
-RUN apk add --no-cache chromium
 WORKDIR /app
 COPY package.json package-lock.json ./
+RUN apk add --no-cache libc6-compat chromium
 RUN npm ci --legacy-peer-deps
 
 # Rebuild the source code only when needed
 FROM node:16-alpine AS builder
+
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD 1
+ENV PUPPETEER_EXECUTABLE_PATH /usr/bin/chromium-browser
+
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+
+RUN apk add chromium
 
 RUN npm run build
 
