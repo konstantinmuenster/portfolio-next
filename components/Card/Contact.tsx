@@ -7,7 +7,7 @@ import { SparkSvg } from '@components/TextDecoration/SparkSvg';
 import { Avatar } from '@components/Avatar';
 import { Link } from '@components/Link';
 import { getEmailAddress } from '@utils/getEmailAddress';
-import { getCurrentTimestamp } from '@utils/date/getCurrentTimestamp';
+import { useCurrentTimestamp } from '@utils/date/useCurrentTimestamp';
 
 const StyledContactCard = styled('div', {
   marginBottom: '6rem',
@@ -94,6 +94,8 @@ const StyledContactCard = styled('div', {
 });
 
 export const ContactCard: React.FC = () => {
+  const timestamp = useCurrentTimestamp();
+
   const email = useMemo(() => {
     return socialProfiles.find(({ to }) => to.includes('mailto:'));
   }, []);
@@ -121,7 +123,7 @@ export const ContactCard: React.FC = () => {
             <div className="contact-card-chat-message">
               <Avatar size={24} />
               <p>Looking forward to it!</p>
-              <span className="timestamp">{getCurrentTimestamp()}</span>
+              <span className="timestamp">{timestamp}</span>
             </div>
             <Link
               to={email?.to ?? ''}
