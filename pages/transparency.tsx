@@ -2,6 +2,7 @@ import type { NextPage } from 'next';
 
 import { LegalContentWrapper } from '@components/Layout';
 import { getBaseUrl } from '@utils/getBaseUrl';
+import { Link } from '@components/Link';
 
 const TransparencyPage: NextPage = () => {
   return (
@@ -10,7 +11,7 @@ const TransparencyPage: NextPage = () => {
       <p>
         Your privacy is important to me. It is my policy to respect your privacy
         regarding any information I may collect from you across my website,{' '}
-        {getBaseUrl()}.
+        {getBaseUrl({ omitProtocol: true })}.
       </p>
       <p>
         I only ask for personal information when I truly need it to provide a
@@ -24,6 +25,13 @@ const TransparencyPage: NextPage = () => {
         disclosure, copying, use or modification. I don&apos;t share any
         personally identifying information publicly or with third-parties,
         except when required to by law.
+      </p>
+      <p>
+        I use <Link to="https://plausible.io/">plausible.io</Link> - a
+        privacy-friendly and cookie-less analytics solution - for tracking. All
+        the site measurement is carried out absolutely anonymously. Cookies are
+        not set and no personal data is collected. This helps me aggregating
+        some useful data for improving the site while remaining your privacy.
       </p>
       <p>
         My website may link to external sites that are not operated by me.
