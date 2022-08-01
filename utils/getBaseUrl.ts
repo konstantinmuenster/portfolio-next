@@ -3,7 +3,7 @@ type GetBaseUrlOptions = {
 };
 
 export const getBaseUrl = (options?: GetBaseUrlOptions) => {
-  if (typeof window !== undefined) {
+  if (typeof window !== 'undefined') {
     return options?.omitProtocol
       ? window.location.host
       : `${window.location.protocol}//${window.location.host}`;
