@@ -31,12 +31,12 @@ Let’s look at the major changes.
 
 This table shows the biggest changes that have been introduced in Next.js 12.2 and how it compares to the old image component.
 
-|                 | Next.js 10                                       | Next.js 12.2                                           |
-| --------------- | ------------------------------------------------ | ------------------------------------------------------ |
-| **HTML Output** | Renders `<img />` with span and div wrapper      | Renders `<img />` without any wrappers                 |
-| **Sizing**      | Width and height represent the actual image size | Width and height represent the rendered image size     |
-| **Styling**     | Using `layout` and CSS properties                | Using CSS properties                                   |
-| **Fill Mode**   | Set `layout=fill`                                | Setting `fill=true` and set styles on parent container |
+|                 | Next.js 10                                             | Next.js 12.2                                           |
+| --------------- | ------------------------------------------------------ | ------------------------------------------------------ |
+| **HTML Output** | Renders `<img />` with span and div wrapper            | Renders `<img />` without any wrappers                 |
+| **Sizing**      | Width/height represent rendered or original image size | Width/height always represent the rendered image size  |
+| **Styling**     | Using `layout` and CSS properties                      | Using CSS properties                                   |
+| **Fill Mode**   | Set `layout=fill`                                      | Setting `fill=true` and set styles on parent container |
 
 Let’s see how this would look like in an example. The API for using the image component hasn’t changed much but there are still some tweaks that are useful to know.
 
