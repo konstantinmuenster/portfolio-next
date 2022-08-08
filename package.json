@@ -48,6 +48,7 @@
     "rehype-external-links": "^1.0.1",
     "rehype-prism-plus": "^1.4.2",
     "rehype-slug": "^5.0.1",
+    "remark-gfm": "^3.0.1",
     "remark-mdx-images": "^1.0.3",
     "sharp": "^0.30.7",
     "stitches-reset": "^1.0.0",

@@ -3,9 +3,12 @@ import type { ReactElement, ReactNode } from 'react';
 import { styled, darkTheme, globalCss, CSS } from '@config/stitches.config';
 
 const codeBlockPadding: CSS = {
-  width: '110%',
-  marginLeft: '-5%',
   px: '1rem',
+
+  '@lg': {
+    width: '110%',
+    marginLeft: '-5%',
+  },
 };
 
 const injectCodeTitleStyle = globalCss({
@@ -70,7 +73,7 @@ const StyledPre = styled('pre', {
     whiteSpace: 'normal',
   },
   '.token.comment, .token.prolog, .token.doctype, .token.cdata': {
-    color: '#6272a4',
+    color: '#8495c6',
   },
   '.token.punctuation': { color: '#f8f8f2' },
   '.namespace': { opacity: 0.7 },

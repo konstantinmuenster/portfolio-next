@@ -294,8 +294,8 @@ export const applyGlobalStyles = globalCss({
     color: '$text',
     padding: '0.25rem',
     fontFamily: '$mono',
-    fontSize: '$small',
-    lineHeight: '$mini',
+    fontSize: '90%',
+    lineHeight: '90%',
   },
 
   p: {

@@ -30,6 +30,13 @@ const StyledSection = styled('section', {
     color: '$primary900',
     marginTop: '1.5rem',
     marginBottom: '0.5rem',
+    fontSize: '2rem',
+    lineHeight: '2.5rem',
+
+    '@sm': {
+      fontSize: '2.5rem',
+      lineHeight: '3rem',
+    },
   },
 
   'p.summary': { color: '$subtext' },

@@ -24,6 +24,8 @@ import { BlogPicture } from '@components/Picture';
 import { BlogPostBanner } from '@sections/BlogPostPage/Banner';
 import { BlogPostFooterSection } from '@sections/BlogPostPage/Footer';
 import { Pre } from '@components/Code';
+import { Table } from '@components/Table';
+import { Callout } from '@components/Callout';
 
 const baseUrl = getBaseUrl();
 
@@ -152,8 +154,10 @@ const BlogPost: React.FC<BlogPostProps> = ({ code, frontmatter }) => {
       <ContentWrapper className="blog-post-content">
         <MDXBody
           components={{
+            Callout: Callout,
             Image: BlogPicture,
             pre: Pre,
+            table: Table,
           }}
         />
       </ContentWrapper>

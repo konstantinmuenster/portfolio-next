@@ -5,6 +5,7 @@ import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeExternalLinks from 'rehype-external-links';
 import rehypePrism from 'rehype-prism-plus';
 import rehypeCodeTitles from 'rehype-code-titles';
+import remarkGfm from 'remark-gfm';
 import { remarkMdxImages } from 'remark-mdx-images';
 import { getPlaiceholder } from 'plaiceholder';
 import { readdirSync } from 'fs';
@@ -17,7 +18,7 @@ import { ContentRoutes, MDXContentType } from '@config/content.config';
 import { getAllMdxFiles } from './common/getAllMdxFiles';
 import { getCompiledMdx } from './common/getCompiledMdx';
 
-const remarkPlugins: PluggableList = [remarkMdxImages];
+const remarkPlugins: PluggableList = [remarkMdxImages, remarkGfm];
 
 const rehypePlugins: PluggableList = [
   rehypeCodeTitles,
