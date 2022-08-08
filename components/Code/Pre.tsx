@@ -3,9 +3,12 @@ import type { ReactElement, ReactNode } from 'react';
 import { styled, darkTheme, globalCss, CSS } from '@config/stitches.config';
 
 const codeBlockPadding: CSS = {
-  width: '110%',
-  marginLeft: '-5%',
   px: '1rem',
+
+  '@lg': {
+    width: '110%',
+    marginLeft: '-5%',
+  },
 };
 
 const injectCodeTitleStyle = globalCss({
