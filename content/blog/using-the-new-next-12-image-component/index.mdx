@@ -1,0 +1,99 @@
+---
+title: Using The New <next/image> Component
+summary: 'Next.js 12.2 includes a totally revised component for image optimization. Let’s see what has changed.'
+category: 'Web Development'
+type: 'Essay'
+banner:
+  name: 'robert-shunev-mS1nlYbq1kA-unsplash'
+  caption: 'Photo by <a href="https://unsplash.com/@rshunev" target="_blank" rel="noopener noreferrer">Robert Shunev</a> on Unsplash'
+tags: ['Next.js', 'Image Optimization']
+publishedAt: '2022/08/07'
+mediumUrl:
+---
+
+export * as banner from './robert-shunev-mS1nlYbq1kA-unsplash.jpg';
+
+<Callout>
+  Right now, the newer `next/image` component is still under development and
+  only available using [the experimental
+  flag](https://nextjs.org/docs/api-reference/next/future/image).
+</Callout>
+
+With Next.js 10 and the then introduced `next/image` component, serving images became a lot easier. Image compression, modern image formats, lazy loading - everything just by swapping out the browser default `<img />` tag.
+
+Though, it was not that simple after all. While the user experience improved a lot, the developer experience was not as simple as hoped. Properties that didn’t behave as expected, images that were wrapped several times like a good old present on Christmas.
+
+Luckily, the feedback had been heard and Next.js introduced a revised, experimental version for the next/image component in Next.js 12.2.
+
+Let’s look at the major changes.
+
+## Changes for `next/image` in Next.js 12.2
+
+This table shows the biggest changes that have been introduced in Next.js 12.2 and how it compares to the old image component.
+
+|                 | Next.js 10                                       | Next.js 12.2                                           |
+| --------------- | ------------------------------------------------ | ------------------------------------------------------ |
+| **HTML Output** | Renders `<img />` with span and div wrapper      | Renders `<img />` without any wrappers                 |
+| **Sizing**      | Width and height represent the actual image size | Width and height represent the rendered image size     |
+| **Styling**     | Using `layout` and CSS properties                | Using CSS properties                                   |
+| **Fill Mode**   | Set `layout=fill`                                | Setting `fill=true` and set styles on parent container |
+
+Let’s see how this would look like in an example. The API for using the image component hasn’t changed much but there are still some tweaks that are useful to know.
+
+### How to use `next/image` with fixed image size
+
+If you want to preserve the aspect ratio of the image, you can use the fixed layout. Depending on whether you are importing your image locally or not, you can simply set a width and height image of the rendered image, that's it!
+
+```tsx
+<Image
+  src={image.srcUrl}
+  alt="Image"
+  width={600} // If you import the image locally, you can omit this
+  height={600} // If you import the image locally, you can omit this
+/>
+```
+
+Additionally, you could set properties like `style` or `className` to style the image.
+
+Almost not worth explaining, right? I’m glad it is that simple! Coming from an approach that differed immensely from the browser built-in `<img />` behavior, this “new” approach doesn’t let us think much about how to use it properly.
+
+### How to use `next/image` with fill mode
+
+But what if you just want to let the image fill its parent container? For those cases, you can use the `fill` property. Set it to `true`, make sure the parent container has all the needed styling, and you are good to go!
+
+```tsx
+<div style={{ position: 'relative', overflow: 'hidden', height: '600px' }}>
+  <Image
+    src={image.srcUrl}
+    alt="Image"
+    fill={true}
+    style={{ objectFit: 'cover' }}
+  />
+</div>
+```
+
+As you see, this is fairly simple too! Of course, there are more advanced scenarios but these two should cover the most common use-cases.
+
+### Demo Project
+
+I created a tiny project to showcase how both approaches would look like in an actual app. You find the project on Github if you want to take a closer look.
+
+<iframe
+  src="https://codesandbox.io/embed/next-12-image-component-demo-623m7n?autoresize=1&fontsize=14&hidenavigation=1&module=%2Fsrc%2Fpages%2Findex.tsx&theme=dark&view=preview"
+  style={{
+    width: '100%',
+    height: '500px',
+    border: '0',
+    borderRadius: '4px',
+    overflow: 'hidden',
+    marginTop: '2rem',
+    marginBottom: '2rem',
+  }}
+  title="next-12-image-component-demo"
+  allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
+  sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
+></iframe>
+
+If you want to dive deeper, make sure to check out the official Next.js documentation. They also cover what has changed technically under the hood - would definitely recommend it.
+
+[next/future/image (experimental) | Next.js](https://nextjs.org/docs/api-reference/next/future/image)
