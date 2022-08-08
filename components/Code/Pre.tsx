@@ -73,7 +73,7 @@ const StyledPre = styled('pre', {
     whiteSpace: 'normal',
   },
   '.token.comment, .token.prolog, .token.doctype, .token.cdata': {
-    color: '#6272a4',
+    color: '#8495c6',
   },
   '.token.punctuation': { color: '#f8f8f2' },
   '.namespace': { opacity: 0.7 },
