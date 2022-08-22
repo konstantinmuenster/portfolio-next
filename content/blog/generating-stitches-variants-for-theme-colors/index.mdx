@@ -1,0 +1,132 @@
+---
+title: Generating Stitches Variants For Your Theme’s Color Palette
+summary: 'Stiches.dev lets you write performant CSS-in-JS. Let’s see how we can speed up creating variants for it!'
+category: 'Web Development'
+type: 'Tutorial'
+banner:
+  name: 'stitches-color-palette-variants-banner'
+  caption: 'Applying our trick, we can generate color variants easily for all colors in our palette.'
+tags: [Stitches.dev', 'React', 'CSS-in-JS']
+publishedAt: '2022/08/23'
+mediumUrl:
+---
+
+export * as banner from './stitches-color-palette-variants-banner.png';
+
+I recently came across [Stitches.dev](http://Stitches.dev) when I rebuilt my portfolio. Using a CSS-in-JS library with almost zero interpolations at runtime and a very well designed API seemed appealing - so I tried it!
+
+#### What are Variants in Stitches?
+
+A feature Stitches offers are variants. This is one of its key differences compared to [Styled Components](https://styled-components.com/), which was one of the first and still most popular CSS-in-JS tools. Whereas Styled Components used string interpolation to conditionally set styles, Stitches lets you predefine variants to avoid unnecessary interpolation. This significantly enhances performance.
+
+A simple example can be found in this [Stitches docs](https://stitches.dev/docs/variants):
+
+```tsx:Button.tsx
+const Button = styled('button', {
+  // base styles
+
+  variants: {
+    color: {
+      violet: { backgroundColor: 'blueviolet' },
+      gray: { backgroundColor: 'gainsboro' },
+    },
+  },
+});
+
+() => <Button color="violet">Button</Button>;
+```
+
+### Using Your Theme's Color Palette To Create Variants
+
+When I built my portfolio, I wanted to have such a variant-based button component too. But I wanted it to be highly customizable - instead of having two defined color variants, it should accept any color that I defined in my theme’s color palette.
+
+#### The Manual Way
+
+The easiest (and probably fastest 😄) way would have been to manually create a variant for each color I used in my theme. So something like this:
+
+```tsx:Button.tsx
+const Button = styled('button', {
+  // base styles
+
+  variants: {
+    color: {
+      background: { backgroundColor: '$background' },
+      surface50: { backgroundColor: '$surface50' },
+      surface100: { backgroundColor: '$surface100' },
+      surface250: { backgroundColor: '$surface250' },
+      surface500: { backgroundColor: '$surface500' },
+      secondary50: { backgroundColor: '$secondary50' },
+      secondary100: { backgroundColor: '$secondary100' },
+      secondary250: { backgroundColor: '$secondary250' },
+      secondary500: { backgroundColor: '$secondary500' },
+	  ...
+    },
+  },
+});
+
+() => <Button color="violet">Button</Button>;
+```
+
+This would have been perfectly fine but I was eager to automate this process so that I could reuse the same functionality in other components too.
+
+#### The Automated Way
+
+Since Stitches uses an object syntax to write CSS, we can write a function that generates an object that contains all the CSS for the needed variants.
+
+In the end, we end up with this little piece of Stitches CSS:
+
+```tsx:Button.tsx
+const Button = styled('button', {
+  // base styles
+
+  variants: {
+    color: generateColorPaletteVariants({ backgroundColor: '$––color––' }),
+  },
+});
+
+() => <Button color="violet">Button</Button>;
+```
+
+Let’s look into `generateColorPaletteVariants` to see what it does internally. Admittedly, it is a bit hacky… but hey, it works!
+
+```tsx:generateColorPaletteVariants.ts
+import * as Stitches from '@stitches/react';
+
+import { theme } from '@config/stitches.config';
+
+const COLOR_PATTERN = '$––color––';
+const REGEX = /\"([^\"]*?\$––color––[^\"]*?)\"/;
+
+export const generateColorPaletteVariants = (css: Stitches.CSS) => {
+  const cssString = JSON.stringify(css);
+
+  return Object.values(theme.colors).reduce((prev, color) => {
+    const substringToReplace = REGEX.exec(cssString);
+    if (!substringToReplace?.length) throw Error('No Color Token provided.');
+
+    const replacedSubstring = substringToReplace[0].replace(
+      COLOR_PATTERN,
+      `$${color.token}`
+    );
+
+    const replacedString = cssString.replace(
+      substringToReplace[0],
+      replacedSubstring
+    );
+
+    return { ...prev, [color.token]: JSON.parse(replacedString) };
+  }, {}) as Record<keyof typeof theme.colors, Stitches.CSS>;
+};
+```
+
+In essence, we just stringify our Stitches CSS object, do some magic replacing via regex, and return the parsed string that contains the modified styles.
+
+The `css` parameter of the function represents the styles of each variant item. In the previous example, we used `{ backgroundColor: '$––color––' }` but it could be more complex too, of course.
+
+By using a specific color pattern (`$––color––`), we can automatically insert theme colors in the styling of the variant. So, when looping through the theme colors object, `{ backgroundColor: '$––color––' }` becomes `{ backgroundColor: '$surface50' }` in the first iteration.
+
+Thus, we have a button that accepts each theme color for the color prop - without manually adding all necessary variants.
+
+I hope this helps you in speeding up your development process using Stitches. If you have a better approach for doing this, let me know!
+
+Also, I highly recommend checking out the library if you look for a fresh and performant way of writing your CSS-in-JS styles.
