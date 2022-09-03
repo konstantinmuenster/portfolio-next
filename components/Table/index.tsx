@@ -7,6 +7,7 @@ const StyledTable = styled('div', {
     borderRadius: '$default',
     background: '$surface50',
     width: '100%',
+    textAlign: 'left',
 
     '@lg': {
       width: '120%',
@@ -29,7 +30,7 @@ const StyledTable = styled('div', {
     },
   },
 
-  td: {
+  'td, th': {
     padding: '1rem',
   },
 

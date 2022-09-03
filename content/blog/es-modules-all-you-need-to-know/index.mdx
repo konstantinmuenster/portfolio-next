@@ -1,0 +1,74 @@
+---
+title: 'ES Modules: All You Need To Know'
+summary: "ESM and CommonJS are Javascript's module systems. Let's understand how they compare and when to choose which system."
+category: 'Web Development'
+type: 'Guide'
+banner:
+  name: 'ej-li-fCyfgmnTj4o-unsplash'
+  caption: 'Photo by <a href="https://unsplash.com/@jiaweizhao" target="_blank" rel="noopener noreferrer">Jiawei Zhao</a> on Unsplash'
+tags: ['ES Modules', 'Modules', 'CommonJS', 'ESM', 'CJS', 'Javascript']
+publishedAt: '2022/09/03'
+mediumUrl: ''
+---
+
+export * as banner from './ej-li-fCyfgmnTj4o-unsplash.jpg';
+
+ES Modules (or short: ESM) and CommonJS (or short: CJS) are the two module systems in Javascript that are actively being used. Module Systems allow us to share and reuse code easily. For example, we can write a module for image compression which can then be distributed via [npmjs.com](http://npmjs.com) and used by developers around the world.
+
+## What is CommonJS?
+
+CommonJS was introduced as the default module system for Node.js. Since this was way before ES Modules were released, most of the tooling and packages you find on [npmjs.com](http://npmjs.com) and [yarnpkg.com](http://yarnpkg.com) were initially written in CommonJS.
+
+In Node, each file is treated as a separate module. You can import and export with the following CommonJS syntax:
+
+| Importing | `const fs = require("fs");`                           |
+| --------- | ----------------------------------------------------- |
+| Exporting | `module.exports = function() { return “Hi there!”; }` |
+
+While [Node.js](https://flaviocopes.com/nodejs/) has been using the CommonJS standard for years, the browser never had a module system, as every major decision such as a module system must be first standardized by ECMAScript and then implemented by the browser.
+
+## What are ES Modules?
+
+This standardization process has been completed with ES6. It defines ES Modules as the ECMAScript standard for working with modules in the browser.
+
+The syntax for importing and exporting is slightly different compared to CommonJS:
+
+| Importing | `import fs from “fs”`                               |
+| --------- | --------------------------------------------------- |
+| Exporting | `export default function() { return “Hi there!”; }` |
+
+Frontend frameworks like React or Vue have been using the ESM syntax even before it became a standard in the browser. Though they used tools like Babel to transpile it to CommonJS syntax. Hence, most frontend devs are more familiar with ESM than CJS.
+
+## Incompatibilities Between ES Modules and CommonJS
+
+Effectively, we now had two module systems that had a different syntax as well as some internal details that worked differently: ESM as the standard in browser-land, and CJS as the standard in node-land.
+
+This was a problem though since most modules were initially written in CommonJS.
+
+While it is possible to import CJS modules in ESM (using `import * as CJSModule from 'cjs-module'`), the other way around doesn’t work. Hence, a lot of tools that worked with your code required you to still use CommonJS.
+
+But there a few things that helped and still help to circumvent these issues:
+
+#### Adopting ES Modules in Node.js
+
+After ES Modules were released and declared as the _future of modules_ in Javascript, Node.js implement this newer approach too.
+
+Now you can decide whether you want to use ESM or CJS in your Node application. This works either by using the `.mjs` file extension for all ESM files or by declaring `type: “module”` in your package.json. The latter will tell Node that all of your files are written with the newer ES Modules syntax.
+
+With that, a lot of packages that were incompatible with ESM before could add support for the ES Modules syntax. Nowadays, most packages are shipped in a hybrid way - supporting ESM and CJS.
+
+#### Using Module Bundlers like Rollup
+
+Another way of working around incompatibilities is using tools like Rollup. Rollup is a module bundler, meaning it resolves the imports/exports in your code at build time, not at run time.
+
+Thus, it is more flexible about what it allows and supports. You can use different syntaxes and just tell Rollup how the bundled output should look like. For example, you can write CJS syntax and tell Rollup to output you an ESM module.
+
+## Should I Use ESM or CJS?
+
+Long story short: Use ES Modules wherever you can. Especially if you build a new application and support modern browsers only, you should use it.
+
+If you need to support old browsers or have dependencies that still require CommonJS syntax, you likely have no other choice than using CJS. But it is always worth checking if there are newer, ESM-compatible packages out there if it is a dependency that holds you in CJS-land (e.g. as Jest did not support ESM for a long time, Vitest appeared).
+
+---
+
+I hope this helps understanding how ES Modules work and how they compare to the CommonJS approach of working with modules. If you have questions, thoughts, or improvements to the article, let me know!
