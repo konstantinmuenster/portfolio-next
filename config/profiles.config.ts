@@ -2,6 +2,7 @@ import type { SvgProps } from '@components/Icon';
 import { MediumSvg } from '@components/Icon/Medium';
 import { LinkedInSvg } from '@components/Icon/LinkedIn';
 import { GithubSvg } from '@components/Icon/Github';
+import { TwitterSvg } from '@components/Icon/Twitter';
 
 export type Profile = {
   to: string;
@@ -21,6 +22,11 @@ export const socialProfiles: Profile[] = [
     to: 'https://github.com/konstantinmuenster/',
     label: 'Github',
     icon: GithubSvg,
+  },
+  {
+    to: 'https://twitter.com/konstantinmnstr',
+    label: 'Twitter',
+    icon: TwitterSvg,
   },
   {
     to: 'https://medium.com/@konstantinmuenster',
