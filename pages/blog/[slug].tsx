@@ -26,6 +26,7 @@ import { BlogPostFooterSection } from '@sections/BlogPostPage/Footer';
 import { Pre } from '@components/Code';
 import { Table } from '@components/Table';
 import { Callout } from '@components/Callout';
+import { TwitterChip } from '@components/TwitterChip';
 
 const baseUrl = getBaseUrl();
 
@@ -158,6 +159,7 @@ const BlogPost: React.FC<BlogPostProps> = ({ code, frontmatter }) => {
             Image: BlogPicture,
             pre: Pre,
             table: Table,
+            TwitterChip: TwitterChip,
           }}
         />
       </ContentWrapper>
