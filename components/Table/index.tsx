@@ -2,6 +2,9 @@ import { styled } from '@config/stitches.config';
 import { ReactElement, ReactNode } from 'react';
 
 const StyledTable = styled('div', {
+  overflowX: 'scroll',
+  '@lg': { overflowX: 'unset' },
+
   table: {
     my: '2rem',
     borderRadius: '$default',
