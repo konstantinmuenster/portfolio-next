@@ -37,7 +37,7 @@ const StyledBlogPost = styled('article', {
     p: { fontSize: '$big', lineHeight: '$big' },
 
     'ol > li, ul > li': { fontSize: '$big' },
-    'h2, h3': { marginBottom: '1rem', marginTop: '1.5rem' },
+    'h2, h3': { marginBottom: '0.5rem', marginTop: '1.5rem' },
     'h4, h5': { marginBottom: '-0.5rem', marginTop: '1rem' },
 
     'h2[id], h3[id], h4[id], h5[id]': {
