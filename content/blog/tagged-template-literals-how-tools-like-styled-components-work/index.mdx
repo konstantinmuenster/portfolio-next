@@ -1,0 +1,259 @@
+---
+title: Tagged Template Literals - How Tools Like Styled Components Work
+summary: 'Have you ever wondered how syntactical sugar like styled just magically works? Let’s recreate this functionality using tagged template strings in Javascript.'
+category: 'Web Development'
+type: 'Guide'
+banner:
+  name: 'styled-tag'
+  caption: 'Styled Components and other libraries made template tags quite popular.'
+tags:
+  [
+    'tagged template literals',
+    'es6',
+    'template strings',
+    'styled components',
+    'styled',
+    'string interpolation',
+  ]
+publishedAt: '2022/11/08'
+mediumUrl: ''
+---
+
+export * as banner from './styled-tag.png';
+
+If you used tools like [styled-components](https://styled-components.com/) or [graphql](https://graphql.org/), you most likely came across tagged template literals. A new Javascript feature that was introduced with ES6.
+
+In styled components, template strings allow you to create components almost magically like this:
+
+```jsx
+const Title = styled.h1`
+  font-size: ${props => props.theme.sizes.lg};
+  text-align: center;
+  color: palevioletred;
+`;
+```
+
+In this example, `styled.h1` is the _template function_ or _tag_. The succeeding string represents the actual template. We call it _template string_. Combining both pieces, we get the magic 🪄
+
+Let’s take a look first at the template string. It uses the backticks syntax which supports string interpolation. Thus, we can write…
+
+```jsx
+const output = `My name is ${name}.`;
+```
+
+… and dynamically populate the `name` value.
+
+The template function `styled.h1` is used to tag the string, hence the name tagged template literals. It allows us to tell the engine how the tagged string should be populated and constructed.
+
+Given the simple example of printing `My name is ${name}`, the browser would usually just insert the current value of `name` into the string.
+
+But maybe we want to do something different with the string? By running a template function against the string, we can do exactly this and control how the output will look like.
+
+The template function receives all the information about the template string (its parts and variables) and whatever we return from the function will be our `output`.
+
+## Understanding The Template Function
+
+Before we try rebuilding our own `styled` template function, let’s first understand how those functions work.
+
+In this simple example below, we print out a brief introduction using the `introduce` tag.
+
+```jsx
+function introduce(strings, name, food) {
+  // construct and return string
+}
+
+const name = 'Nina';
+const food = '🍕';
+const output = introduce`I am ${name}. I like ${food}.`;
+```
+
+When running the function against a template string, we receive all the details we need via arguments.
+
+`strings` contains an array of strings, essentially all the static parts between the dynamic variables. In our case, it is an array containing 3 items: `I am` , `. I like` , and `.`.
+
+All subsequent arguments are the values of our interpolated variables, `name` and `food`.
+
+Using the ES6 rest operator, we can batch those subsequent arguments together like this:
+
+```jsx
+function introduce(strings, ...args) {
+  // construct and return string
+}
+```
+
+Thus, we can use templates that are not restricted to two values only.
+
+## Building Our Own `styled` Tag
+
+Knowing how template functions generally work, let’s get back to our initial example: the `styled` tag.
+
+```jsx
+const Title = styled.h1`
+  font-size: ${props => props.theme.sizes.lg};
+  text-align: center;
+  color: palevioletred;
+`;
+```
+
+Instead of returning a simple string, we now want to return a React component, called `Title`. This component should render an HTML heading element with the styling we provide inside the template string.
+
+For the styling, we make use of a theme which we access inside our template string. The `Title` component should thus respect the font sizes we inject via our theme.
+
+Although this might look complex, it is fairly simple to implement!
+
+First, let’s scaffold some prerequisites:
+
+```jsx showLineNumbers
+// This acts as our theme provider
+const props = {
+  theme: {
+    sizes: {
+      xl: '2rem',
+      lg: '1.5rem',
+      md: '1rem',
+      xs: '0.75rem',
+    },
+  },
+};
+
+// This will be our template function
+function h1(strings, ...args) {
+  // Do something
+}
+
+const styled = { h1 };
+
+// This will be our styled component
+const Title = styled.h1`
+  font-size: ${props => props.theme.sizes.lg};
+  text-align: center;
+  color: palevioletred;
+`;
+```
+
+We the sake of simplicity we assume that we can access a global `props` object which acts like a theme provider for us.
+
+Below our `props` object, we define our `h1` template function. To make it look even more like styled-components, I wrapped the function in an object called `styled` which we then use to build our `Title` component.
+
+Let’s take a closer look at the `h1` function and how it’s being used:
+
+```jsx
+function h1(strings, ...args) {
+  // Do something
+}
+
+const Title = styled.h1`
+  font-size: ${props => props.theme.sizes.lg};
+  text-align: center;
+  color: palevioletred;
+`;
+```
+
+Recalling what we learned previously, the `strings` argument contains all the static string parts of our template. In this case, it only has two items: `font-size:` and `; text-align: center; …`
+
+`args` contains the interpolated values. Note that in this example we actually interpolate functions, not just strings as we did before. It works the same but provides way more possibilities as we will see in a sec!
+
+To create a tagged template literal that outputs such a styled component, we need to do two things:
+
+1. Generating the theme-based styles based on the provided template string
+2. Creating and returning a React component with those styles
+
+So let’s do exactly this and start with step one.
+
+### Generating Theme-based Styles
+
+In this first step, we generate the styling which we later apply to our component. For now, we can output the styling as a simple CSS string, likewise to the current format in the template string.
+
+```jsx {12-20} showLineNumbers
+const props = {
+  theme: {
+    sizes: {
+      xl: '2rem',
+      lg: '1.5rem',
+      md: '1rem',
+      xs: '0.75rem',
+    },
+  },
+};
+
+function h1(strings, ...args) {
+  let str = '';
+
+  strings.forEach((string, i) => {
+    str += string + (args[i] ? args[i](props) : '');
+  });
+
+  return str;
+}
+
+const styles = h1`
+  font-size: ${props => props.theme.sizes.lg};
+  text-align: center;
+  color: palevioletred;
+`;
+```
+
+In our function `h1`, we loop through the static string parts of the template and concatenate those incrementally. By using the index `i`, we can check for each part whether there is an associated interpolated value.
+
+So, after concatenating `font-size:` to the initial empty string, we check if there exists an interpolated value at index 0. And indeed, there is! Our function we provided to define the theme-based font size.
+
+Since `args[i]` contains our injected value `(props) => props.theme.sizes.lg`, we can call this function with the global `props` object and receive the font size back. Perfect!
+
+Finally, we return `str` from our template function. It contains a CSS string like this:
+
+```css
+font-size: 1.5rem;
+text-align: center;
+color: palevioletred;
+```
+
+### Returning A Styled React Component
+
+To thoroughly emulate styled components, we now want to return a styled React component instead of the CSS string.
+
+We can do this easily by using a little helper function `css2obj` that transforms the CSS string into a CSS object which can be applied to a React component. This is not exactly how styled components works, but it does the job for now. You can check the implementation [here](https://gist.github.com/konstantinmuenster/dd391a78b167972f03e198198fe6b5ae) if you are interested.
+
+```jsx {8-10} showLineNumbers
+function h1(strings, ...args) {
+  let str = '';
+
+  strings.forEach((string, i) => {
+    str += string + (args[i] ? args[i](props) : '');
+  });
+
+  return React.createElement('h1', {
+    style: css2obj(str),
+  });
+}
+```
+
+With this, we can adapt our `h1` implementation so that we don’t return the CSS string but create a React element that has the proper heading type and the generated style object.
+
+And that’s it! We can now use this tagged template literal to create awesomely styled headings as easy as this:
+
+```jsx
+const Title = styled.h1`
+  font-size: ${props => props.theme.sizes.lg};
+  text-align: center;
+  color: palevioletred;
+`;
+
+export const MyComponent = () => {
+  return <Title>My Heading</Title>;
+};
+```
+
+---
+
+Of course, in reality, styled components hides more complexity than this simple example. Nonetheless, I hope we unveiled a bit of the magic tagged template literals provide.
+
+For me, this has been one of the things that always looked (and sounded) far more complex than it actually is.
+
+So for you to remember:
+
+<Callout>
+  Tagged template literals enable you to define how a template string should be
+  constructed and returned.
+</Callout>
+
+Yet another nice technique for one’s tool-belt! If you are interested, you find the full example in this [CodeSandbox](https://codesandbox.io/s/styled-components-tagged-template-literal-article-dbiyd9).
