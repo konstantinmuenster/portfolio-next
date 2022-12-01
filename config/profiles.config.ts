@@ -24,7 +24,7 @@ export const socialProfiles: Profile[] = [
     icon: GithubSvg,
   },
   {
-    to: 'https://twitter.com/konstantinmnstr',
+    to: 'https://twitter.com/@kmuenster',
     label: 'Twitter',
     icon: TwitterSvg,
   },
