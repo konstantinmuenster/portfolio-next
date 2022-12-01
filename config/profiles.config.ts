@@ -10,7 +10,7 @@ export type Profile = {
   icon?: React.FC<SvgProps>;
 };
 
-export const TwitterHandle = '@konstantinmnstr';
+export const TwitterHandle = '@kmuenster';
 
 export const socialProfiles: Profile[] = [
   {
