@@ -1,0 +1,622 @@
+---
+title: How To Build A Text Editor With Lexical and React
+summary: "Lexical is a new framework for building rich text editors. Let's build a simple WYSIWYG editor with it."
+publishedAt: '2023/01/10'
+category: 'Web Development'
+type: 'Guide'
+banner:
+  name: 'lexical-text-editor-react-tutorial'
+  caption: 'Lexical integrates perfectly with React to build complex editor experiences.'
+tags:
+  [
+    'Contenteditable',
+    'Text Editor',
+    'Rich Editor',
+    'WYSIWYG',
+    'Block Editor',
+    'React.js',
+    'Lexical',
+    'Notion',
+  ]
+mediumUrl: https://konstantinmuenster.medium.com/how-to-build-a-text-editor-with-lexical-and-react-27204c186d0f
+---
+
+import Screenshot from './lexical-react-rich-text-demo.gif';
+import LexicalSetup from './lexical-setup.png';
+import LexicalNodes from './lexical-nodes.png';
+import LexicalToolbar from './lexical-toolbar.png';
+import LexicalToolbarDisabled from './lexical-toolbar-disabled.png';
+
+export * as banner from './lexical-text-editor-react-tutorial.png';
+
+In April 2022, Meta open-sourced [Lexical](https://lexical.dev/) – “an extensible text editor framework”.
+
+Given that it powers some of the most popular web apps in the world, it especially focuses on accessibility and performance. Among other things, by its native support for React 18.
+
+This caught my eye since a lot of text editing experiences are inherently inaccessible and struggle performance-wise as things get more complicated. Furthermore, Lexical adopted a lot of paradigms of React which makes it fairly easy to pick it up as a React developer (although it is framework agnostic).
+
+So, I decided to give it a try and build a simple WYSIWYG editor with it.
+
+<Image
+  src={Screenshot}
+  alt="Rich Text Editor with Lexical and React"
+  caption="WYSIWYG editor built with Lexical and React"
+/>
+
+<LearningPathCard>
+  <ul>
+    <li>
+      Understanding Lexical’s foundational concepts (editor state, nodes,
+      commands)
+    </li>
+    <li>
+      <p>Setting up an editor with Lexical and React</p>
+    </li>
+    <li>
+      <p>Developing custom plugins</p>
+    </li>
+  </ul>
+</LearningPathCard>
+
+<TargetAudienceCard>
+  React developers with beginner or intermediate text editing experience
+</TargetAudienceCard>
+
+So, let's jump right into it!
+
+## How To Setup Lexical with React
+
+Lexical can be used with any framework of your choice – or without a framework at all. It even offers a **`@lexical/headless`** package which lets you run the editor in a Node.js environment. This can come in handy sometimes (e.g. running Lexical on the server)!
+
+In our example, however, we will use Lexical with React.
+
+Setting up an editor with Lexical and React is fairly easy. First we need to install necessary packages:
+
+```bash
+npm i react react-dom lexical @lexical/react
+```
+
+Lexical ships with a React-specific package (`@lexical/react`) that let you compose your first editor in just a breeze:
+
+```tsx:Editor.tsx showLineNumbers
+import { LexicalComposer } from '@lexical/react/LexicalComposer';
+import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
+import { ContentEditable } from '@lexical/react/LexicalContentEditable';
+import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
+
+type LexicalEditorProps = {
+  config: Parameters<typeof LexicalComposer>['0']['initialConfig'];
+};
+
+export function LexicalEditor(props: LexicalEditorProps) {
+  return (
+    <LexicalComposer initialConfig={props.config}>
+      <RichTextPlugin
+        contentEditable={<ContentEditable />}
+        placeholder={<div>Start writing...</div>}
+        ErrorBoundary={LexicalErrorBoundary}
+      />
+    </LexicalComposer>
+  );
+}
+```
+
+Each editor has a `LexicalComposer` instance at the root. This root component internally executes Lexical’s `createEditor` function and exposes the editor instance to its children, i.e. our plugins.
+
+I immediately fell in love with the paradigm of _each plugin is a React component_.
+
+This let you build your plugins as extensible building blocks – just as regular components in React.
+
+A plugin can extend and customize the functionality of the editor, such as adding custom commands (which we will learn later on) or rendering toolbars (which we will learn too!).
+
+As we can see, Lexical ships with pre-defined plugins, such as the `RichTextPlugin`. We can configure it with custom elements (e.g. placeholder) and get a working editor with just a few lines of code. It already provides a few handy utilities, like shortcuts to add text marks.
+
+Although before we try that, let’s add some styling. The editor config we passed into the `LexicalEditor` component accepts classes for each text node. Thus we can theme the editor.
+
+```tsx:Editor.tsx showLineNumbers
+import { LexicalComposer } from '@lexical/react/LexicalComposer';
+import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
+import { ContentEditable } from '@lexical/react/LexicalContentEditable';
+import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
+
+type LexicalEditorProps = {
+  config: Parameters<typeof LexicalComposer>['0']['initialConfig'];
+};
+
+export function LexicalEditor(props: LexicalEditorProps) {
+  return (
+    <LexicalComposer initialConfig={props.config}>
+      <RichTextPlugin
+        contentEditable={<ContentEditable />}
+        placeholder={<Placeholder />}
+        ErrorBoundary={LexicalErrorBoundary}
+      />
+    </LexicalComposer>
+  );
+}
+
+const Placeholder = () => {
+  return (
+    <div className="absolute top-[1.125rem] left-[1.125rem] opacity-50">
+      Start writing...
+    </div>
+  );
+};
+
+export function Editor() {
+  return (
+    <div
+      id="editor-wrapper"
+      className={
+        'relative prose prose-slate prose-p:my-0 prose-headings:mb-4 prose-headings:mt-2'
+      }
+    >
+      <LexicalEditor
+        config={{
+          namespace: 'lexical-editor',
+          theme: {
+            root: 'p-4 border-slate-500 border-2 rounded h-full min-h-[200px] focus:outline-none focus-visible:border-black',
+            link: 'cursor-pointer',
+            text: {
+              bold: 'font-semibold',
+              underline: 'underline',
+              italic: 'italic',
+              strikethrough: 'line-through',
+              underlineStrikethrough: 'underlined-line-through',
+            },
+          },
+          onError: error => {
+            console.log(error);
+          },
+        }}
+      />
+    </div>
+  );
+}
+```
+
+_Note: In our example, we use [tailwindui.com](http://tailwindui.com) to style our editor. For the sake of simplicity, I don’t cover the styling part in this article. If you want to follow along, take a look at the final repository to see the Tailwind setup._
+
+And with a few classes added, we get this pretty neatly looking editor:
+
+<Image src={LexicalSetup} alt="Lexical Setup" />
+
+## Deep Dive: How Lexical Works Internally
+
+Albeit we use `LexicalComposer` to initiate our editor with React, Lexical doesn’t use React to render regular text nodes. It comes with its own renderer. This renderer is responsible for syncing state updates to the DOM. Hence, we can only use static classes to style those.
+
+If we want to render editor nodes with React, and thus be able to render more complex components, we would need to create a so-called decorator node. This type of node can’t hold any text content and is kind of a black hole for Lexical.
+
+The concept of an internal editor state object that acts as single source of truth and syncs updates with the DOM seems familiar compared to other text editor frameworks.
+
+Lexical, however, utilizes another interesting concept. Instead of flushing changes directly to the actual DOM, it creates a virtual DOM first. If actual and virtual DOM differ, only the changed parts get marked as “dirty” and re-render. This is great news from a performance perspective!
+
+<Callout>
+  Note: Although the concept of a virtual DOM may be familiar to React
+  developers, Lexical and React do not share the same virtual DOM. The Lexical
+  editor creates its own based on its text nodes, while React creates its own
+  based on components that may be rendered by the editor.
+</Callout>
+
+## Editor State: Persisting Content In Local Storage
+
+Now that we have a bare minimum editor up and running, let’s extend it!
+
+As mentioned, one of Lexical core concepts is its [editor state](https://lexical.dev/docs/concepts/editor-state) – the single source of truth that represents the editor content and the selection. If we type within the editor, each keystroke dispatches an update to the editor state.
+
+To see how the editor state works in an application, we will write our first custom plugin that syncs the editor state with an external store. Thus, users don’t lose their content when they refresh the page.
+
+For the sake of simplicity, I chose local storage for that. But it would work similarly with any other external store.
+
+As mentioned before, each plugin is just a React component. Our `LocalStoragePlugin` looks like this:
+
+```tsx:plugins/LocalStorage.tsx showLIneNumbers
+import { useCallback, useEffect } from 'react';
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
+
+import { debounce } from '../utils/debounce';
+
+type LocalStoragePluginProps = {
+  namespace: string;
+};
+
+export function LocalStoragePlugin({ namespace }: LocalStoragePluginProps) {
+  const [editor] = useLexicalComposerContext();
+
+  const saveContent = useCallback(
+    (content: string) => {
+      localStorage.setItem(namespace, content);
+    },
+    [namespace]
+  );
+
+  const debouncedSaveContent = debounce(saveContent, 500);
+
+  useEffect(() => {
+    return editor.registerUpdateListener(
+      ({ editorState, dirtyElements, dirtyLeaves }) => {
+        // Don't update if nothing changed
+        if (dirtyElements.size === 0 && dirtyLeaves.size === 0) return;
+
+        const serializedState = JSON.stringify(editorState);
+        debouncedSaveContent(serializedState);
+      }
+    );
+  }, [debouncedSaveContent, editor]);
+
+  return null;
+}
+```
+
+In our newly created plugin, we get access to the editor instance by using the `useLexicalComposerContext` hook. Each plugin is nested within the root `LexicalEditorComposer` component, so we can simply access the editor instance like this.
+
+Next, we define a debounced callback that syncs content changes to the external store. Usually, this would the piece that updates your remote database.
+
+Lastly, we create a `useEffect` hook that registers an update listener on the editor instance. In there, we can check if there are any _dirty_ elements that need to be synced with the state. If so, we call our debounced `saveContent` callback.
+
+Note that `editor.registerUpdateListener()` returns a callback to remove the update listener again. To avoid memory leaks, we use this returned callback for the cleanup function of `useEffect`.
+
+As this plugin shouldn’t render any decoration or toolbar, we simply return `null` at the very end of the component.
+
+With the plugin written, we can add it to our editor:
+
+```tsx:Editor.tsx {15,25,37} showLineNumbers
+...
+
+import { LocalStoragePlugin } from "./plugins/LocalStorage";
+
+...
+
+export function LexicalEditor(props: LexicalEditorProps) {
+  return (
+    <LexicalComposer initialConfig={props.config}>
+      <RichTextPlugin
+        contentEditable={<ContentEditable />}
+        placeholder={<Placeholder />}
+        ErrorBoundary={LexicalErrorBoundary}
+      />
+      <LocalStoragePlugin namespace={props.config.namespace} />
+    </LexicalComposer>
+  );
+}
+
+...
+
+const EDITOR_NAMESPACE = "lexical-editor";
+
+export function Editor() {
+  const content = localStorage.getItem(EDITOR_NAMESPACE);
+
+  return (
+    <div
+      id="editor-wrapper"
+      className={
+        "relative prose prose-slate prose-p:my-0 prose-headings:mb-4 prose-headings:mt-2"
+      }
+    >
+      <LexicalEditor
+        config={{
+          namespace: EDITOR_NAMESPACE,
+          editorState: content,
+          theme: {
+            root: "p-4 border-slate-500 border-2 rounded h-full min-h-[200px] focus:outline-none focus-visible:border-black",
+            link: "cursor-pointer",
+            text: {
+              bold: "font-semibold",
+              underline: "underline",
+              italic: "italic",
+              strikethrough: "line-through",
+              underlineStrikethrough: "underlined-line-through",
+            },
+          },
+          onError: (error) => {
+            console.log(error);
+          },
+        }}
+      />
+    </div>
+  );
+}
+```
+
+We added two pieces:
+
+1. we inserted our `LocalStoragePlugin` as a child of the `LexicalComposer` component
+2. we retrieved the content from local storage in the `Editor` component
+
+In this example, we used `EDITOR_NAMESPACE` as an identifier to store and retrieve our data. If `EDITOR_NAMESPACE` would be dynamic, e.g. an editor id, we could spin up several editors and store their data separately.
+
+With that in place, we have extended our editor so that it stores our content safely in an external store, utilizing the concept of Lexical’s editor state. Now, let’s move on to the next important part of Lexical!
+
+## Nodes: Adding Headings And More Text Elements
+
+Another foundational concept are [nodes](https://lexical.dev/docs/concepts/nodes). Nodes are the building blocks of our editor content. We can define for each type of node how it should be displayed, how it should behave on certain interactions, and what type of content it may contain.
+
+The `ParagraphNode`, for instance, is a simple node that the `LexicalRichTextPlugin` includes already. We could, however, define more advanced node types. A `DecoratorNode` can embed a React component, for example, which allows complex renderings.
+
+Ultimately, nodes define our data model. Hence, we need to tell Lexical which nodes may occur in the editor. To do that, we can extend the editor config by passing in an array of possible nodes.
+
+But before, we need to install nodes Lexical does not automatically ship with:
+
+```bash
+npm install --legacy-peer-deps @lexical/list @lexical/link @lexical/code
+```
+
+With that, we can import each node from its respective package and pass it to the editor configuration:
+
+```tsx:Editor.tsx {8-15,33} showLineNumbers
+import { HeadingNode, QuoteNode } from "@lexical/rich-text";
+import { ListNode, ListItemNode } from "@lexical/list";
+import { LinkNode } from "@lexical/link";
+import { CodeNode } from "@lexical/code";
+
+...
+
+const EDITOR_NODES = [
+  CodeNode,
+  HeadingNode,
+  LinkNode,
+  ListNode,
+  ListItemNode,
+  QuoteNode,
+];
+
+...
+
+export function Editor() {
+  const content = localStorage.getItem(EDITOR_NAMESPACE);
+
+  return (
+    <div
+      id="editor-wrapper"
+      className={
+        "relative prose prose-slate prose-p:my-0 prose-headings:mb-4 prose-headings:mt-2"
+      }
+    >
+      <LexicalEditor
+        config={{
+          namespace: EDITOR_NAMESPACE,
+          editorState: content,
+          nodes: EDITOR_NODES,
+          theme: {
+            root: "p-4 border-slate-500 border-2 rounded h-full min-h-[200px] focus:outline-none focus-visible:border-black",
+            link: "cursor-pointer",
+            text: {
+              bold: "font-semibold",
+              underline: "underline",
+              italic: "italic",
+              strikethrough: "line-through",
+              underlineStrikethrough: "underlined-line-through",
+            },
+          },
+          onError: (error) => {
+            console.log(error);
+          },
+        }}
+      />
+    </div>
+  );
+}
+```
+
+Cool that was easy. Now that our editor can handle other node types, let’s add a way to create them!
+
+## Built-in Plugins: Adding Markdown Support
+
+Markdown syntax allows us to easily create nodes of certain types. For example, typing "_# My Lexical Editor_" gets transformed into a heading with the title "_My Lexical Editor_".
+
+Adding Markdown capabilities to our editor is as simple as adding new nodes. Lexical provides a package for this too! So let’s add it by executing:
+
+```bash
+npm install --legacy-peer-deps @lexical/markdown
+```
+
+This package provides `TRANSFORMERS`. They configure how text input should be interpreted and handled.
+
+For example, if the user’s text input matches the following regular expression `/^(#{1,6})\s/`, it should turn the node into a heading node and remove the leading hashmark.
+
+These `TRANSFORMERS` can be plugged into Lexical’s `MarkdownShortcutPlugin`. So we just need to embed the plugin in our `LexicalComposer` wrapper like this:
+
+```tsx:Editor.tsx {15} showLineNumbers
+import { TRANSFORMERS } from "@lexical/markdown";
+import { MarkdownShortcutPlugin } from "@lexical/react/LexicalMarkdownShortcutPlugin";
+
+...
+
+export function LexicalEditor(props: LexicalEditorProps) {
+  return (
+    <LexicalComposer initialConfig={props.config}>
+      <RichTextPlugin
+        contentEditable={<ContentEditable />}
+        placeholder={<Placeholder />}
+        ErrorBoundary={LexicalErrorBoundary}
+      />
+      <LocalStoragePlugin namespace={props.config.namespace} />
+      <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
+    </LexicalComposer>
+  );
+}
+```
+
+This gives us Markdown support with just a few lines of code. If you had custom node types which aren’t included in the default list of `TRANSFORMERS`, you could extend it as you like, of course.
+
+<Image src={LexicalNodes} alt="Lexical Nodes" />
+
+So far, we got a basic WYSIWYG editor with just a few lines of code. Not bad, right?
+
+By providing a lot of utilities, Lexical makes it easy to get something simple up and running very quickly. I like that a lot as it reduces boilerplate code and encourages best practices.
+
+Before we wrap up this article, let’s improve our editor even further by adding a toolbar. Thus we get to know another core concept of Lexical’s internals: commands.
+
+## Custom Plugins: Creating An Actions Toolbar
+
+#### Writing Our First Command
+
+We already learned what nodes – Lexical’s building blocks – are. To define how those building blocks react to certain interactions, we can create [commands](https://lexical.dev/docs/concepts/commands).
+
+A command is basically an event listener that holds a callback function. The function gets executed when the event occurs.
+
+```tsx
+const CLEAR_EDITOR_COMMAND: LexicalCommand<undefined> = createCommand();
+
+editor.registerCommand(
+  CLEAR_EDITOR_COMMAND,
+  () => {
+    editor.update(() => {
+      const root = $getRoot();
+      const paragraph = $createParagraphNode();
+      root.clear();
+      root.append(paragraph);
+      paragraph.select();
+    });
+    return true;
+  },
+  LowPriority
+);
+
+editor.dispatchCommand(CLEAR_EDITOR_COMMAND, undefined);
+```
+
+In this example, we created a simple command that erases all editor content. We first need to run `createCommand()` and create a typed `CLEAR_EDITOR_COMMAND` variable that we can use throughout our application. With that, we can register a callback function that should run whenever the command gets dispatched.
+
+Inside the callback function, we wrap our code inside `editor.update()`. Thus, we get access to the latest editor state tick and can use all $-prefixed helper functions (those are provided by Lexical itself).
+
+We clear all content and return `true` to mark this event as handled. Thus, no other succeeding command handler is called.
+
+Commands are perfectly suited to create interactive elements such as toolbars. Since every WYSIWYG has one, let’s build our own too.
+
+#### Rendering A Toolbar Outside the Editor
+
+Since we already created a command that can clear the editor, we will start with a simple toolbar that has a button for exactly that.
+
+```tsx:plugins/Actions.tsx showLineNumbers
+import { useMemo } from 'react';
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
+import { ClearEditorPlugin } from '@lexical/react/LexicalClearEditorPlugin';
+import { CLEAR_EDITOR_COMMAND } from 'lexical';
+
+import { Button } from '../components/Button';
+
+export function ActionsPlugin() {
+  const [editor] = useLexicalComposerContext();
+
+  const MandatoryPlugins = useMemo(() => {
+    return <ClearEditorPlugin />;
+  }, []);
+
+  return (
+    <>
+      {MandatoryPlugins}
+      <div className="my-4">
+        <Button
+          onClick={() => {
+            editor.dispatchCommand(CLEAR_EDITOR_COMMAND, undefined);
+          }}
+        >
+          {ActionIcons.Clear}
+        </Button>
+      </div>
+    </>
+  );
+}
+```
+
+Our new `ActionsPlugin` is fairly simple. We, again, get access to the editor by `LexicalComposerContext`. With that, we can later call the `CLEAR_EDITOR_COMMAND` on button click.
+
+One note: as Lexical ships with its own `ClearEditorPlugin` for React applications, we use this instead our example we previously created. By returning `<ClearEditorPlugin />` as well as our toolbar decoration, we can include the functionality of the plugin in our editor.
+
+As you see, the paradigm of _each plugin is a component_ makes it really easy to extend our editor. Whether it's custom functionality or a React-rendered toolbar, as long as we wrap it in the `LexicalComposer` container, it just works!
+
+```tsx:Editor.tsx {11} showLineNumbers
+export function LexicalEditor(props: LexicalEditorProps) {
+  return (
+    <LexicalComposer initialConfig={props.config}>
+      <RichTextPlugin
+        contentEditable={<ContentEditable />}
+        placeholder={<Placeholder />}
+        ErrorBoundary={LexicalErrorBoundary}
+      />
+      <LocalStoragePlugin namespace={props.config.namespace} />
+      <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
+      <ActionsPlugin />
+    </LexicalComposer>
+  );
+}
+```
+
+<Image src={LexicalToolbar} alt="Lexical Toolbar" />
+
+We now have our first toolbar button! Similarly, we could add more, e.g. to undo and redo changes.
+
+But since we already covered a lot, let’s wrap things up for now. Though, there is a tiny tweak we can add to improve the experience.
+
+#### Registering A State Update Listener
+
+Right now, we can always clear the editor, even though there is no content. Let’s disable the button if the editor is empty. We can do so with this `useEffect` that runs on any change and checks if the editor has content or not.
+
+```tsx:plugins/Actions.tsx {3,6-27,34} showLineNumbers
+export function ActionsPlugin() {
+  ...
+  const [isEditorEmpty, setIsEditorEmpty] = useState(true);
+
+  ...
+  useEffect(
+    function checkEditorEmptyState() {
+      return editor.registerUpdateListener(({ editorState }) => {
+        editorState.read(() => {
+          const root = $getRoot();
+          const children = root.getChildren();
+
+          if (children.length > 1) {
+            setIsEditorEmpty(false);
+            return;
+          }
+
+          if ($isParagraphNode(children[0])) {
+            setIsEditorEmpty(children[0].getChildren().length === 0);
+          } else {
+            setIsEditorEmpty(false);
+          }
+        });
+      });
+    },
+    [editor]
+  );
+
+  return (
+    <>
+      {MandatoryPlugins}
+      <div className="my-4">
+        <Button
+          disabled={isEditorEmpty}
+          onClick={() => {
+            editor.dispatchCommand(CLEAR_EDITOR_COMMAND, undefined);
+          }}
+        >
+          {ActionIcons.Clear}
+        </Button>
+      </div>
+    </>
+  );
+}
+```
+
+With this change, we can pass the `isEditorEmpty` boolean to the button and display a disabled state:
+
+<Image src={LexicalToolbarDisabled} alt="Lexical Toolbar Disabled" />
+
+## Wrap Up
+
+In this article, we did a lot! We went from knowing nothing about Lexical to building a simple WYSIWYG text editor. We covered foundational concepts of Lexical, such as editor state, nodes, commands, and how everything works hand in hand with React.
+
+Have fun extending the editor with even more functionality. I already created a version that has slightly more features, such as more toolbar actions and a floating menu.
+
+[🗳️ Github Repository](https://github.com/konstantinmuenster/lexical-rich-text-react-demo)
+
+[🛝 Live Demo](https://lexical-rich-text-react-demo.vercel.app/)
+
+Feel free to play with it. If you have questions or found a bug in the application, let me know on Twitter: <TwitterChip />
+
+I am always happy about feedback!
+
+If you are interested in learning more about Lexical, check out the [documentation](https://lexical.dev) as well as its [Discord community](https://discord.gg/KmG4wQnnD9).
