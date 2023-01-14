@@ -27,6 +27,8 @@ import { Pre } from '@components/Code';
 import { Table } from '@components/Table';
 import { Callout } from '@components/Callout';
 import { TwitterChip } from '@components/TwitterChip';
+import { LearningPathCard, TargetAudienceCard } from '@components/Card';
+import { Embed } from '@components/Embed';
 
 const baseUrl = getBaseUrl();
 
@@ -35,6 +37,22 @@ const StyledBlogPost = styled('article', {
     maxWidth: '42rem',
 
     p: { fontSize: '$big', lineHeight: '$big' },
+
+    '.target-audience p': {
+      paddingTop: '0.5rem',
+      fontSize: '$default',
+      lineHeight: '$default',
+    },
+
+    '.learning-path ul': {
+      marginTop: '0.5rem',
+      marginBottom: '0',
+      'li > p, li': {
+        color: '$subtext',
+        fontSize: '$default',
+        lineHeight: '$default',
+      },
+    },
 
     'ol > li, ul > li': { fontSize: '$big' },
     'h2, h3': { marginBottom: '0.5rem', marginTop: '1.5rem' },
@@ -156,10 +174,13 @@ const BlogPost: React.FC<BlogPostProps> = ({ code, frontmatter }) => {
         <MDXBody
           components={{
             Callout: Callout,
+            Embed: Embed,
             Image: BlogPicture,
+            LearningPathCard: LearningPathCard,
             pre: Pre,
             table: Table,
             TwitterChip: TwitterChip,
+            TargetAudienceCard: TargetAudienceCard,
           }}
         />
       </ContentWrapper>
