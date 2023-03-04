@@ -40,10 +40,10 @@ export const BlogPostBanner: React.FC<BlogPostBannerProps> = props => {
             src={props.banner.src}
             alt={props.title}
             blurDataURL={props.banner.placeholder}
-            layout="fill"
             placeholder="blur"
-            objectFit="cover"
+            style={{ objectFit: 'cover' }}
             priority
+            fill
           />
         </div>
         {props.banner.caption ? (

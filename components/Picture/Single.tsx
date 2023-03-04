@@ -72,8 +72,8 @@ export const SinglePicture: React.FC<SinglePictureProps> = ({
         <Image
           src={src}
           alt={alt}
-          layout="fill"
-          objectFit={objectFit ?? 'cover'}
+          fill={true}
+          style={{ objectFit: objectFit ?? 'cover' }}
           placeholder={placeholder ? 'blur' : undefined}
           blurDataURL={placeholder !== 'blur' ? placeholder : undefined}
         />

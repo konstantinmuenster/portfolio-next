@@ -52,10 +52,8 @@ export const Logo = ({
   if (!asLink) return LogoSvg;
 
   return (
-    <Link href="/" passHref>
-      <a aria-label="Go to home page" className="logo">
-        {LogoSvg}
-      </a>
+    <Link href="/" aria-label="Go to home page" className="logo">
+      {LogoSvg}
     </Link>
   );
 };
