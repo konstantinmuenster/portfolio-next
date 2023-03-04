@@ -28,6 +28,16 @@ export const generateSeoProps = (
     url: input.url,
     title: input.title,
     description: input.description,
+    images: input.image
+      ? [
+          {
+            url: input.image,
+            width: 1200,
+            height: 630,
+            alt: input.title,
+          },
+        ]
+      : undefined,
     type: input.type ?? 'website',
     site_name: 'konstantin',
     article: input.article,
@@ -44,5 +54,5 @@ export const defaultSeoProps = generateSeoProps({
   description:
     'I am a freelance developer who helps individuals and companies build better web applications.',
   url: baseUrl,
-  image: `${baseUrl}/default-og-image.png`,
+  image: `${baseUrl}/api/og`,
 });
