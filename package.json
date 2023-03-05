@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "postbuild": "next-sitemap && next-banner",
+    "postbuild": "next-sitemap",
     "docker:build": "docker build . -t portfolio-next",
     "docker:run": "docker run -p 3000:3000 portfolio-next",
     "start": "next start",
