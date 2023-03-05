@@ -142,6 +142,7 @@ const BlogPost: React.FC<BlogPostProps> = ({ code, frontmatter }) => {
     description: frontmatter.summary,
     url: `${baseUrl}${frontmatter.path}`,
     type: 'article',
+    image: `${baseUrl}/api/og?title=${frontmatter.title}&category=${frontmatter.category}`,
     article: {
       publishedTime: publishedAtDate,
       tags: frontmatter.tags,
