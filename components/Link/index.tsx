@@ -34,10 +34,8 @@ export const Link: React.FC<LinkProps> = forwardRef(
       );
 
     return (
-      <NextLink href={to}>
-        <a ref={ref} {...linkProps}>
-          {props.children}
-        </a>
+      <NextLink href={to} ref={ref} {...linkProps}>
+        {props.children}
       </NextLink>
     );
   }

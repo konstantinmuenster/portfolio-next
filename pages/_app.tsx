@@ -4,7 +4,6 @@ import 'focus-visible';
 
 import type { AppProps } from 'next/app';
 import { DefaultSeo } from 'next-seo';
-import { NextBannerMeta } from 'next-banner';
 import PlausibleProvider from 'next-plausible';
 
 import { applyGlobalStyles } from '@config/stitches.config';
@@ -31,10 +30,8 @@ function MyApp({ Component, pageProps }: AppProps<PageProps>) {
     <PlausibleProvider domain={getBaseUrl({ omitProtocol: true })}>
       <ThemeProvider>
         <PageLayout>
-          <NextBannerMeta>
-            <DefaultSeo {...defaultSeoProps} />
-            <Component {...pageProps} />
-          </NextBannerMeta>
+          <DefaultSeo {...defaultSeoProps} />
+          <Component {...pageProps} />
         </PageLayout>
       </ThemeProvider>
     </PlausibleProvider>
