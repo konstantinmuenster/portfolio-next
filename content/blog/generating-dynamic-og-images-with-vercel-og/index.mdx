@@ -1,0 +1,404 @@
+---
+title: Generating Dynamic OG Images For Your Blog With Vercel OG
+summary: 'Improve your Next.js-based blog with OG images generated with @vercel/og.'
+category: 'Web Development'
+type: 'Tutorial'
+banner:
+  name: 'shubham-dhage-Hatkch_piQM-unsplash'
+  caption: 'Photo by <a href="https://unsplash.com/@theshubhamdhage" target="_blank" rel="noopener noreferrer">Shubham Dhage</a> on Unsplash'
+tags: [next.js, vercel, og-image, automation, blog, seo]
+publishedAt: '2023/03/08'
+mediumUrl: 'https://konstantinmuenster.medium.com/generating-dynamic-og-images-for-your-blog-with-vercel-og-1b5f940f6fb3'
+---
+
+export * as banner from './shubham-dhage-Hatkch_piQM-unsplash.jpg';
+
+import StaticOGImage from './static-og-image-next-js.png';
+import DynamicOGImage from './dynamic-og-image-next-js.png';
+
+Throughout the years, Open Graph images became more and more important. Most modern tools (like Slack, Facebook, or Twitter) automatically show a little preview image of your website whenever you share it. This is the Open Graph image (or OG image).
+
+Especially on social media platforms, link preview images influence heavily whether or not the user decides to visit your site. A well-designed image shows your competence even before the first page view.
+
+Too bad that generating those images dynamically has been quite a struggle… until now. Vercel has a new library, called Vercel OG, that helps you create preview images on the fly.
+
+Let’s take a look how we can use it to improve our blog.
+
+<LearningPathCard>
+  <ul>
+    <li>Integrate `@vercel/og` in Next.js-based blog</li>
+    <li>
+      <p>Generate and embed dynamic OG images for each blog post</p>
+    </li>
+  </ul>
+</LearningPathCard>
+
+<TargetAudienceCard>
+  <p>Beginner React developers</p>
+</TargetAudienceCard>
+
+#### Installing `@vercel/og`
+
+First, I set up a brand new Next.js site with the [Blog Starter Kit](https://vercel.com/templates/next.js/blog-starter-kit). We will use this blog as an example throughout this article.
+
+With the new site up and running, we can install the `@vercel/og` library:
+
+```bash
+npm install @vercel/og
+```
+
+That’s it for now! We do not need any further configuration.
+
+#### How `@vercel/og` Works
+
+Before we get into implementation details, let’s first have a look at how Vercel OG image works.
+
+Behind the scenes, Vercel OG uses [Satori](https://github.com/vercel/satori), a new library to convert HTML and CSS to SVGs (and other image formats).
+
+Satori was built for the edge. Hence, it is lightweight, very fast, and runs in a Node.js environment. Sounds like a perfect use-case for API routes in Next.js? It is!
+
+In our blog, we can utilize `@vercel/og` to do the following:
+
+1. Create an API route handler like `/api/og`. For dynamically generated images, this route may accept parameters via query params (e.g. `/api/og?title=My First Blog Post`)
+2. In your API route handler, define a JSX-like syntax that represents your image. Think of a classic JSX component but instead of HTML markup, you get an image as the rendered output.
+
+And that’s it. In production, each generated image will be cached at the edge to avoid unnecessary executions. Hence, our second call to `/api/og?title=My First Blog Post` will serve the generated and cached image right away.
+
+#### Creating A `/api/og` API Route
+
+Let’s start implementing the OG image generation for your blog.
+
+Inside your `pages/api` directory, create a new file called `og.tsx`. This will be the handler for our API route.
+
+```tsx:og.tsx showLineNumbers
+import { ImageResponse } from '@vercel/og';
+import { NextApiHandler } from 'next';
+
+export const config = {
+  runtime: 'edge',
+};
+
+const handler: NextApiHandler = async req => {
+  try {
+    return new ImageResponse(<div>My First OG Image</div>, {
+      width: 1200,
+      height: 630,
+    });
+  } catch {
+    return new Response(`Failed to generate the image`, {
+      status: 500,
+    });
+  }
+};
+
+export default handler;
+```
+
+With this little example, you should already see your first generated OG image. Start your development server and visit `http://localhost:3000/api/og`.
+
+In the example, we use `ImageResponse` to convert our JSX code (the first parameter) to an image with a specific configuration (the second parameter).
+
+Note: Although it looks like that we can write regular _JSX-like_ components in our API route handler, not all HTML, CSS, and JSX features are supported due to the limitations of the edge and the Satori rendering engine.
+
+#### Styling OG Images With `@vercel/og`
+
+Now that we can successfully generate images with our API route, let’s work on the image content.
+
+For this, I created two new components (`BackgroundCanvas` and `ProfileContent`) that we can import and use in our `og.tsx` file.
+
+```tsx:og.tsx {5-7} showLineNumbers
+const handler: NextApiHandler = async req => {
+  try {
+    return new ImageResponse(
+      (
+        <BackgroundCanvas>
+          <ProfileContent />
+        </BackgroundCanvas>
+      ),
+      {
+        width: 1200,
+        height: 630,
+      }
+    );
+  } catch {
+    return new Response(`Failed to generate the image`, {
+      status: 500,
+    });
+  }
+};
+```
+
+The `BackgroundCanvas` component looks like this:
+
+```tsx:BackgroundCanvas.tsx showLineNumbers
+export const BackgroundCanvas = ({ children }: { children?: ReactNode }) => {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        width: '100%',
+        height: '100%',
+        background: 'linear-gradient(to right, #e8cbc0, #636fa4)',
+        padding: '32px',
+      }}
+    >
+      <div
+        style={{
+          display: 'flex',
+          width: '100%',
+          height: '100%',
+          alignItems: 'center',
+          padding: '64px',
+        }}
+      >
+        {children}
+      </div>
+    </div>
+  );
+};
+```
+
+Since Satori (and thus Vercel OG) does not support all CSS properties, styling your components seems a bit rough at first. But since OG images are usually quite simple, I did not run into any problems due to that.
+
+There is also an [experimental Tailwind CSS example](https://vercel.com/docs/concepts/functions/edge-functions/og-image-generation/og-image-examples#using-tailwind-css---experimental) which may be interesting to you.
+
+The `ProfileContent` component is a more advanced example that also embeds images and custom fonts:
+
+```tsx:ProfileContent.tsx showLineNumbers
+export const ProfileContent = () => {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        height: '100%',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+      }}
+    >
+      <div style={{ display: 'flex', marginTop: '80px' }}>
+        <img
+          alt="Vercel"
+          height={180}
+          src="data:image/svg+xml,%3Csvg width='116' height='100' fill='black' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M57.5 0L115 100H0L57.5 0z' /%3E%3C/svg%3E"
+          width={180}
+        />
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            marginLeft: '48px',
+          }}
+        >
+          <span
+            style={{
+              fontSize: '56px',
+              color: '#222',
+              paddingTop: '32px',
+              fontFamily: "'Noto Sans', sans-serif",
+              fontWeight: 700,
+            }}
+          >
+            Your Name
+          </span>
+          <span
+            style={{
+              fontSize: '28px',
+              color: '#222',
+              fontFamily: "'Noto Sans', sans-serif",
+              fontWeight: 500,
+            }}
+          >
+            Frontend Developer
+          </span>
+        </div>
+      </div>
+      <span
+        style={{
+          fontSize: '18px',
+          color: '#222',
+          fontFamily: "'Noto Sans', sans-serif",
+          fontWeight: 500,
+        }}
+      >
+        yourname.com
+      </span>
+    </div>
+  );
+};
+```
+
+To resolve the specified `fontFamily` properties correctly, we need to load those fonts in our `og.tsx` file too:
+
+```tsx:og.tsx {1-7, 10-11, 23-36} showLineNumbers
+const fetchNotoSansMedium = fetch(
+  new URL('../../public/fonts/NotoSans-Medium.ttf', import.meta.url).href
+).then(res => res.arrayBuffer());
+
+const fetchNotoSansBold = fetch(
+  new URL('../../public/fonts/NotoSans-Bold.ttf', import.meta.url).href
+).then(res => res.arrayBuffer());
+
+const handler: NextApiHandler = async () => {
+  const NotoSansBold = await fetchNotoSansBold;
+  const NotoSansMedium = await fetchNotoSansMedium;
+
+  try {
+    return new ImageResponse(
+      (
+        <BackgroundCanvas>
+          <ProfileContent />
+        </BackgroundCanvas>
+      ),
+      {
+        width: 1200,
+        height: 630,
+        fonts: [
+          {
+            name: 'Noto Sans',
+            data: NotoSansBold,
+            style: 'normal',
+            weight: 700,
+          },
+          {
+            name: 'Noto Sans',
+            data: NotoSansMedium,
+            style: 'normal',
+            weight: 500,
+          },
+        ],
+      }
+    );
+  } catch {
+    return new Response(`Failed to generate the image`, {
+      status: 500,
+    });
+  }
+};
+```
+
+By placing our font files inside the `public` directory, we can fetch those inside our handler and pass the data along. The `ImageResponse` configuration allows us to specify multiple fonts using the `fonts` array.
+
+If you hit your `/api/og` route again, you get this beautiful OG image:
+
+<Image src={StaticOGImage} alt="OG image generated with Vercel OG" />
+
+#### Adding The OG Image To Your Site
+
+With the API route in place, we can add our generated OG image to our site. In Next.js, you can embed any meta properties with the `Head` component.
+
+Let’s assume you have a `Layout` component that wraps every page. To add the OG image to your site, you could extend your component like this:
+
+```tsx:Layout.tsx {5} showLineNumbers
+const Layout = ({ children }: Props) => {
+  return (
+    <>
+      <Head>
+        <meta property="og:image" content={`${BASE_URL}/api/og`} />
+      </Head>
+      <div className="min-h-screen">
+        <main>{children}</main>
+      </div>
+      <Footer />
+    </>
+  );
+};
+```
+
+In this example, `BASE_URL` is a variable that specifies the domain of our site based on the environment. If we run the site in development mode, this will be `http://localhost:3000`. In production, it will be whatever domain you host your site on.
+
+#### Generating Dynamic OG Images For Blog Posts
+
+Lastly, we want to create dynamic OG images for each individual blog post. Each image should show a little preview of the blog post title and its author.
+
+To do that, we can extend our API route so that it accepts query params. Thus, we can call our OG image generation with dynamic data.
+
+```tsx:og.tsx {5-14, 17} showLineNumbers
+const handler: NextApiHandler = async req => {
+  const NotoSansBold = await fetchNotoSansBold;
+  const NotoSansMedium = await fetchNotoSansMedium;
+
+  const { searchParams } = new URL(req.url);
+
+  const hasTitle = searchParams.has('title');
+  const title = hasTitle ? searchParams.get('title') : undefined;
+
+  const Content = hasTitle ? (
+    <BlogPostContent title={title} />
+  ) : (
+    <ProfileContent />
+  );
+
+  try {
+    return new ImageResponse(<BackgroundCanvas>{Content}</BackgroundCanvas>, {
+      width: 1200,
+      height: 630,
+      fonts: [
+        {
+          name: 'Noto Sans',
+          data: NotoSansBold,
+          style: 'normal',
+          weight: 700,
+        },
+        {
+          name: 'Noto Sans',
+          data: NotoSansMedium,
+          style: 'normal',
+          weight: 500,
+        },
+      ],
+    });
+  } catch {
+    return new Response(`Failed to generate the image`, {
+      status: 500,
+    });
+  }
+};
+```
+
+We can access the request and retrieve the `title` param from it. If there is a title specified, we simply render a different component. Pretty easy, isn’t it?
+
+If we now call our API again with the following request: `/api/og?title=Generating Dynamic OG Images For Your Blog`, we get this image in return.
+
+<Image src={DynamicOGImage} alt="OG image that is dynamically generated" />
+
+Similarly to our first OG image, you can embed the dynamically generated OG image on your blog post page using the `Head` component:
+
+```tsx:[slug].tsx {9-15} showLineNumbers
+export default function Post({ post, preview }: Props) {
+  const title = `${post.title} | Next.js Blog Example with ${CMS_NAME}`;
+
+  return (
+    <Layout preview={preview}>
+      <Container>
+        <Header />
+        <article className="mb-32">
+          <Head>
+            <title>{title}</title>
+            <meta
+              property="og:image"
+              content={`${BASE_URL}/api/og?title=${title}`}
+            />
+          </Head>
+          <PostHeader
+            title={post.title}
+            coverImage={post.coverImage}
+            date={post.date}
+            author={post.author}
+          />
+          <PostBody content={post.content} />
+        </article>
+      </Container>
+    </Layout>
+  );
+}
+```
+
+Now you automatically get an individual OG image for each blog post 🎉
+
+---
+
+With `@vercel/og`, OG image generation got so much easier. If you want to learn more about, have a look at the [documentation](https://vercel.com/docs/concepts/functions/edge-functions/og-image-generation).
+
+If you want to check out the full repository of our example, here it is:
+
+[https://github.com/konstantinmuenster/next-js-blog-with-vercel-og-image](https://github.com/konstantinmuenster/next-js-blog-with-vercel-og-image)
