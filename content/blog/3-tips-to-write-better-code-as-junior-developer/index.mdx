@@ -1,0 +1,192 @@
+---
+title: 3 Tips To Write Better Code As A Beginner Frontend Developer
+summary: 'As a beginner, you don’t think about coding style. Implement these three principles to improve your code base immediately.'
+category: 'Web Development'
+type: 'Essay'
+banner:
+  name: 'alex-kotliarskyi-ourQHRTE2IM-unsplash'
+  caption: 'Photo by <a href="https://unsplash.com/@frantic" target="_blank" rel="noopener noreferrer">Alex Kotliarskyi</a> on Unsplash'
+tags: [principles, coding practice, self-taught, beginner, code style]
+publishedAt: '2023/04/04'
+mediumUrl: ''
+---
+
+export * as banner from './alex-kotliarskyi-ourQHRTE2IM-unsplash.jpg';
+
+Over the course of the last months, I had the opportunity to mentor a group of talented new web developers who participated in [TechLabs’ digital shaper program](https://techlabs.org/).
+
+It was really fun to see the groups’ learning progress from zero to deployed application. While I was reviewing their first bits of code, it reminded me of my first years as a developer.
+
+Especially if you are self-taught and don’t have any formal education, you just rock n roll. You don’t have any feeling for good or bad code practices. You are happy about anything that works.
+
+This got me thinking: “Which coding principles do I wish I had known earlier?”. Well, here they are!
+
+You can implement these simple tips in your coding practice right away. But although simple, they changed a lot in how I write code.
+
+Note: The principles are applicable to all areas of programming, even though the title says ‘frontend developers’ specifically.
+
+## 1. “Return Early” instead of nested conditions
+
+In web development, you have a lot of situations in which you have to check if certain conditions are met.
+
+Let’s take the example of an API route that validates a request and returns an user object:
+
+```jsx
+export const handler = async (req, res) => {
+  if (req.method === 'POST' || req.method === 'OPTIONS') {
+    const email = validateEmail(req.body.email);
+    if (email) {
+      const user = getUserByEmail(email);
+      if (user) {
+        return res.status(200).json({ user });
+      } else {
+        return res.status(404).json({ message: 'No user found' });
+      }
+    } else {
+      return res.status(422).json({ message: 'Missing email' });
+    }
+  } else {
+    return res.status(405).json({ message: 'Unsupported message' });
+  }
+};
+```
+
+Although we don’t have that much of logic incapsulated in this function, it already looks quite a bit cluttered. Specifically, there are two issues with this code:
+
+1. It is hard to follow the flow of code. Instead of reading top-to-bottom, we need to read left-to-right ([Arrow-Anti-Pattern](http://wiki.c2.com/?ArrowAntiPattern)).
+2. It is hard to figure out the corresponding _else_ for each **if**. They are separated by the big body of the if statement.
+
+A simple technique to improve this code is to incorporate the **Return-Early-Pattern**.
+
+The Return-Early-Pattern terminates the execution of functions when conditions are not met. So that the expected result of the function is always at the very end.
+
+If we rewrite the API route from above, it would look like:
+
+```jsx
+export const handler = async (req, res) => {
+  if (req.method !== 'POST' && !req.method !== 'OPTIONS') {
+    return res.status(405).json({ message: 'Unsupported message' });
+  }
+
+  const email = validateEmail(req.body.email);
+  if (!email) {
+    return res.status(422).json({ message: 'Missing email' });
+  }
+
+  const user = getUserByEmail(email);
+  if (!user) {
+    return res.status(404).json({ message: 'No user found' });
+  }
+
+  return res.status(200).json({ user });
+};
+```
+
+With the Return-Early-Pattern in place, we can easily follow the code execution from top to bottom. Since we assume a happy path and only check for missing values, we avoid nesting too many conditions.
+
+Lastly, we can see at first glance the expected outcome of the function at the very bottom.
+
+## 2. Writing Code For Humans
+
+Generalizing what we did in the previous tip leads us to the second principle: write code that’s easily read by your coworkers, not the machine.
+
+This sounds trivial, but it changed my thinking tremendously at first.
+
+When I started programming, I always perceived it as a way to communicate to the computer. We tell the machine what to do. Yet the code that we write is read by our coworkers - not the machine.
+
+Our coworkers are the ones who need to read and understand the code. The computer in the end transpiles everything to 0s and 1s and does not care about readability.
+
+Let’s take this `groupBy` function as an example:
+
+```jsx
+const groupBy = (arr, groupFn) =>
+  arr.reduce(
+    (grouped, obj) => ({
+      ...grouped,
+      [groupFn(obj)]: [...(grouped[groupFn(obj)] || []), obj],
+    }),
+    {}
+  );
+```
+
+We clearly demonstrated that we can write complicated one-liner functions to do a simple operation: take an array and group it.
+
+While this may let you feel a bit more senior, it for sure makes things harder to understand for anyone who needs to review this.
+
+Consider this implementation instead:
+
+```jsx
+const groupBy = (arr, groupFn) => {
+  const grouped = {};
+  for (const obj of arr) {
+    const groupName = groupFn(obj);
+    if (!grouped[groupName]) {
+      grouped[groupName] = [];
+    }
+    grouped[groupName].push(obj);
+  }
+  return grouped;
+};
+```
+
+We can read it from top to bottom and instantly know what happens on every line.
+
+It may not look as cool as the previous example - true! But everybody who revisits this function in the future will thank you for this readable implementation.
+
+## 3. Hiding Information Behind Functions
+
+The last idea to improve your code style as a junior developer is to hide irrelevant information behind functions. This also benefits readability.
+
+If you are familiar with React, hooks are a great example for this principle:
+
+```jsx
+import React, { useState, useEffect } from 'react';
+
+function FriendListItem(props) {
+  const [isOnline, setIsOnline] = useState(null);
+
+  useEffect(() => {
+    function handleStatusChange(status) {
+      setIsOnline(status.isOnline);
+    }
+
+    ChatAPI.subscribeToFriendStatus(props.friend.id, handleStatusChange);
+    return () => {
+      ChatAPI.unsubscribeFromFriendStatus(props.friend.id, handleStatusChange);
+    };
+  });
+
+  return (
+    <li style={{ color: isOnline ? 'green' : 'black' }}>{props.friend.name}</li>
+  );
+}
+```
+
+Here, we have a component that outputs a list item with a dynamic status color. While this code executes perfectly fine, it incapsulates logic that is not directly related to the purpose of the `FriendListItem` component.
+
+If we extract the logic and create a custom hook called `useFriendStatus`, we can simplify the component as follows:
+
+```jsx
+import React, { useState, useEffect } from 'react';
+
+function FriendListItem(props) {
+  const isOnline = useFriendStatus(props.friend.id);
+
+  return (
+    <li style={{ color: isOnline ? 'green' : 'black' }}>{props.friend.name}</li>
+  );
+}
+```
+
+This has two benefits:
+
+1. We can reuse the `useFriendStatus` logic.
+2. We simplified our component to what’s truly relevant for its functionality.
+
+More generally, the principle of hiding information is to encapsulated irrelevant information behind abstract functions.
+
+Thus, we do not have to care about what happens inside the abstract function (implementation details) - we can rather focus on its purpose, i.e. the function's name (level of problem domain).
+
+---
+
+I hope these small tips have been helpful to you! Essentially, writing better code is often just about making it more readable and easily understandable – for yourself and everyone else.
