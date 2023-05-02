@@ -1,0 +1,474 @@
+---
+title: How To Build A Floating Menu With Lexical  and React
+summary: "Nowadays text editors like Notion let you easily format text with a bubble menu near your selection. Let's build one!"
+publishedAt: '2023/05/02'
+category: 'Web Development'
+type: 'Guide'
+banner:
+  name: 'lexical-floating-menu-screenshot'
+  caption: 'This is the floating menu we are going to create!'
+tags:
+  [
+    notion,
+    lexical,
+    react,
+    bubble menu,
+    text selection,
+    action menu,
+    floating bar,
+    menu,
+    rich text editor,
+    WYSIWYG,
+  ]
+mediumUrl: https://medium.com/konstantinmuenster/how-to-build-a-floating-menu-with-lexical-and-react-44eb69939cad
+---
+
+import Screenshot from './lexical-floating-menu.gif';
+import LexicalSetup from './lexical-floating-menu-setup.png';
+import LexicalComponent from './lexical-floating-menu-component.png';
+
+export * as banner from './lexical-floating-menu-screenshot.jpg';
+
+Nowadays tools like Notion achieved quite a leap in terms of text editing experience. They introduced new patterns which seamlessly integrate into our flow of writing.
+
+One of these new patterns is a floating menu that shows up whenever you select text. It keeps your attention on the text you are editing – instead of letting it wander to a menu bar at the very top of the page. I love those little details!
+
+Since I recently explored Lexical as a new framework for building rich text editors, I wanted to try creating such a bubble menu with Lexical and React.
+
+Here’s the result:
+
+<Image src={Screenshot} alt="Lexical Floating Menu" />
+
+<LearningPathCard>
+  <ul>
+    <li>
+      <p>Create floating menu with formatting options</p>
+    </li>
+    <li>
+      <p>Conditionally show menu near active text selection</p>
+    </li>
+  </ul>
+</LearningPathCard>
+
+<TargetAudienceCard>Intermediate React developers</TargetAudienceCard>
+
+Let’s go through it, step by step!
+
+## Setting up the editor
+
+For this article, I created a simple editor upfront so that we can avoid any boilerplate code for the setup. You find this setup [on this branch](https://github.com/konstantinmuenster/lexical-react-floating-menu/tree/setup) in the Github project.
+
+If you want to follow along, you can clone the project and follow the installation instructions.
+
+Once you installed the dependencies and started the development server, you should see this little editor on your [localhost](http://localhost) instance:
+
+<Image src={LexicalSetup} alt="Lexical Floating Menu Setup" />
+
+If you want to create the floating menu for your already existing editor, make
+sure you have all required dependencies installed. You find these inside the
+[package.json](https://github.com/konstantinmuenster/lexical-react-floating-menu/blob/setup/package.json).
+
+## Creating a new plugin
+
+Having the setup done, we can move forward to creating the plugin for the floating menu.
+
+With Lexical, plugins are essentially React components that we wrap within the editor composer. Hence we create a new file for our floating menu inside the plugins directory.
+
+```tsx:FloatingMenuPlugin.tsx showLineNumbers
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
+import { useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
+
+import { FloatingMenu, FloatingMenuCoords } from '../components/FloatingMenu';
+
+const DOM_ELEMENT = document.body;
+
+export function FloatingMenuPlugin() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [coords, setCoords] = useState<FloatingMenuCoords>(undefined);
+  const [editor] = useLexicalComposerContext();
+
+  return createPortal(
+    <FloatingMenu ref={ref} editor={editor} coords={coords} />,
+    DOM_ELEMENT
+  );
+}
+```
+
+The floating menu plugin takes care of two things:
+
+1. It calculates and stores the `coords` of the menu, so that we can display it right above the text selection.
+2. It attaches a React portal to the DOM. This takes care of rendering the actual FloatingMenu UI component (which we will create in a second).
+
+This new plugin can now be added to the editor. For this, we navigate to `Editor.tsx` and add the plugin inside the Lexical editor component:
+
+```tsx:Editor.tsx {2,13} showLineNumbers
+// ...
+import { FloatingMenuPlugin } from './plugins/FloatingMenu';
+
+export function LexicalEditor(props: LexicalEditorProps) {
+  return (
+    <LexicalComposer initialConfig={props.config}>
+      <RichTextPlugin
+        contentEditable={<ContentEditable spellCheck={false} />}
+        placeholder={<Placeholder />}
+        ErrorBoundary={LexicalErrorBoundary}
+      />
+      {/** ... */}
+      <FloatingMenuPlugin />
+    </LexicalComposer>
+  );
+}
+```
+
+Now, whenever a new editor is created, it executes the `FloatingMenuPlugin`, which determines if and where we should render our `FloatingMenu` component.
+
+Since this component is the last missing piece to get something on the screen, let’s create it!
+
+## Creating the menu component
+
+Inside the components directory, we create a new file `FloatingMenu.tsx`.
+
+```tsx:FloatingMenu.tsx showLineNumbers
+import { forwardRef, useEffect, useState } from 'react';
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
+import { $getSelection, $isRangeSelection, FORMAT_TEXT_COMMAND } from 'lexical';
+
+import { IconButton } from '../../IconButton';
+
+export type FloatingMenuCoords = { x: number; y: number } | undefined;
+
+type FloatingMenuState = {
+  isBold: boolean;
+  isCode: boolean;
+  isItalic: boolean;
+  isStrikethrough: boolean;
+  isUnderline: boolean;
+};
+
+type FloatingMenuProps = {
+  editor: ReturnType<typeof useLexicalComposerContext>[0];
+  coords: FloatingMenuCoords;
+};
+
+export const FloatingMenu = forwardRef<HTMLDivElement, FloatingMenuProps>(
+  function FloatingMenu(props, ref) {
+    const { editor, coords } = props;
+
+    const shouldShow = coords !== undefined;
+
+    const [state, setState] = useState<FloatingMenuState>({
+      isBold: false,
+      isCode: false,
+      isItalic: false,
+      isStrikethrough: false,
+      isUnderline: false,
+    });
+
+    useEffect(() => {
+      const unregisterListener = editor.registerUpdateListener(
+        ({ editorState }) => {
+          editorState.read(() => {
+            const selection = $getSelection();
+            if (!$isRangeSelection(selection)) return;
+
+            setState({
+              isBold: selection.hasFormat('bold'),
+              isCode: selection.hasFormat('code'),
+              isItalic: selection.hasFormat('italic'),
+              isStrikethrough: selection.hasFormat('strikethrough'),
+              isUnderline: selection.hasFormat('underline'),
+            });
+          });
+        }
+      );
+      return unregisterListener;
+    }, [editor]);
+
+    return (
+      <div
+        ref={ref}
+        className="flex items-center justify-between bg-slate-100 border-[1px] border-slate-300 rounded-md p-1 gap-1"
+        aria-hidden={!shouldShow}
+        style={{
+          position: 'absolute',
+          top: coords?.y,
+          left: coords?.x,
+          visibility: shouldShow ? 'visible' : 'hidden',
+          opacity: shouldShow ? 1 : 0,
+        }}
+      >
+        <IconButton
+          icon="bold"
+          aria-label="Format text as bold"
+          active={state.isBold}
+          onClick={() => {
+            editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'bold');
+          }}
+        />
+        <IconButton
+          icon="italic"
+          aria-label="Format text as italics"
+          active={state.isItalic}
+          onClick={() => {
+            editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'italic');
+          }}
+        />
+        <IconButton
+          icon="underline"
+          aria-label="Format text to underlined"
+          active={state.isUnderline}
+          onClick={() => {
+            editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'underline');
+          }}
+        />
+        <IconButton
+          icon="strike"
+          aria-label="Format text with a strikethrough"
+          active={state.isStrikethrough}
+          onClick={() => {
+            editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'strikethrough');
+          }}
+        />
+        <IconButton
+          icon="code"
+          aria-label="Format text with inline code"
+          active={state.isCode}
+          onClick={() => {
+            editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'code');
+          }}
+        />
+      </div>
+    );
+  }
+);
+```
+
+This component is the actual menu bar that we render to the screen. Since we want to position it right above the text selection, it requires a set of coordinates that we receive via the `coords` prop.
+
+If `coords` is correctly set, we render the menu bar and its buttons.
+
+To apply the same styling to all buttons, I created an `IconButton` component. You find it [here](https://github.com/konstantinmuenster/lexical-react-floating-menu/blob/setup/src/components/IconButton/IconButton.tsx).
+
+In this component, the effect takes care of handling the formatting state. It gets executed whenever the editor state updates. Thus, we can sync our button states easily with the formatting applied to the current selection.
+
+Let’s have a quick preview of how our component looks like. For it, we can temporarily mutate our `coords` prop right before we define `shouldShow`.
+
+```tsx:FloatingMenu.tsx
+const { editor, coords } = props;
+coords = { x: 600, y: 75 }; // only temporary – remove it again!
+const shouldShow = coords !== undefined;
+```
+
+Now, we can see our new menu bar that we just created!
+
+<Image src={LexicalComponent} alt="Floating Menu, absolulety positioned" />
+
+But instead of setting fixed coordinates manually, let’s see how we can automatically position the menu based on the active text selection!
+
+## Displaying the menu on active selections
+
+For it, we switch back into our FloatingMenuPlugin. The plugin is responsible for observing the editor state and calculating the menu position if there is an active text selection. Let’s start with the latter part: calculating the menu position.
+
+### Calculating the menu position
+
+Inside `FloatingMenuPlugin.tsx`, we add a new function that encapsulates the positioning logic:
+
+```tsx:FloatingMenuPlugin.tsx {1,7,16-32} showLineNumbers
+import { computePosition } from '@floating-ui/dom';
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
+import { useCallback, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
+
+import { FloatingMenu, FloatingMenuCoords } from '../components/FloatingMenu';
+import { usePointerInteractions } from '../hooks/usePointerInteractions';
+
+const DOM_ELEMENT = document.body;
+
+export function FloatingMenuPlugin() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [coords, setCoords] = useState<FloatingMenuCoords>(undefined);
+  const [editor] = useLexicalComposerContext();
+
+  const { isPointerDown, isPointerReleased } = usePointerInteractions();
+
+  const calculatePosition = useCallback(() => {
+    const domSelection = getSelection();
+    const domRange =
+      domSelection?.rangeCount !== 0 && domSelection?.getRangeAt(0);
+
+    if (!domRange || !ref.current || isPointerDown) return setCoords(undefined);
+
+    computePosition(domRange, ref.current, { placement: 'top' })
+      .then(pos => {
+        setCoords({ x: pos.x, y: pos.y - 10 });
+      })
+      .catch(() => {
+        setCoords(undefined);
+      });
+  }, [isPointerDown]);
+
+  return createPortal(
+    <FloatingMenu ref={ref} editor={editor} coords={coords} />,
+    DOM_ELEMENT
+  );
+}
+```
+
+`calculatePosition` uses three important helper functions:
+
+1. The browser native `getSelection()` method that allows us to access the browser selection. If it has an active range (i.e. multiple characters are selected), we pass it to our next helper.
+2. From `@floating-ui/dom` (awesome library!), we use `computePosition` to calculate the positions directly above our text selection. The calculated coordinates are set as state.
+3. Lastly, we added a crucial check with the help of `usePointerInteractions()`. If we don’t check for `isPointerDown`, we would already start setting coordinates and showing the menu bar if the user is still making his mouse selection across the text.
+
+With this in place, we already dealt with most of the complexity. I love how libraries like `@floating/ui` can help us in making complex computations easy!
+
+### Defining when to show the menu
+
+Finally, we can write editor state observers that define in which situations we want to actually show the menu bar.
+
+Fortunately, Lexical allows us to easily write an update listener that watches the editor state. Whenever the state updates, the callback function gets executed. In our case, we run our `$handleSelectionChange` function (if you want to learn more about the dollar sign prefix, check [this discussion on Github](https://github.com/facebook/lexical/discussions/1800)).
+
+```tsx:FloatingMenuPlugin.tsx {3,23-48} showLineNumbers
+import { computePosition } from '@floating-ui/dom';
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
+import { $getSelection, $isRangeSelection } from 'lexical';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
+
+import { FloatingMenu, FloatingMenuCoords } from '../components/FloatingMenu';
+import { usePointerInteractions } from '../hooks/usePointerInteractions';
+
+const DOM_ELEMENT = document.body;
+
+export function FloatingMenuPlugin() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [coords, setCoords] = useState<FloatingMenuCoords>(undefined);
+  const [editor] = useLexicalComposerContext();
+
+  const { isPointerDown, isPointerReleased } = usePointerInteractions();
+
+  const calculatePosition = useCallback(() => {
+    // ...
+  }, [isPointerDown]);
+
+  const $handleSelectionChange = useCallback(() => {
+    if (
+      editor.isComposing() ||
+      editor.getRootElement() !== document.activeElement
+    ) {
+      setCoords(undefined);
+      return;
+    }
+
+    const selection = $getSelection();
+
+    if ($isRangeSelection(selection) && !selection.anchor.is(selection.focus)) {
+      calculatePosition();
+    } else {
+      setCoords(undefined);
+    }
+  }, [editor, calculatePosition]);
+
+  useEffect(() => {
+    const unregisterListener = editor.registerUpdateListener(
+      ({ editorState }) => {
+        editorState.read(() => $handleSelectionChange());
+      }
+    );
+    return unregisterListener;
+  }, [editor, $handleSelectionChange]);
+
+  return createPortal(
+    <FloatingMenu ref={ref} editor={editor} coords={coords} />,
+    DOM_ELEMENT
+  );
+}
+```
+
+Note that we also defined some additional checks. We don’t want to update the menu position…
+
+- if a [composition](https://w3c.github.io/uievents/#events-compositionevents) is active
+- if the editor is not focused anymore (e.g. the user clicks outside the editor)
+- if the editor selection does not span across multiple characters
+
+But if all of those checks pass, we run our `calculatePosition` function.
+
+Nonetheless, if we now try to select text via mouse, the floating menu won’t show up. This is because we are missing one important last piece.
+
+In `calculatePosition`, we exit the function early if `isPointerDown` is true. This was to prevent the menu from popping up too early (when the user still spans the selection).
+
+But now we don’t see the menu at all when making a selection via mouse. To fix this, we can add another effect that runs whenever `isPointerReleased` changes.
+
+```tsx:FloatingMenuPlugin.tsx {31-40} showLineNumbers
+import { computePosition } from '@floating-ui/dom';
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
+import { $getSelection, $isRangeSelection } from 'lexical';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
+
+import { FloatingMenu, FloatingMenuCoords } from '../components/FloatingMenu';
+import { usePointerInteractions } from '../hooks/usePointerInteractions';
+
+const DOM_ELEMENT = document.body;
+
+export function FloatingMenuPlugin() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [coords, setCoords] = useState<FloatingMenuCoords>(undefined);
+  const [editor] = useLexicalComposerContext();
+
+  const { isPointerDown, isPointerReleased } = usePointerInteractions();
+
+  const calculatePosition = useCallback(() => {
+    // ...
+  }, [isPointerDown]);
+
+  const $handleSelectionChange = useCallback(() => {
+    // ...
+  }, [editor, calculatePosition]);
+
+  useEffect(() => {
+    // ...
+  }, [editor, $handleSelectionChange]);
+
+  const show = coords !== undefined;
+
+  useEffect(() => {
+    if (!show && isPointerReleased) {
+      editor.getEditorState().read(() => $handleSelectionChange());
+    }
+    // Adding show to the dependency array causes an issue if
+    // a range selection is dismissed by navigating via arrow keys.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isPointerReleased, $handleSelectionChange, editor]);
+
+  return createPortal(
+    <FloatingMenu ref={ref} editor={editor} coords={coords} />,
+    DOM_ELEMENT
+  );
+}
+```
+
+If the pointer was released and our coordinates are still undefined, we access the editor state and trigger our `$handleSelectionChange` callback.
+
+With this we finally have all our pieces to test our floating menu in the editor!
+
+<Image src={Screenshot} alt="Lexical Floating Menu" />
+
+## Wrap up
+
+Now, this was honestly a lot to digest! Take your time and go through the steps again.
+
+If you have question, feel free to reach out to me on Twitter: <TwitterChip />
+
+### Introducing lexical-floating-menu
+
+Since interactive editor components such as a floating menu / bubble menu are hard to get right, I released `lexical-floating-menu` – a headless and fully customizable plugin to create floating menus easily.
+
+It encapsulates everything we learnt in this tutorial. You can simply install it as any other npm package. Check out the instructions on Github:
+
+[konstantinmuenster/lexical-floating-menu](https://github.com/konstantinmuenster/lexical-floating-menu)
+
+I’d love to hear your feedback – either on Github or on Twitter!
+
+Have fun playing with it!
