@@ -53,7 +53,8 @@ const StyledBlogPost = styled('article', {
       },
     },
 
-    'ol > li, ul > li': { fontSize: '$big' },
+    'ol > li, ul > li': { fontSize: '$big', paddingLeft: '0.5rem' },
+    'ol li::marker, ul li::marker': { fontSize: '$big' },
     'h2, h3': { marginBottom: '0.5rem', marginTop: '1.5rem' },
     'h4, h5': { marginBottom: '-0.5rem', marginTop: '1rem' },
 
