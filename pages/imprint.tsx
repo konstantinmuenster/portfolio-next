@@ -14,9 +14,9 @@ const ImprintPage: NextPage = () => {
       <p>
         Konstantin Münster
         <br />
-        Jarrestrasse 90
+        Rissener Landstr. 225A
         <br />
-        22303 Hamburg
+        22559 Hamburg
         <br />
         Germany
       </p>
