@@ -1,0 +1,119 @@
+---
+title: Adopting a no-code mindset
+summary: 'Writing code has never been easier. Yet, effective teams do the
+  opposite: they focus on shipping less code. Learn why and how you adopt a
+  no-code mindset.'
+publishedAt: 2023/07/01
+category: Web Development
+type: Essay
+banner:
+  name: 'adopting-no-code'
+  caption: 'Photo by <a href="https://unsplash.com/@alperguzeler" target="_blank" rel="noopener noreferrer">Alper Güzeler</a> on Unsplash'
+tags: [
+    'chatgpt',
+    'ai',
+    'software',
+    'aws',
+    'managed services',
+    'no code',
+    'low
+    code',
+    'product',
+    'discovery',
+  ]
+mediumUrl: 'https://medium.com/swlh/adopting-a-no-code-mindset-11b3bef8b21d'
+---
+
+export * as banner from './adopting-no-code.png';
+
+Building and maintaining software is hard. As the team grows, so does the code base. New features are added, and existing features are tweaked so that they somehow integrate with the latest changes.
+
+Eventually, our simple app turns incredibly complex. A few boilerplate files morphed into thousands of lines of intertwined code. And with each new line, there is a potential place for bugs to hide.
+
+Now, we could pretend to be Jeff Bezos and tell ourselves “Every day is day one” as we wake up and look into the mirror. But, unfortunately, this does not work in software land. There is only one “initial commit”. And you can’t escape the growing complexity of a codebase that easily.
+
+This scenario does not sound new to most developers. Every codebase eventually starts to have pain points. People make bad decisions all the time. Repercussions, however, often only show up months after.
+
+So, how do we combat this vicious battle? If all we do is write code, yet code seems to work against us over time, is there a way to win this fight at all?
+
+Actually, there is a very simple approach to maneuvering this conflict.
+
+### “The best code is node code at all”
+
+This was the title of a [recent article](https://blog.codinghorror.com/the-best-code-is-no-code-at-all/) I read. Though the article was published in 2007, the idea still holds today. And I could not agree more.
+
+It most likely sounds demotivating at first though. We all love writing code. Otherwise, we hadn’t become developers. And yet we need to be intentional with what we ship. The less code, the better.
+
+Less code has fewer moving pieces that have to be maintained and that could potentially break. Less code lets new coworkers onboard even faster. Overall, a leaner codebase enables your team to work on a codebase more reliably and confidently.
+
+To be precise, less code does not mean you should sacrifice readability or code quality. There is no argument about prioritizing an easy-to-understand function over a fancy-looking one-liner.
+
+Adopting a “no code mindset” rather asks the question of whether this function should exist at all:
+
+> A “no code mindset” aims on keeping the codebase as lean as possible while not sacrificing readability or code quality.
+
+Once I read about this incredibly simple and effective paradigm, I immediately started thinking about how we can integrate it into our day-to-day development. Here are a few ideas!
+
+## 1. Start with product discovery
+
+The decision about whether or not we code and ship specific features should usually not start in your IDE. The biggest lever in terms of writing less code is product discovery.
+
+If you could remove all the features that hadn't been thoroughly discovered and now seem neglected by most users, your application would probably be half its size. This would mean 50% less stuff to worry about.
+
+But as is it in software development, once we ship a feature, it usually stays in production. We already put all of our efforts into it. And since it could be helpful to some users, we just leave it where it is.
+
+However, this does not take into account the costs of maintaining the feature long term. Most features are not isolated and have to be adjusted as new changes are integrated. In the end, keeping dead features alive is a huge cost.
+
+So ideally, we would spare those costs if we start with doing a thorough product discovery. This is not the sole responsibility of your product team by the way. You as the developer have to challenge new feature requests too.
+
+If you do not have strong indications that the majority of users crave for this capability, consider not building it.
+
+## 2. Dump code without regret
+
+Similarly, if we shipped a feature that did not reach adoption as anticipated, we should remove it again.
+
+Again, less code means less stuff to maintain. But in this case, it also improves the user experience significantly. If you reduce the number of features on your home screen, your UI becomes less cluttered. Users can navigate more easily since they only interact with functionalities that they regularly use and truly love.
+
+A great example of removing unwanted features is Medium’s customizability on profile pages. [They decided after years](https://blog.medium.com/an-update-on-profile-colors-and-themes-2cb471e61e40) to dumb this idea eventually. This was a bold decision considering how much work it must have been to build it.
+
+Yet ultimately, it makes Medium’s developers happier and their users too.
+
+So don’t be afraid of deleting code. Make sure you communicate clearly to your users why you removed certain functionalities. They will understand.
+
+And if you have ever come to need some of the removed code again, it is safely stored in your Git history, no worries.
+
+## 3. Embrace managed services
+
+Even seemingly simple apps can grow in complexity fast. Consider a common app where users can sign up for a monthly subscription. You need to handle authentication, authorization, and billing. And this does not even include any capabilities related to your core product.
+
+Managed services can help you with that. Instead of writing an authentication system on your own, use a service like [Clerk](https://clerk.com/). This saves you hundreds of lines of code. Hundreds of lines you don't have to worry about.
+
+This is an aspect I often find neglected in the discussion on whether or not third-party integrations are worth the price. Of course, using a service like Clerk looks expensive at first. But everything comes with opportunity costs.
+
+Building and maintaining a custom-built authentication system can be very expensive. Just think about the salary of an average developer and how long it would take to initially build the system. Even the costs of building it, cover your managed service costs for years. And this does not even include the long-term maintenance of it.
+
+In my experience, using managed services for features outside your core value proposition turns out to be more effective: fewer headaches and more time to double down on the things that provide value to your customers.
+
+## 4. Use ChatGPT wisely
+
+With the recent rise of generative AI tools like ChatGPT, I realized a tendency: the easier it becomes to produce code, the more we produce.
+
+We don’t know how to approach a certain problem? We get help immediately by asking our virtual tutor. Same for working with foreign libraries or languages.
+
+While this is good news at first, it can become dangerous eventually. We potentially ship features where we don’t entirely understand the mechanics. But hey, it works! And when there are bugs, I will be on holiday hopefully.
+
+This is a mindset we already saw with copy-pasting solutions from Stackoverflow. Yet, it could worsen with tools like ChatGPT.
+
+Hence, we have to remind ourselves constantly that we should use such tools to nudge us in the right direction and eventually help us understand code better. Fortunately, ChatGPT offers extensive explanations for the code it produces. So, it is there. We just have to read it.
+
+## Wrap up
+
+If you take one thing from this article, it is this:
+
+Over time, codebases by nature get more and more complex. To avoid this, we have to write less code wherever possible. This means primarily we have to be rigorous in our product decisions. Remove features if they don’t provide value to customers - or even better, thoroughly discover features before shipping them.
+
+By reducing the size of your codebase, you keep it maintainable. Less code means fewer places for bugs to hide. Fewer moving pieces that you have to keep in mind while developing.
+
+This does not mean that you should sacrifice readability and a well-structured repository for fewer lines of code. We should always prioritize an easy-to-understand function over fancy-looking one-liners. But if there is the possibility of removing a dead feature or outsourcing complexity to an external service, use it.
+
+What is your take on improving maintainability by writing less code? I am curious to hear about it on Twitter <TwitterChip />.
